@@ -53,19 +53,20 @@ The main objectives are:
 ## Backend
 
 - Python
-- Django
+- Firebase
 - Django REST Framework
 - Django REST Framework Simple JWT
 - Python packages required by the project
 
 ## Database
 
-- PostgreSQL
+- PostgreSQL 
+- Firebase
 - pgAdmin
 
 ## Authentication and Security
 
-- JWT authentication
+- JWT authentication + bcrypt
 - Password hashing using Django's authentication system
 - Role-based authorization
 - Protected API endpoints
@@ -86,7 +87,7 @@ The main objectives are:
 - Visual Studio Code
 - Git
 - GitHub
-- Postman
+- Postman(Email verification)
 - Draw.io / diagrams.net
 - Chrome or another modern browser
 
@@ -132,7 +133,7 @@ A librarian can:
 - Process book returns
 - Calculate/manage fines
 - Manage reservations
-- Manage vendors
+- Manage vendors(add later)
 - Create/manage purchase orders
 - Generate reports
 - Send or trigger notifications
@@ -1426,7 +1427,7 @@ PostgreSQL Database
 
 ---
 
-# 29. Testing Strategy
+# 29. Testing phase
 
 Testing should be performed at multiple levels.
 
