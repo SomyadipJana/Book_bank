@@ -1,4 +1,8 @@
-# Git Workflow — Book Bank Management System
+# Book Bank - Git Workflow Guide
+
+This document defines the Git branching strategy and daily workflow for the **Book Bank Management System** team.
+
+---
 
 ## Branch Structure
 
@@ -9,82 +13,83 @@ main
       └── backend
 ```
 
-| Branch     | Purpose                                                   | Who works here       |
-|------------|-----------------------------------------------------------|----------------------|
-| `main`     | Stable, production-ready releases only                    | No direct commits    |
-| `develop`  | Integration branch — receives completed frontend/backend  | Both (via PR/merge)  |
-| `frontend` | Long-lived branch for all frontend (React/UI) development | Friend (frontend)    |
-| `backend`  | Long-lived branch for backend, database, API development  | Krish (backend)      |
+| Branch     | Purpose                                                        | Who works here              |
+|------------|----------------------------------------------------------------|-----------------------------|
+| `main`     | Stable, production-ready releases only                         | Merged from `develop`       |
+| `develop`  | Integration branch — all finished features land here first     | Both team members (via PRs) |
+| `frontend` | Long-lived branch for all frontend (React/Vite) development    | Friend (frontend dev)       |
+| `backend`  | Long-lived branch for all backend (Django/Python/PostgreSQL)   | Krish (backend dev)         |
 
 ---
 
-## Rules
+## Ground Rules
 
-- **Never commit directly to `main`.**
-- **Never commit directly to `develop`** — always use a Pull Request from `frontend` or `backend`.
-- Always `pull` or `fetch` before starting new work.
-- Always resolve merge conflicts carefully — never discard the other person's valid work.
-- Never use `git reset --hard` on shared/published branches.
-- Never `force-push` to any shared branch (`main`, `develop`, `frontend`, `backend`).
-- Write meaningful commit messages.
+- **NEVER** commit directly to `main` or `develop`
+- **NEVER** force-push any shared branch (`main`, `develop`, `frontend`, `backend`)
+- **NEVER** use `git reset --hard` on shared/published branches
+- **ALWAYS** `pull` / `fetch` before starting work
+- Use Pull Requests to merge `frontend` → `develop` and `backend` → `develop`
+- Merge `develop` into your working branch to receive integrated updates
+- Write meaningful, descriptive commit messages
+- Resolve merge conflicts carefully — never discard your teammate's valid work
 
 ---
 
 ## A. Friend's Frontend Workflow
 
 ```bash
-# Switch to your frontend branch
+# 1. Switch to the frontend branch
 git switch frontend
 
-# Always pull latest changes before starting
+# 2. Always pull the latest changes before starting work
 git pull origin frontend
 
-# ... do your frontend work (React, UI, etc.) ...
+# 3. ... work on React / Vite / UI code ...
 
-# Stage and commit your changes
+# 4. Stage and commit your changes
 git add .
-git commit -m "feat: describe what you changed"
+git commit -m "feat: add book search results component"
 
-# Push to remote
+# 5. Push to remote
 git push origin frontend
 ```
 
 Then open a **Pull Request** on GitHub:
 > `frontend` → `develop`
 
-Have it reviewed, then merge. **Do not merge into `main` directly.**
+Have the other team member review and approve before merging. **Do not merge into `main` directly.**
 
 ---
 
 ## B. Krish's Backend Workflow
 
 ```bash
-# Switch to your backend branch
+# 1. Switch to the backend branch
 git switch backend
 
-# Always pull latest changes before starting
+# 2. Always pull the latest changes before starting work
 git pull origin backend
 
-# ... do your backend work (Django, DRF, PostgreSQL, models, APIs) ...
+# 3. ... work on Django / Python / PostgreSQL / API endpoints ...
 
-# Stage and commit your changes
+# 4. Stage and commit your changes
 git add .
-git commit -m "feat: describe what you changed"
+git commit -m "feat: add Book model and REST API endpoint"
 
-# Push to remote
+# 5. Push to remote
 git push origin backend
 ```
 
 Then open a **Pull Request** on GitHub:
 > `backend` → `develop`
 
-Have it reviewed, then merge. **Do not merge into `main` directly.**
+Have the other team member review and approve before merging. **Do not merge into `main` directly.**
 
 ---
 
 ## C. How Krish Gets the Latest Frontend Changes
 
-After the friend's frontend changes have been merged into `develop` via a Pull Request:
+Once your friend's frontend changes are merged into `develop` via a Pull Request:
 
 ```bash
 git switch backend
@@ -92,13 +97,15 @@ git fetch origin
 git merge origin/develop
 ```
 
-This brings the latest integrated `develop` changes (including frontend updates) into your `backend` branch so your work stays up to date.
+This fetches all remote branch updates without changing your local code, then merges
+the latest `develop` (which contains the frontend updates) into your `backend` branch.
+Resolve any merge conflicts carefully.
 
 ---
 
 ## D. How the Friend Gets the Latest Backend Changes
 
-After Krish's backend changes have been merged into `develop` via a Pull Request:
+Once Krish's backend changes are merged into `develop` via a Pull Request:
 
 ```bash
 git switch frontend
@@ -106,20 +113,44 @@ git fetch origin
 git merge origin/develop
 ```
 
-This brings the latest integrated `develop` changes (including backend updates) into the `frontend` branch.
+This fetches all remote branch updates, then merges the latest `develop` (which contains
+the backend updates) into the `frontend` branch. Both branches stay in sync through
+`develop` as the shared integration point.
 
 ---
 
-## E. Final Release Workflow
+## E. Final Release Workflow (Merging to main)
 
-When a feature/milestone is complete and fully tested on `develop`:
+When both frontend and backend work is complete, tested, and stable in `develop`:
 
-1. **Merge frontend work into develop** (via Pull Request)
-2. **Merge backend work into develop** (via Pull Request)
-3. **Test and verify** the integrated `develop` branch
-4. **Open a Pull Request** on GitHub:
-   > `develop` → `main`
-5. Merge after approval — this becomes a stable release on `main`
+```bash
+# 1. Ensure develop is up to date
+git switch develop
+git pull origin develop
+
+# 2. Switch to main
+git switch main
+git pull origin main
+
+# 3. Open a Pull Request on GitHub: develop -> main
+#    (preferred — allows review before release)
+#    OR merge locally:
+git merge --no-ff develop -m "release: v1.0.0 - Book Bank initial release"
+
+# 4. Push the release to origin/main
+git push origin main
+
+# 5. (Optional) Tag the release
+git tag -a v1.0.0 -m "Version 1.0.0 - Initial release"
+git push origin v1.0.0
+```
+
+Full release flow:
+```
+frontend  --PR--.
+                +---> develop --PR---> main
+backend   --PR--'
+```
 
 ---
 
@@ -134,39 +165,36 @@ When a feature/milestone is complete and fully tested on `develop`:
 
 ---
 
-## Quick Cheat Sheet
+## Daily Sync Cheatsheet
 
-```bash
-# Start working (any branch)
-git switch <branch>
-git pull origin <branch>
-
-# After working
-git add .
-git commit -m "type: short description"
-git push origin <branch>
-
-# Get teammate's latest changes (after their PR is merged to develop)
-git fetch origin
-git merge origin/develop
-
-# Check what branch you're on
-git branch
-
-# See all branches (local + remote)
-git branch -a
-```
+| Task                              | Command                                                  |
+|-----------------------------------|----------------------------------------------------------|
+| Start a work session              | `git switch <your-branch>` then `git pull origin <your-branch>` |
+| Get integrated updates from team  | `git fetch origin` then `git merge origin/develop`       |
+| Stage all changes                 | `git add .`                                              |
+| Commit                            | `git commit -m "type: short description"`                |
+| Push to remote                    | `git push origin <your-branch>`                          |
+| See local branches                | `git branch`                                             |
+| See all branches (local + remote) | `git branch -a`                                          |
+| See recent commits                | `git log --oneline --decorate -10`                       |
 
 ---
 
-## Database & Backend Note
+## Backend Tech Stack (Planned for backend branch)
 
-The `backend` branch is reserved for:
-- Python / Django / Django REST Framework setup
-- PostgreSQL configuration
-- Database models (ORM)
-- API endpoints
-- JWT authentication
-- Any server-side logic
+- Python + Django + Django REST Framework
+- PostgreSQL database configuration
+- Database models (Book, User, Loan, Fine, Reservation, etc.)
+- REST API endpoints
+- JWT Authentication / Role-based Authorization
 
-These technologies will be added to the `backend` branch only. Frontend code lives exclusively in the `frontend` branch.
+> **Note:** Do not install or configure these technologies until you are actively working on the `backend` branch.
+
+---
+
+## Repository Info
+
+- GitHub: https://github.com/SomyadipJana/Book_bank
+- Frontend dev server: http://localhost:5173 (Vite)
+- Backend API server: http://localhost:8000 (uvicorn / Django)
+- API Docs: http://localhost:8000/docs (FastAPI/Swagger)
