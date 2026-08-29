@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '../components/Button'
 import { DueDatePocket } from '../components/DueDatePocket'
 
@@ -19,12 +19,145 @@ const STATS = [
 ]
 
 const ARRIVALS = [
-  { accession: 'BB-0501', title: 'Atomic Habits',              author: 'James Clear',       spine: '#2A4A3E', available: true  },
-  { accession: 'BB-0502', title: 'The Pragmatic Programmer',   author: 'Hunt & Thomas',     spine: '#4A3B1A', available: false },
-  { accession: 'BB-0503', title: 'Deep Work',                  author: 'Cal Newport',       spine: '#1E3A5C', available: true  },
-  { accession: 'BB-0504', title: 'Structure and Interpretation',author: 'Abelson & Sussman', spine: '#3B1A1A', available: true  },
-  { accession: 'BB-0505', title: 'Sapiens',                    author: 'Yuval Noah Harari', spine: '#2E3B2A', available: false },
-  { accession: 'BB-0506', title: 'The Lean Startup',           author: 'Eric Ries',         spine: '#3A2A4A', available: true  },
+  /* ── Original 6 ── */
+  {
+    accession: 'BB-0501', available: true,
+    spine: '#2A4A3E',
+    title: 'Atomic Habits',
+    author: 'James Clear',
+    isbn13: '9780735211292',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780735211292-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg?default=false',
+  },
+  {
+    accession: 'BB-0502', available: false,
+    spine: '#4A3B1A',
+    title: 'The Pragmatic Programmer',
+    author: 'Hunt & Thomas',
+    isbn13: '9780135957059',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780135957059-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780135957059-L.jpg?default=false',
+  },
+  {
+    accession: 'BB-0503', available: true,
+    spine: '#1E3A5C',
+    title: 'Deep Work',
+    author: 'Cal Newport',
+    isbn13: '9781455586691',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9781455586691-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9781455586691-L.jpg?default=false',
+  },
+  {
+    accession: 'BB-0504', available: true,
+    spine: '#3B1A1A',
+    title: 'Structure and Interpretation',
+    author: 'Abelson & Sussman',
+    isbn13: '9780262510875',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780262510875-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780262510875-L.jpg?default=false',
+  },
+  {
+    accession: 'BB-0505', available: false,
+    spine: '#2E3B2A',
+    title: 'Sapiens',
+    author: 'Yuval Noah Harari',
+    isbn13: '9780062316097',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780062316097-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780062316097-L.jpg?default=false',
+  },
+  {
+    accession: 'BB-0506', available: true,
+    spine: '#3A2A4A',
+    title: 'The Lean Startup',
+    author: 'Eric Ries',
+    isbn13: '9780307887894',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780307887894-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780307887894-L.jpg?default=false',
+  },
+
+  /* ── New 9 — genre-diverse additions ── */
+  {
+    accession: 'BB-0507', available: true,
+    spine: '#3B1F2B',
+    title: 'The Alchemist',
+    author: 'Paulo Coelho',
+    isbn13: '9780061122415',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780061122415-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780061122415-L.jpg?default=false',
+  },
+  {
+    accession: 'BB-0508', available: false,
+    spine: '#2B1A1A',
+    title: '1984',
+    author: 'George Orwell',
+    isbn13: '9780451524935',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780451524935-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780451524935-L.jpg?default=false',
+  },
+  {
+    accession: 'BB-0509', available: true,
+    spine: '#2A3B2A',
+    title: 'To Kill a Mockingbird',
+    author: 'Harper Lee',
+    isbn13: '9780061935466',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780061935466-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780061935466-L.jpg?default=false',
+  },
+  {
+    accession: 'BB-0510', available: true,
+    spine: '#4A1E2A',
+    title: 'Pride and Prejudice',
+    author: 'Jane Austen',
+    isbn13: '9780141439518',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780141439518-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780141439518-L.jpg?default=false',
+  },
+  {
+    accession: 'BB-0511', available: false,
+    spine: '#3B1A2A',
+    title: 'The Fault in Our Stars',
+    author: 'John Green',
+    isbn13: '9780141345642',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780141345642-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780141345642-L.jpg?default=false',
+  },
+  {
+    accession: 'BB-0512', available: true,
+    spine: '#2E2820',
+    title: 'The Great Gatsby',
+    author: 'F. Scott Fitzgerald',
+    isbn13: '9780521402309',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780521402309-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780521402309-L.jpg?default=false',
+  },
+  {
+    accession: 'BB-0513', available: true,
+    spine: '#2E2A24',
+    title: 'Steve Jobs',
+    author: 'Walter Isaacson',
+    isbn13: '9781451648546',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9781451648546-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9781451648546-L.jpg?default=false',
+  },
+  /* Clean Code and CLRS also appear in the main catalogue — reuse their accessions */
+  {
+    accession: 'BB-0006', available: false,
+    spine: '#1E3D32',
+    title: 'Clean Code',
+    author: 'Robert C. Martin',
+    isbn13: '9780132350884',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780132350884-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg?default=false',
+  },
+  {
+    accession: 'BB-0001', available: true,
+    spine: '#18294A',
+    title: 'Introduction to Algorithms',
+    author: 'Cormen, Leiserson, Rivest, Stein',
+    isbn13: '9780262046305',
+    coverGrid:  'https://covers.openlibrary.org/b/isbn/9780262046305-M.jpg?default=false',
+    coverLarge: 'https://covers.openlibrary.org/b/isbn/9780262046305-L.jpg?default=false',
+  },
 ]
 
 const STEPS = [
@@ -189,38 +322,60 @@ function StatsStrip() {
 }
 
 function ArrivalCard({ book }) {
+  const [imgFailed, setImgFailed] = useState(false)
+  const showImg = book.coverGrid && !imgFailed
+
   return (
     <article className="arrival-card">
       <div
         className="arrival-card__cover"
-        style={{
-          backgroundColor: book.spine,
-          backgroundImage: `repeating-linear-gradient(
-            0deg,
-            rgba(0,0,0,0.04) 0px,
-            rgba(0,0,0,0.04) 1px,
-            transparent 1px,
-            transparent 10px
-          )`,
-        }}
+        style={{ backgroundColor: book.spine }}
       >
-        {/* Centred title on cover */}
-        <div style={{
-          position: 'absolute', inset: '12px 8px',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <p style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '0.7rem',
-            fontWeight: 600,
-            color: 'rgba(250,247,240,0.8)',
-            lineHeight: 1.3,
-            textAlign: 'center',
-            letterSpacing: '-0.01em',
-          }}>
-            {book.title}
-          </p>
-        </div>
+        {showImg ? (
+          /* Real cover image — fills the fixed-ratio cover box */
+          <img
+            src={book.coverGrid}
+            alt={`Cover of ${book.title}`}
+            onError={() => setImgFailed(true)}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center top',
+              display: 'block',
+            }}
+          />
+        ) : (
+          /* Fallback: lined spine texture + centred Fraunces title */
+          <>
+            <div style={{
+              position: 'absolute', inset: 0,
+              backgroundImage: `repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px,
+                transparent 1px, transparent 10px
+              )`,
+            }} />
+            <div style={{
+              position: 'absolute', inset: '12px 8px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <p style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '0.7rem',
+                fontWeight: 600,
+                color: 'rgba(250,247,240,0.8)',
+                lineHeight: 1.3,
+                textAlign: 'center',
+                letterSpacing: '-0.01em',
+              }}>
+                {book.title}
+              </p>
+            </div>
+          </>
+        )}
         <DueDatePocket accession={book.accession} />
       </div>
 

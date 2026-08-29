@@ -692,6 +692,8 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
+  /* align-items: start keeps rows independent — no row stretching */
+  align-items: start;
 }
 
 /* ── Catalog card ────────────────────────────────────────── */
@@ -699,11 +701,14 @@ body {
   border: 1px solid rgba(30, 61, 50, 0.10);
   border-radius: 4px;
   background-color: var(--color-paper);
+  /* overflow:visible lets the DueDatePocket peek below the cover */
   overflow: visible;
   cursor: pointer;
   transition: border-color 140ms ease;
   display: flex;
   flex-direction: column;
+  /* width is fully governed by the grid — never shrink below 0 */
+  min-width: 0;
 }
 
 .catalog-card:hover {
@@ -713,10 +718,24 @@ body {
 .catalog-card__cover {
   position: relative;
   width: 100%;
-  height: 200px;
   border-radius: 3px 3px 0 0;
+  /* overflow:visible is required so DueDatePocket (bottom:-1px)
+     can peek below the cover edge into the card body area */
   overflow: visible;
-  /* line texture */
+  flex-shrink: 0;
+}
+
+/* Inner wrapper that clips the <img> to a 2:3 aspect ratio
+   without clipping the DueDatePocket (which is a sibling). */
+.catalog-card__cover-img {
+  position: relative;
+  width: 100%;
+  /* 2:3 = standard book cover proportion.
+     Every card cover is the same height regardless of image dimensions. */
+  aspect-ratio: 2 / 3;
+  border-radius: 3px 3px 0 0;
+  overflow: hidden;
+  /* lined texture — visible only for the fallback placeholder */
   background-image: repeating-linear-gradient(
     0deg,
     rgba(0,0,0,0.04) 0px,
@@ -724,6 +743,8 @@ body {
     transparent 1px,
     transparent 10px
   );
+  /* Inherit the spine background colour from the parent cover div */
+  background-color: inherit;
 }
 
 .catalog-card__cover-title {
