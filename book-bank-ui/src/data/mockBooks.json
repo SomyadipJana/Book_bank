@@ -1,0 +1,1474 @@
+[
+  {
+    "rawTitle": "Introduction To Algorithms",
+    "authors": [
+      "Thomas H Cormen",
+      "Charles E Leiserson",
+      "Ronald L Rivest",
+      "Clifford Stein"
+    ],
+    "publisher": "MIT Press",
+    "publishedDate": "2001",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780262032933",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780262032933-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780262032933-L.jpg?default=false",
+    "description": "An extensively revised edition of a mathematically rigorous yet accessible introduction to algorithms.",
+    "pageCount": 1216,
+    "overrideCat": "Algorithms & DS",
+    "id": 1,
+    "accession": "BB-0001",
+    "author": "Thomas H Cormen, Charles E Leiserson, Ronald L Rivest, Clifford Stein",
+    "category": "Algorithms & DS",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780262032933-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 4,
+    "addedDate": "2026-08-29",
+    "edition": "2001 Edition"
+  },
+  {
+    "rawTitle": "The Algorithm Design Manual",
+    "authors": [
+      "Steven S Skiena"
+    ],
+    "publisher": "Springer Science & Business Media",
+    "publishedDate": "2009-04-05",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9781848000704",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781848000704-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781848000704-L.jpg?default=false",
+    "description": "This newly expanded and updated second edition of the best-selling classic continues to take the \"mystery\" out of designing algorithms, and analyzing their efficacy and efficiency. Expanding on the first edition, the book now serves as the primary textbook of choice for algorithm design courses while maintaining its status as the premier practical reference guide to algorithms for programmers, researchers, and students. The reader-friendly Algorithm Design Manual provides straightforward access to combinatorial algorithms technology, stressing design over analysis. The first part, Techniques, provides accessible instruction on methods for designing and analyzing computer algorithms. The second part, Resources, is intended for browsing and reference, and comprises the catalog of algorithmic resources, implementations and an extensive bibliography. NEW to the second edition: • Doubles the tutorial material and exercises over the first edition • Provides full online support for lecturers, and a completely updated and improved website component with lecture slides, audio and video • Contains a unique catalog identifying the 75 algorithmic problems that arise most often in practice, leading the reader down the right path to solve them • Includes several NEW \"war stories\" relating experiences from real-world applications • Provides up-to-date links leading to the very best algorithm implementations available in C, C++, and Java",
+    "pageCount": 742,
+    "overrideCat": "Algorithms & DS",
+    "id": 2,
+    "accession": "BB-0002",
+    "author": "Steven S Skiena",
+    "category": "Algorithms & DS",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781848000704-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 4,
+    "addedDate": "2026-08-29",
+    "edition": "2009 Edition"
+  },
+  {
+    "rawTitle": "Data Structures and Algorithm Analysis in C++",
+    "authors": [
+      "Mark Allen Weiss"
+    ],
+    "publisher": "Pearson Education",
+    "publishedDate": "2012-09-01",
+    "googleCats": [
+      "C++ (Computer program language)"
+    ],
+    "isbn13": "9780273769385",
+    "coverGrid": "https://books.google.com/books/content?id=sdhhywAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=sdhhywAACAAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "Data Structures and Algorithm Analysis in C++ is an advanced algorithms book that bridges the gap between traditional CS2 and Algorithms Analysis courses.As the speed and power of computers increases, so does the need for effective programming and algorithm analysis. By approaching these skills in tandem, Mark Allen Weiss teaches readers to develop well-constructed, maximally efficient programs using the C++ programming language. This book explains topics from binary heaps to sorting to NP-completeness, and dedicates a full chapter to amortized analysis and advanced data structures and their implementation. Figures and examples illustrating successive stages of algorithms contribute to Weiss' careful, rigorous and in-depth analysis of each type of algorithm.",
+    "pageCount": 653,
+    "overrideCat": "Algorithms & DS",
+    "id": 3,
+    "accession": "BB-0003",
+    "author": "Mark Allen Weiss",
+    "category": "Algorithms & DS",
+    "thumbnail": "https://books.google.com/books/content?id=sdhhywAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2012 Edition"
+  },
+  {
+    "rawTitle": "Introduction to the Theory of Computation",
+    "authors": [
+      "Erwin Engeler"
+    ],
+    "publisher": "",
+    "publishedDate": "1973",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "",
+    "coverGrid": "https://books.google.com/books/content?id=mNpQAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=mNpQAAAAMAAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "",
+    "pageCount": 240,
+    "overrideCat": "Computer Science",
+    "id": 4,
+    "accession": "BB-0004",
+    "author": "Erwin Engeler",
+    "category": "Computer Science",
+    "thumbnail": "https://books.google.com/books/content?id=mNpQAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 2,
+    "addedDate": "2026-08-29",
+    "edition": "1973 Edition"
+  },
+  {
+    "rawTitle": "Automata, Computability and Complexity",
+    "authors": [
+      "Elaine Rich"
+    ],
+    "publisher": "Prentice Hall",
+    "publishedDate": "2008",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780132288064",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780132288064-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780132288064-L.jpg?default=false",
+    "description": "For upper level courses on Automata. Combining classic theory with unique applications, this crisp narrative is supported by abundant examples and clarifies key concepts by introducing important uses of techniques in real systems. Broad-ranging coverage allows instructors to easily customise course material to fit their unique requirements.",
+    "pageCount": 1120,
+    "overrideCat": "Computer Science",
+    "id": 5,
+    "accession": "BB-0005",
+    "author": "Elaine Rich",
+    "category": "Computer Science",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780132288064-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "2008 Edition"
+  },
+  {
+    "rawTitle": "Clean Code",
+    "authors": [
+      "Robert C. Martin"
+    ],
+    "publisher": "Pearson Education",
+    "publishedDate": "2009",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780132350884",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780132350884-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg?default=false",
+    "description": "This title shows the process of cleaning code. Rather than just illustrating the end result, or just the starting and ending state, the author shows how several dozen seemingly small code changes can positively impact the performance and maintainability of an application code base.",
+    "pageCount": 464,
+    "overrideCat": "Engineering",
+    "id": 6,
+    "accession": "BB-0006",
+    "author": "Robert C. Martin",
+    "category": "Engineering",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780132350884-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 4,
+    "addedDate": "2026-08-29",
+    "edition": "2009 Edition"
+  },
+  {
+    "rawTitle": "Design Patterns",
+    "authors": [
+      "Erich Gamma",
+      "Richard Helm",
+      "Ralph Johnson",
+      "John Vlissides"
+    ],
+    "publisher": "Pearson Education",
+    "publishedDate": "1994-10-31",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780321700698",
+    "coverGrid": "https://books.google.com/books/content?id=6oHuKQe3TjQC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=6oHuKQe3TjQC&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "The Gang of Four’s seminal catalog of 23 patterns to solve commonly occurring design problems Patterns allow designers to create more flexible, elegant, and ultimately reusable designs without having to rediscover the design solutions themselves. Highly influential, Design Patterns is a modern classic that introduces what patterns are and how they can help you design object-oriented software and provides a catalog of simple solutions for those already programming in at last one object-oriented programming language. Each pattern: Describes the circumstances in which it is applicable, when it can be applied in view of other design constraints, and the consequences and trade-offs of using the pattern within a larger design Is compiled from real systems and based on real-world examples Includes downloadable C++ source code that demonstrates how patterns can be implemented and Python From the preface: “Once you the design patterns and have had an ‘Aha!’ (and not just a ‘Huh?’) experience with them, you won't ever think about object-oriented design in the same way. You'll have insights that can make your own designs more flexible, modular, reusable, and understandable - which is why you're interested in object-oriented technology in the first place, right?”",
+    "pageCount": 496,
+    "overrideCat": "Engineering",
+    "id": 7,
+    "accession": "BB-0007",
+    "author": "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
+    "category": "Engineering",
+    "thumbnail": "https://books.google.com/books/content?id=6oHuKQe3TjQC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 4,
+    "addedDate": "2026-08-29",
+    "edition": "1994 Edition"
+  },
+  {
+    "rawTitle": "The Pragmatic Programmer",
+    "authors": [
+      "Andrew Hunt",
+      "David Thomas"
+    ],
+    "publisher": "Addison-Wesley Professional",
+    "publishedDate": "1999-10-20",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780132119177",
+    "coverGrid": "https://books.google.com/books/content?id=5wBQEp6ruIAC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=5wBQEp6ruIAC&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "What others in the trenches say about The Pragmatic Programmer... “The cool thing about this book is that it’s great for keeping the programming process fresh. The book helps you to continue to grow and clearly comes from people who have been there.” — Kent Beck, author of Extreme Programming Explained: Embrace Change “I found this book to be a great mix of solid advice and wonderful analogies!” — Martin Fowler, author of Refactoring and UML Distilled “I would buy a copy, read it twice, then tell all my colleagues to run out and grab a copy. This is a book I would never loan because I would worry about it being lost.” — Kevin Ruland, Management Science, MSG-Logistics “The wisdom and practical experience of the authors is obvious. The topics presented are relevant and useful.... By far its greatest strength for me has been the outstanding analogies—tracer bullets, broken windows, and the fabulous helicopter-based explanation of the need for orthogonality, especially in a crisis situation. I have little doubt that this book will eventually become an excellent source of useful information for journeymen programmers and expert mentors alike.” — John Lakos, author of Large-Scale C++ Software Design “This is the sort of book I will buy a dozen copies of when it comes out so I can give it to my clients.” — Eric Vought, Software Engineer “Most modern books on software development fail to cover the basics of what makes a great software developer, instead spending their time on syntax or technology where in reality the greatest leverage possible for any software team is in having talented developers who really know their craft well. An excellent book.” — Pete McBreen, Independent Consultant “Since reading this book, I have implemented many of the practical suggestions and tips it contains. Across the board, they have saved my company time and money while helping me get my job done quicker! This should be a desktop reference for everyone who works with code for a living.” — Jared Richardson, Senior Software Developer, iRenaissance, Inc. “I would like to see this issued to every new employee at my company....” — Chris Cleeland, Senior Software Engineer, Object Computing, Inc. “If I’m putting together a project, it’s the authors of this book that I want. . . . And failing that I’d settle for people who’ve read their book.” — Ward Cunningham Straight from the programming trenches, The Pragmatic Programmer cuts through the increasing specialization and technicalities of modern software development to examine the core process--taking a requirement and producing working, maintainable code that delights its users. It covers topics ranging from personal responsibility and career development to architectural techniques for keeping your code flexible and easy to adapt and reuse. Read this book, and you'll learn how to Fight software rot; Avoid the trap of duplicating knowledge; Write flexible, dynamic, and adaptable code; Avoid programming by coincidence; Bullet-proof your code with contracts, assertions, and exceptions; Capture real requirements; Test ruthlessly and effectively; Delight your users; Build teams of pragmatic programmers; and Make your developments more precise with automation. Written as a series of self-contained sections and filled with entertaining anecdotes, thoughtful examples, and interesting analogies, The Pragmatic Programmer illustrates the best practices and major pitfalls of many different aspects of software development. Whether you're a new coder, an experienced programmer, or a manager responsible for software projects, use these lessons daily, and you'll quickly see improvements in personal productivity, accuracy, and job satisfaction. You'll learn skills and develop habits and attitudes that form the foundation for long-term success in your career. You'll become a Pragmatic Programmer.",
+    "pageCount": 346,
+    "overrideCat": "Engineering",
+    "id": 8,
+    "accession": "BB-0008",
+    "author": "Andrew Hunt, David Thomas",
+    "category": "Engineering",
+    "thumbnail": "https://books.google.com/books/content?id=5wBQEp6ruIAC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "1999 Edition"
+  },
+  {
+    "rawTitle": "Software Engineering",
+    "authors": [
+      "Ian Sommerville"
+    ],
+    "publisher": "Addison-Wesley",
+    "publishedDate": "2015-03-24",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780133943030",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780133943030-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780133943030-L.jpg?default=false",
+    "description": "For courses in computer science and software engineering The Fundamental Practice of Software Engineering Software Engineering introduces readers to the overwhelmingly important subject of software programming and development. In the past few years, computer systems have come to dominate not just our technological growth, but the foundations of our world's major industries. This text seeks to lay out the fundamental concepts of this huge and continually growing subject area in a clear and comprehensive manner. The Tenth Edition contains new information that highlights various technological updates of recent years, providing readers with highly relevant and current information. Sommerville's experience in system dependability and systems engineering guides the text through a traditional plan-based approach that incorporates some novel agile methods. The text strives to teach the innovators of tomorrow how to create software that will make our world a better, safer, and more advanced place to live.",
+    "pageCount": 816,
+    "overrideCat": "Engineering",
+    "id": 9,
+    "accession": "BB-0009",
+    "author": "Ian Sommerville",
+    "category": "Engineering",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780133943030-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "2015 Edition"
+  },
+  {
+    "rawTitle": "Silberschatz's Operating System Concepts, Global Edition",
+    "authors": [
+      "Abraham Silberschatz",
+      "Peter B. Galvin",
+      "Greg Gagne"
+    ],
+    "publisher": "John Wiley & Sons",
+    "publishedDate": "2019-08-13",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9781119454083",
+    "coverGrid": "https://books.google.com/books/content?id=2vC1EQAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=2vC1EQAAQBAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "Instruction on operating system functionality with examples incorporated for improved learning With the updating of Silberschatz's Operating System Concepts, 10th Edition, students have access to a text that presents both important concepts and real-world applications. Key concepts are reinforced in this global edition through instruction, chapter practice exercises, homework exercises, and suggested readings. Students also receive an understanding how to apply the content. The book provides example programs written in C and Java for use in programming environments.",
+    "pageCount": 898,
+    "overrideCat": "Systems & OS",
+    "id": 10,
+    "accession": "BB-0010",
+    "author": "Abraham Silberschatz, Peter B. Galvin, Greg Gagne",
+    "category": "Systems & OS",
+    "thumbnail": "https://books.google.com/books/content?id=2vC1EQAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2019 Edition"
+  },
+  {
+    "rawTitle": "Computer Organization and Architecture",
+    "authors": [
+      "William Stallings"
+    ],
+    "publisher": "Prentice Hall",
+    "publishedDate": "2003",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "",
+    "coverGrid": "https://books.google.com/books/content?id=_y5aAAAAYAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=_y5aAAAAYAAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "This book provides a clear, comprehensive presentation of the latest developments in the organization and architecture of modern-day computers, emphasizing both fundamental principles \"and\" the critical role of performance in driving computer design. A basic reference and companion for self-study, it conveys concepts through a wealth of concrete examples highlighting modern CISC and RISC systems. A five-part organization covers: an overview, the computer system, the central processing unit, the control unit, and parallel organization. For computer engineers and architects, product marketing personnel in computer or communications companies, and for information systems and computer systems personnel.",
+    "pageCount": 848,
+    "overrideCat": "Systems & OS",
+    "id": 11,
+    "accession": "BB-0011",
+    "author": "William Stallings",
+    "category": "Systems & OS",
+    "thumbnail": "https://books.google.com/books/content?id=_y5aAAAAYAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 5,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "2003 Edition"
+  },
+  {
+    "rawTitle": "Database System Concepts",
+    "authors": [
+      "Henry F. Korth",
+      "S. Sudarshan",
+      "Abraham Silberschatz, Professor"
+    ],
+    "publisher": "McGraw-Hill Education",
+    "publishedDate": "2010-01-27",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780073523323",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780073523323-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780073523323-L.jpg?default=false",
+    "description": "Database System Concepts by Silberschatz, Korth and Sudarshan is now in its 6th edition and is one of the cornerstone texts of database education. It presents the fundamental concepts of database management in an intuitive manner geared toward allowing students to begin working with databases as quickly as possible. The text is designed for a first course in databases at the junior/senior undergraduate level or the first year graduate level. It also contains additional material that can be used as supplements or as introductory material for an advanced course. Because the authors present concepts as intuitive descriptions, a familiarity with basic data structures, computer organization, and a high-level programming language are the only prerequisites. Important theoretical results are covered, but formal proofs are omitted. In place of proofs, figures and examples are used to suggest why a result is true.",
+    "pageCount": null,
+    "overrideCat": "Computer Science",
+    "id": 12,
+    "accession": "BB-0012",
+    "author": "Henry F. Korth, S. Sudarshan, Abraham Silberschatz, Professor",
+    "category": "Computer Science",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780073523323-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "2010 Edition"
+  },
+  {
+    "rawTitle": "Computer Networks, Global Edition",
+    "authors": [
+      "Andrew S. Tanenbaum",
+      "Nick Feamster",
+      "David J. Wetherall"
+    ],
+    "publisher": "Pearson Higher Ed",
+    "publishedDate": "2021-01-22",
+    "googleCats": [],
+    "isbn13": "9781292374017",
+    "coverGrid": "https://books.google.com/books/content?id=nT4QEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=nT4QEAAAQBAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "For coursesin Business Data Communication and Networking. Anintroduction to computer networking grounded in real-world examples In Computer Networks,Tanenbaum et al. explain how networks work from the inside out. They start withthe physical layer of networking, computer hardware and transmission systems,then work their way up to network applications. Each chapter follows aconsistent approach: The book presents key principles, then illustrates themutilizing real-world example networks that run through the entire book – theInternet, and wireless networks, including Wireless LANs, broadband wireless,and Bluetooth. The 6th Edition is updated throughout to reflect the mostcurrent technologies, and the chapter on network security is rewritten to focuson modern security principles and actions. Tutorial videos on key networkingtopics and techniques are available to students on the companion website at www.pearsonglobaleditions.com Instructors are supported with a SolutionsManual to end-of-chapter exercises featured in the book, LecturePowerPoint slides, and extracted art and figures featured in thebook.",
+    "pageCount": 945,
+    "overrideCat": "Networks",
+    "id": 13,
+    "accession": "BB-0013",
+    "author": "Andrew S. Tanenbaum, Nick Feamster, David J. Wetherall",
+    "category": "Networks",
+    "thumbnail": "https://books.google.com/books/content?id=nT4QEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2021 Edition"
+  },
+  {
+    "rawTitle": "Computer Networking: A Top-Down Approach, Global Edition",
+    "authors": [
+      "James F. Kurose",
+      "Keith Ross"
+    ],
+    "publisher": "Pearson Higher Ed",
+    "publishedDate": "2021-06-07",
+    "googleCats": [],
+    "isbn13": "9781292405513",
+    "coverGrid": "https://books.google.com/books/content?id=374zEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=374zEAAAQBAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "This print textbook is available for students to rent for their classes. The Pearson print rental program provides students with affordable access to learning materials, so they come to class ready to succeed. A top-down, layered approach to computer networking. Unique among computer networking texts, the 8th Edition of the popular Computer Networking: A Top Down Approach builds on the authors’ long tradition of teaching this complex subject through a layered approach in a “top-down manner.” The text works its way from the application layer down toward the physical layer, motivating students by exposing them to important concepts early in their study of networking. Focusing on the Internet and the fundamentally important issues of networking, this text provides an excellent foundation for students in computer science and electrical engineering, without requiring extensive knowledge of programming or mathematics. The 8th Edition has been updated to reflect the most important and exciting recent advances in networking, including the importance of software-defined networking (SDN) and the rapid adoption of 4G/5G networks and the mobile applications they enable.",
+    "pageCount": 797,
+    "overrideCat": "Networks",
+    "id": 14,
+    "accession": "BB-0014",
+    "author": "James F. Kurose, Keith Ross",
+    "category": "Networks",
+    "thumbnail": "https://books.google.com/books/content?id=374zEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 2,
+    "addedDate": "2026-08-29",
+    "edition": "2021 Edition"
+  },
+  {
+    "rawTitle": "Discrete Mathematics and Its Applications",
+    "authors": [
+      "Kenneth H. Rosen"
+    ],
+    "publisher": "",
+    "publishedDate": "2018-07-09",
+    "googleCats": [
+      "Computer science"
+    ],
+    "isbn13": "9781260091991",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781260091991-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781260091991-L.jpg?default=false",
+    "description": "Rosen's Discrete Mathematics and its Applications presents a precise, relevant, comprehensive approach to mathematical concepts. This world-renowned best-selling text was written to accommodate the needs across a variety of majors and departments, including mathematics, computer science, and engineering. As the market leader, the book is highly flexible, comprehensive and a proven pedagogical teaching tool for instructors.",
+    "pageCount": 942,
+    "overrideCat": "Mathematics",
+    "id": 15,
+    "accession": "BB-0015",
+    "author": "Kenneth H. Rosen",
+    "category": "Mathematics",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781260091991-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "2018 Edition"
+  },
+  {
+    "rawTitle": "Linear Algebra and Its Applications",
+    "authors": [
+      "Gilbert Strang"
+    ],
+    "publisher": "",
+    "publishedDate": "2006",
+    "googleCats": [
+      "Algebras, Linear"
+    ],
+    "isbn13": "9780534422004",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780534422004-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780534422004-L.jpg?default=false",
+    "description": "Renowned professor and author Gilbert Strang demonstrates that linear algebra is a fascinating subject by showing both its beauty and value. While the mathematics is there, the effort is not all concentrated on proofs. Strang's emphasis is on understanding. He explains concepts, rather than deduces. This book is written in an informal and personal style and teaches real mathematics. The gears change in Chapter 2 as students reach the introduction of vector spaces. Throughout the book, the theory is motivated and reinforced by genuine applications, allowing pure mathematicians to teach applied mathematics.",
+    "pageCount": 487,
+    "overrideCat": "Mathematics",
+    "id": 16,
+    "accession": "BB-0016",
+    "author": "Gilbert Strang",
+    "category": "Mathematics",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780534422004-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "2006 Edition"
+  },
+  {
+    "rawTitle": "Thinking, Fast and Slow",
+    "authors": [
+      "Daniel Kahneman"
+    ],
+    "publisher": "Macmillan",
+    "publishedDate": "2011-10-25",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9780374275631",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780374275631-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780374275631-L.jpg?default=false",
+    "description": "The long-awaited work by \"one of the most influential psychologists in history and certainly the most important psychologist alive today\" (Steven Pinker).",
+    "pageCount": 511,
+    "overrideCat": "Psychology",
+    "id": 17,
+    "accession": "BB-0017",
+    "author": "Daniel Kahneman",
+    "category": "Psychology",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780374275631-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 5,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "2011 Edition"
+  },
+  {
+    "rawTitle": "The Hitchhiker's Guide to the Galaxy",
+    "authors": [
+      "Douglas Adams"
+    ],
+    "publisher": "Pan Macmillan",
+    "publishedDate": "2009-09-01",
+    "googleCats": [
+      "Fiction"
+    ],
+    "isbn13": "9780330513081",
+    "coverGrid": "https://books.google.com/books/content?id=DmUr6q1EDYMC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=DmUr6q1EDYMC&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "‘Sheer delight’ – The Times This 42nd Anniversary Edition includes exclusive bonus material from the Douglas Adams archives, and an introduction by Doctor Who showrunner, Russell T Davies. ***** An international phenomenon and pop-culture classic, The Hitchhiker's Guide to the Galaxy has been a radio show, TV series, novel, stage play, comic book and film. Following the galactic (mis)adventures of Arthur Dent, Hitchhiker’s in its various incarnations has captured the imaginations of curious minds around the world . . . It's an ordinary Thursday lunchtime for Arthur Dent until his house gets demolished. The Earth follows shortly afterwards to make way for a new hyperspace express route, and his best friend has just announced that he's an alien. At this moment, they're hurtling through space with nothing but their towels and an innocuous-looking book inscribed, in large friendly letters, with the words: DON'T PANIC. The weekend has only just begun . . . Continue Arthur Dent's intergalactic adventures in the rest of the trilogy with five parts: The Restaurant at the End of the Universe, Life, the Universe and Everything, So Long, and Thanks for All the Fish, and Mostly Harmless. ***** Praise for Douglas Adams: ‘One of the world’s sanest, smartest, kindest, funniest voices’ – Independent on Sunday ‘Magical . . . read this book’ – Sunday Express 'A pleasure to read' - New York Times",
+    "pageCount": 231,
+    "overrideCat": "Fiction",
+    "id": 18,
+    "accession": "BB-0018",
+    "author": "Douglas Adams",
+    "category": "Fiction",
+    "thumbnail": "https://books.google.com/books/content?id=DmUr6q1EDYMC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 4,
+    "addedDate": "2026-08-29",
+    "edition": "2009 Edition"
+  },
+  {
+    "rawTitle": "The Phoenix Project",
+    "authors": [
+      "Gene Kim",
+      "Kevin Behr",
+      "George Spafford"
+    ],
+    "publisher": "IT Revolution",
+    "publishedDate": "2018-02-06",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9781942788300",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781942788300-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781942788300-L.jpg?default=false",
+    "description": "***Over a half-million sold! And available now, the Wall Street Journal Bestselling sequel The Unicorn Project*** “Every person involved in a failed IT project should be forced to read this book.”—TIM O'REILLY, Founder & CEO of O'Reilly Media “The Phoenix Project is a must read for business and IT executives who are struggling with the growing complexity of IT.”—JIM WHITEHURST, President and CEO, Red Hat, Inc. Five years after this sleeper hit took on the world of IT and flipped it on it's head, the 5th Anniversary Edition of The Phoenix Project continues to guide IT in the DevOps revolution. In this newly updated and expanded edition of the bestselling The Phoenix Project, co-author Gene Kim includes a new afterword and a deeper delve into the Three Ways as described in The DevOps Handbook. Bill, an IT manager at Parts Unlimited, has been tasked with taking on a project critical to the future of the business, code named Phoenix Project. But the project is massively over budget and behind schedule. The CEO demands Bill must fix the mess in ninety days or else Bill's entire department will be outsourced. With the help of a prospective board member and his mysterious philosophy of The Three Ways, Bill starts to see that IT work has more in common with a manufacturing plant work than he ever imagined. With the clock ticking, Bill must organize work flow streamline interdepartmental communications, and effectively serve the other business functions at Parts Unlimited. In a fast-paced and entertaining style, three luminaries of the DevOps movement deliver a story that anyone who works in IT will recognize. Readers will not only learn how to improve their own IT organizations, they'll never view IT the same way again. “This book is a gripping read that captures brilliantly the dilemmas that face companies which depend on IT, and offers real-world solutions.”—JEZ HUMBLE, Co-author of Continuous Delivery, Lean Enterprise, Accelerate, and The DevOps Handbook",
+    "pageCount": 580,
+    "overrideCat": "Management",
+    "id": 19,
+    "accession": "BB-0019",
+    "author": "Gene Kim, Kevin Behr, George Spafford",
+    "category": "Management",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781942788300-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "2018 Edition"
+  },
+  {
+    "rawTitle": "A Dictionary of Computer Science",
+    "authors": [
+      "Andrew Butterfield",
+      "Gerard Ekembe Ngondi"
+    ],
+    "publisher": "Oxford University Press",
+    "publishedDate": "2016",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780199688975",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780199688975-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780199688975-L.jpg?default=false",
+    "description": "This bestselling dictionary has been fully revised, making it the most up-to-date and authoritative reference of its kind. Providing comprehensive coverage of computer applications in industry, school, work, education, and the home, it is the ideal reference for students, professionals, and anyone who uses computers.",
+    "pageCount": 641,
+    "overrideCat": "Computer Science",
+    "id": 20,
+    "accession": "BB-0020",
+    "author": "Andrew Butterfield, Gerard Ekembe Ngondi",
+    "category": "Computer Science",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780199688975-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2016 Edition"
+  },
+  {
+    "rawTitle": "Structure and Interpretation of Computer Programs",
+    "authors": [
+      "Harold Abelson",
+      "Gerald Jay Sussman"
+    ],
+    "publisher": "MIT Press",
+    "publishedDate": "2022-05-03",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780262367622",
+    "coverGrid": "https://books.google.com/books/content?id=WSUuEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=WSUuEAAAQBAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "A new version of the classic and widely used text adapted for the JavaScript programming language. Since the publication of its first edition in 1984 and its second edition in 1996, Structure and Interpretation of Computer Programs (SICP) has influenced computer science curricula around the world. Widely adopted as a textbook, the book has its origins in a popular entry-level computer science course taught by Harold Abelson and Gerald Jay Sussman at MIT. SICP introduces the reader to central ideas of computation by establishing a series of mental models for computation. Earlier editions used the programming language Scheme in their program examples. This new version of the second edition has been adapted for JavaScript. The first three chapters of SICP cover programming concepts that are common to all modern high-level programming languages. Chapters four and five, which used Scheme to formulate language processors for Scheme, required significant revision. Chapter four offers new material, in particular an introduction to the notion of program parsing. The evaluator and compiler in chapter five introduce a subtle stack discipline to support return statements (a prominent feature of statement-oriented languages) without sacrificing tail recursion. The JavaScript programs included in the book run in any implementation of the language that complies with the ECMAScript 2020 specification, using the JavaScript package sicp provided by the MIT Press website.",
+    "pageCount": 642,
+    "overrideCat": "Computer Science",
+    "id": 21,
+    "accession": "BB-0021",
+    "author": "Harold Abelson, Gerald Jay Sussman",
+    "category": "Computer Science",
+    "thumbnail": "https://books.google.com/books/content?id=WSUuEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2022 Edition"
+  },
+  {
+    "rawTitle": "Computer Science",
+    "authors": [
+      "J. Glenn Brookshear"
+    ],
+    "publisher": "Addison Wesley Publishing Company",
+    "publishedDate": "2003",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "",
+    "coverGrid": "https://books.google.com/books/content?id=OV0ZAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=OV0ZAQAAIAAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "Computer Science: An Overview truly lives up to its title, providing an introduction to the entire computer science discipline. This broad coverage, combined with clear explanations, has made it the leading textbook for the beadth-first/CS0 course. The text is unique in that it avoids presenting topics from the perspective of any particular programming language. Moreover, the text communicates the dynamics of computer science by presenting topics in a historical perspective in which past developments, the current state of the art, and directions of research are discussed. The result is a balanced, realistic picture of computer science, including such topics as programming languages, operating systems, algorithms, software engineering, networking, database design, artificial intelligence, and machine architecture. This seventh edition has been thoroughly updated to discuss important trends in such areas as networking and the Internet, software engineering, and artificial intelligence. Topics added include open-source development, associative memory, XML, and C#. Thought-provoking discussions of ethical and legal issues revolving around computing are integrated into each chapter rather than being presented as separate, isolated topics.",
+    "pageCount": 596,
+    "overrideCat": "Computer Science",
+    "id": 22,
+    "accession": "BB-0022",
+    "author": "J. Glenn Brookshear",
+    "category": "Computer Science",
+    "thumbnail": "https://books.google.com/books/content?id=OV0ZAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2003 Edition"
+  },
+  {
+    "rawTitle": "Artificial Intelligence",
+    "authors": [
+      "Stuart Jonathan Russell",
+      "Peter Norvig",
+      "Ernest Davis"
+    ],
+    "publisher": "Prentice Hall",
+    "publishedDate": "2010",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780136042594",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780136042594-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780136042594-L.jpg?default=false",
+    "description": "Artificial intelligence: A Modern Approach, 3e,is ideal for one or two-semester, undergraduate or graduate-level courses in Artificial Intelligence. It is also a valuable resource for computer professionals, linguists, and cognitive scientists interested in artificial intelligence. The revision of this best-selling text offers the most comprehensive, up-to-date introduction to the theory and practice of artificial intelligence.",
+    "pageCount": 1153,
+    "overrideCat": "Computer Science",
+    "id": 23,
+    "accession": "BB-0023",
+    "author": "Stuart Jonathan Russell, Peter Norvig, Ernest Davis",
+    "category": "Computer Science",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780136042594-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2010 Edition"
+  },
+  {
+    "rawTitle": "Deep Learning",
+    "authors": [
+      "Ian Goodfellow",
+      "Yoshua Bengio",
+      "Aaron Courville"
+    ],
+    "publisher": "MIT Press",
+    "publishedDate": "2016-11-18",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780262035613",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780262035613-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780262035613-L.jpg?default=false",
+    "description": "An introduction to a broad range of topics in deep learning, covering mathematical and conceptual background, deep learning techniques used in industry, and research perspectives. “Written by three experts in the field, Deep Learning is the only comprehensive book on the subject.” —Elon Musk, cochair of OpenAI; cofounder and CEO of Tesla and SpaceX Deep learning is a form of machine learning that enables computers to learn from experience and understand the world in terms of a hierarchy of concepts. Because the computer gathers knowledge from experience, there is no need for a human computer operator to formally specify all the knowledge that the computer needs. The hierarchy of concepts allows the computer to learn complicated concepts by building them out of simpler ones; a graph of these hierarchies would be many layers deep. This book introduces a broad range of topics in deep learning. The text offers mathematical and conceptual background, covering relevant concepts in linear algebra, probability theory and information theory, numerical computation, and machine learning. It describes deep learning techniques used by practitioners in industry, including deep feedforward networks, regularization, optimization algorithms, convolutional networks, sequence modeling, and practical methodology; and it surveys such applications as natural language processing, speech recognition, computer vision, online recommendation systems, bioinformatics, and videogames. Finally, the book offers research perspectives, covering such theoretical topics as linear factor models, autoencoders, representation learning, structured probabilistic models, Monte Carlo methods, the partition function, approximate inference, and deep generative models. Deep Learning can be used by undergraduate or graduate students planning careers in either industry or research, and by software engineers who want to begin using deep learning in their products or platforms. A website offers supplementary material for both readers and instructors.",
+    "pageCount": 801,
+    "overrideCat": "Computer Science",
+    "id": 24,
+    "accession": "BB-0024",
+    "author": "Ian Goodfellow, Yoshua Bengio, Aaron Courville",
+    "category": "Computer Science",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780262035613-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2016 Edition"
+  },
+  {
+    "rawTitle": "The Art of Computer Programming: Sorting and searching",
+    "authors": [
+      "Donald Ervin Knuth"
+    ],
+    "publisher": "Addison Wesley Publishing Company",
+    "publishedDate": "1973",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "",
+    "coverGrid": "https://books.google.com/books/content?id=yf3uAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=yf3uAAAAMAAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "Finally, after a wait of more than thirty-five years, the first part of Volume 4 is at last ready for publication. Check out the boxed set that brings together Volumes 1 - 4A in one elegant case, and offers the purchaser a $50 discount off the price of buying the four volumes individually. The Art of Computer Programming, Volumes 1-4A Boxed Set, 3/e ISBN: 0321751043",
+    "pageCount": 756,
+    "overrideCat": "Algorithms & DS",
+    "id": 25,
+    "accession": "BB-0025",
+    "author": "Donald Ervin Knuth",
+    "category": "Algorithms & DS",
+    "thumbnail": "https://books.google.com/books/content?id=yf3uAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 4,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "1973 Edition"
+  },
+  {
+    "rawTitle": "Concrete Mathematics: A Foundation for Computer Science",
+    "authors": [
+      "Ronald L. Graham"
+    ],
+    "publisher": "Pearson Education India",
+    "publishedDate": "1994",
+    "googleCats": [
+      "Asymptotic expansions"
+    ],
+    "isbn13": "9788131708415",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9788131708415-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9788131708415-L.jpg?default=false",
+    "description": "",
+    "pageCount": 648,
+    "overrideCat": "Mathematics",
+    "id": 26,
+    "accession": "BB-0026",
+    "author": "Ronald L. Graham",
+    "category": "Mathematics",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9788131708415-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "1994 Edition"
+  },
+  {
+    "rawTitle": "Introduction to Linear Algebra",
+    "authors": [
+      "Gilbert Strang"
+    ],
+    "publisher": "Wellesley-Cambridge Press",
+    "publishedDate": "2021-06-10",
+    "googleCats": [
+      "Mathematics"
+    ],
+    "isbn13": "9781733146654",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781733146654-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781733146654-L.jpg?default=false",
+    "description": "Linear algebra is something all mathematics undergraduates and many other students, in subjects ranging from engineering to economics, have to learn. The fifth edition of this hugely successful textbook retains the quality of earlier editions while at the same time seeing numerous minor improvements and major additions. The latter include: a new chapter on singular values and singular vectors, including ways to analyze a matrix of data; a revised chapter on computing in linear algebra, with professional-level algorithms and code that can be downloaded for a variety of languages; a new section on linear algebra and cryptography; and a new chapter on linear algebra in probability and statistics. A dedicated and active website also offers solutions to exercises as well as new exercises from many different sources (e.g. practice problems, exams, development of textbook examples), plus codes in MATLAB, Julia, and Python.",
+    "pageCount": null,
+    "overrideCat": "Mathematics",
+    "id": 27,
+    "accession": "BB-0027",
+    "author": "Gilbert Strang",
+    "category": "Mathematics",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781733146654-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2021 Edition"
+  },
+  {
+    "rawTitle": "Numerical Methods for Engineers",
+    "authors": [
+      "Steven Chapra",
+      "Raymond Canale"
+    ],
+    "publisher": "McGraw-Hill Science/Engineering/Math",
+    "publishedDate": "2009-04-20",
+    "googleCats": [
+      "Technology & Engineering"
+    ],
+    "isbn13": "9780073401065",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780073401065-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780073401065-L.jpg?default=false",
+    "description": "Instructors love Numerical Methods for Engineers because it makes teaching easy! Students love it because it is written for them--with clear explanations and examples throughout. The text features a broad array of applications that span all engineering disciplines. The sixth edition retains the successful instructional techniques of earlier editions. Chapra and Canale's unique approach opens each part of the text with sections called Motivation, Mathematical Background, and Orientation. This prepares the student for upcoming problems in a motivating and engaging manner. Each part closes with an Epilogue containing Trade-Offs, Important Relationships and Formulas, and Advanced Methods and Additional References. Much more than a summary, the Epilogue deepens understanding of what has been learned and provides a peek into more advanced methods. Helpful separate Appendices. \"Getting Started with MATLAB\" abd \"Getting Started with Mathcad\" which make excellent references. Numerous new or revised problems drawn from actual engineering practice, many of which are based on exciting new areas such as bioengineering. The expanded breadth of engineering disciplines covered is especially evident in the problems, which now cover such areas as biotechnology and biomedical engineering. Excellent new examples and case studies span asll areas of engineering disciplines; the students using this text will be able to apply their new skills to their chosen field. Users will find use of software packages, specifically MATLAB®, Excel® with VBA and Mathcad®. This includes material on developing MATLAB® m-files and VBA macros.",
+    "pageCount": 960,
+    "overrideCat": "Mathematics",
+    "id": 28,
+    "accession": "BB-0028",
+    "author": "Steven Chapra, Raymond Canale",
+    "category": "Mathematics",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780073401065-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2009 Edition"
+  },
+  {
+    "rawTitle": "Digital Design",
+    "authors": [
+      "M. Morris Mano",
+      "Michael D. Ciletti"
+    ],
+    "publisher": "Prentice Hall",
+    "publishedDate": "2007",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "",
+    "coverGrid": "https://books.google.com/books/content?id=mX3gAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=mX3gAAAAMAAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "CD-ROM contains: evalutaiton versions of Synapticad's WaveFormer Pro -- TestBencher Pro -- Verilogger Pro -- DataSheet Pro -- TimeDiagrammer Pro -- author-supplied HDL example files.",
+    "pageCount": 640,
+    "overrideCat": "Systems & OS",
+    "id": 29,
+    "accession": "BB-0029",
+    "author": "M. Morris Mano, Michael D. Ciletti",
+    "category": "Systems & OS",
+    "thumbnail": "https://books.google.com/books/content?id=mX3gAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 2,
+    "addedDate": "2026-08-29",
+    "edition": "2007 Edition"
+  },
+  {
+    "rawTitle": "Modern Operating Systems",
+    "authors": [
+      "Andrew S. Tanenbaum",
+      "Herbert Bos"
+    ],
+    "publisher": "Prentice Hall",
+    "publishedDate": "2015",
+    "googleCats": [
+      "Operating systems (Computers)."
+    ],
+    "isbn13": "9780133591620",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780133591620-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780133591620-L.jpg?default=false",
+    "description": "Modern Operating Systems is intended for introductory courses in Operating Systems in Computer Science, Computer Engineering, and Electrical Engineering programs.",
+    "pageCount": null,
+    "overrideCat": "Systems & OS",
+    "id": 30,
+    "accession": "BB-0030",
+    "author": "Andrew S. Tanenbaum, Herbert Bos",
+    "category": "Systems & OS",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780133591620-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "2015 Edition"
+  },
+  {
+    "rawTitle": "Computer Architecture",
+    "authors": [
+      "John L. Hennessy",
+      "David A. Patterson"
+    ],
+    "publisher": "Morgan Kaufmann",
+    "publishedDate": "2017-11-23",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780128119068",
+    "coverGrid": "https://books.google.com/books/content?id=cM8mDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=cM8mDwAAQBAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "Computer Architecture: A Quantitative Approach, Sixth Edition has been considered essential reading by instructors, students and practitioners of computer design for over 20 years. The sixth edition of this classic textbook from Hennessy and Patterson, winners of the 2017 ACM A.M. Turing Award recognizing contributions of lasting and major technical importance to the computing field, is fully revised with the latest developments in processor and system architecture. The text now features examples from the RISC-V (RISC Five) instruction set architecture, a modern RISC instruction set developed and designed to be a free and openly adoptable standard. It also includes a new chapter on domain-specific architectures and an updated chapter on warehouse-scale computing that features the first public information on Google's newest WSC. True to its original mission of demystifying computer architecture, this edition continues the longstanding tradition of focusing on areas where the most exciting computing innovation is happening, while always keeping an emphasis on good engineering design. - Winner of a 2019 Textbook Excellence Award (Texty) from the Textbook and Academic Authors Association - Includes a new chapter on domain-specific architectures, explaining how they are the only path forward for improved performance and energy efficiency given the end of Moore's Law and Dennard scaling - Features the first publication of several DSAs from industry - Features extensive updates to the chapter on warehouse-scale computing, with the first public information on the newest Google WSC - Offers updates to other chapters including new material dealing with the use of stacked DRAM; data on the performance of new NVIDIA Pascal GPU vs. new AVX-512 Intel Skylake CPU; and extensive additions to content covering multicore architecture and organization - Includes \"Putting It All Together\" sections near the end of every chapter, providing real-world technology examples that demonstrate the principles covered in each chapter - Includes review appendices in the printed text and additional reference appendices available online - Includes updated and improved case studies and exercises - ACM named John L. Hennessy and David A. Patterson, recipients of the 2017 ACM A.M. Turing Award for pioneering a systematic, quantitative approach to the design and evaluation of computer architectures with enduring impact on the microprocessor industry",
+    "pageCount": 939,
+    "overrideCat": "Systems & OS",
+    "id": 31,
+    "accession": "BB-0031",
+    "author": "John L. Hennessy, David A. Patterson",
+    "category": "Systems & OS",
+    "thumbnail": "https://books.google.com/books/content?id=cM8mDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 4,
+    "addedDate": "2026-08-29",
+    "edition": "2017 Edition"
+  },
+  {
+    "rawTitle": "TCP/IP Illustrated",
+    "authors": [
+      "Kevin R. Fall",
+      "W. Richard Stevens"
+    ],
+    "publisher": "Addison-Wesley",
+    "publishedDate": "2011-11-08",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780132808187",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780132808187-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780132808187-L.jpg?default=false",
+    "description": "“For an engineer determined to refine and secure Internet operation or to explore alternative solutions to persistent problems, the insights provided by this book will be invaluable.” —Vint Cerf, Internet pioneer TCP/IP Illustrated, Volume 1, Second Edition, is a detailed and visual guide to today’s TCP/IP protocol suite. Fully updated for the newest innovations, it demonstrates each protocol in action through realistic examples from modern Linux, Windows, and Mac OS environments. There’s no better way to discover why TCP/IP works as it does, how it reacts to common conditions, and how to apply it in your own applications and networks. Building on the late W. Richard Stevens’ classic first edition, author Kevin R. Fall adds his cutting-edge experience as a leader in TCP/IP protocol research, updating the book to fully reflect the latest protocols and best practices. He first introduces TCP/IP’s core goals and architectural concepts, showing how they can robustly connect diverse networks and support multiple services running concurrently. Next, he carefully explains Internet addressing in both IPv4 and IPv6 networks. Then, he walks through TCP/IP’s structure and function from the bottom up: from link layer protocols–such as Ethernet and Wi-Fi–through network, transport, and application layers. Fall thoroughly introduces ARP, DHCP, NAT, firewalls, ICMPv4/ICMPv6, broadcasting, multicasting, UDP, DNS, and much more. He offers extensive coverage of reliable transport and TCP, including connection management, timeout, retransmission, interactive data flow, and congestion control. Finally, he introduces the basics of security and cryptography, and illuminates the crucial modern protocols for protecting security and privacy, including EAP, IPsec, TLS, DNSSEC, and DKIM. Whatever your TCP/IP experience, this book will help you gain a deeper, more intuitive understanding of the entire protocol suite so you can build better applications and run more reliable, efficient networks.",
+    "pageCount": 1060,
+    "overrideCat": "Networks",
+    "id": 32,
+    "accession": "BB-0032",
+    "author": "Kevin R. Fall, W. Richard Stevens",
+    "category": "Networks",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780132808187-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2011 Edition"
+  },
+  {
+    "rawTitle": "UNIX Network Programming: The sockets networking API",
+    "authors": [
+      "W. Richard Stevens",
+      "Bill Fenner",
+      "Andrew M. Rudoff"
+    ],
+    "publisher": "Addison-Wesley Professional",
+    "publishedDate": "2004",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780131411555",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780131411555-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780131411555-L.jpg?default=false",
+    "description": "To build today's highly distributed, networked applications and services, you need deep mastery of sockets and other key networking APIs. One book delivers comprehensive, start-to-finish guidance for building robust, high-performance networked systems in any environment: UNIX Network Programming, Volume 1, Third Edition.",
+    "pageCount": 1032,
+    "overrideCat": "Networks",
+    "id": 33,
+    "accession": "BB-0033",
+    "author": "W. Richard Stevens, Bill Fenner, Andrew M. Rudoff",
+    "category": "Networks",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780131411555-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 2,
+    "addedDate": "2026-08-29",
+    "edition": "2004 Edition"
+  },
+  {
+    "rawTitle": "Compilers: Principles, Techniques, & Tools, 2/E",
+    "authors": [
+      "Aho"
+    ],
+    "publisher": "Pearson Education India",
+    "publishedDate": "2008-09",
+    "googleCats": [
+      "Compilers (Computer programs)"
+    ],
+    "isbn13": "9788131721018",
+    "coverGrid": "https://books.google.com/books/content?id=kLVv4MSa7EUC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=kLVv4MSa7EUC&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "",
+    "pageCount": 1040,
+    "overrideCat": "Engineering",
+    "id": 34,
+    "accession": "BB-0034",
+    "author": "Aho",
+    "category": "Engineering",
+    "thumbnail": "https://books.google.com/books/content?id=kLVv4MSa7EUC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2008 Edition"
+  },
+  {
+    "rawTitle": "Code Complete, 2nd Edition",
+    "authors": [
+      "Steve Mcconnell"
+    ],
+    "publisher": "",
+    "publishedDate": "",
+    "googleCats": [],
+    "isbn13": "9789350041246",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9789350041246-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9789350041246-L.jpg?default=false",
+    "description": "Widely considered one of the best practical guides to programming, Steve McConnell s original CODE COMPLETE has been helping developers write better software for more than a decade. Now this classic book has been fully updated and revised with leading-edge practices-and hundreds of new code samples-illustrating the art and science of software construction. Capturing the body of knowledge available from research, academia, and everyday commercial practice, McConnell synthesizes the most effective techniques and must-know principles into clear, pragmatic guidance. No matter what your experience level, development environment, or project size, this book will inform and stimulate your thinking-and help you build the highest quality code.",
+    "pageCount": 952,
+    "overrideCat": "Engineering",
+    "id": 35,
+    "accession": "BB-0035",
+    "author": "Steve Mcconnell",
+    "category": "Engineering",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9789350041246-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": ""
+  },
+  {
+    "rawTitle": "Working Effectively With Legacy Code",
+    "authors": [
+      "Feathers"
+    ],
+    "publisher": "Pearson Education India",
+    "publishedDate": "2005-09",
+    "googleCats": [],
+    "isbn13": "9788131715079",
+    "coverGrid": "https://books.google.com/books/content?id=nyONTwPudakC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=nyONTwPudakC&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "",
+    "pageCount": 460,
+    "overrideCat": "Engineering",
+    "id": 36,
+    "accession": "BB-0036",
+    "author": "Feathers",
+    "category": "Engineering",
+    "thumbnail": "https://books.google.com/books/content?id=nyONTwPudakC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 5,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "2005 Edition"
+  },
+  {
+    "rawTitle": "Release It!",
+    "authors": [
+      "Michael T. Nygard"
+    ],
+    "publisher": "The Pragmatic Programmers LLC",
+    "publishedDate": "2018-01-08",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9781680504521",
+    "coverGrid": "https://books.google.com/books/content?id=gMlYEQAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=gMlYEQAAQBAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "A single dramatic software failure can cost a company millions of dollars - but can be avoided with simple changes to design and architecture. This new edition of the best-selling industry standard shows you how to create systems that run longer, with fewer failures, and recover better when bad things happen. New coverage includes DevOps, microservices, and cloud-native architecture. Stability antipatterns have grown to include systemic problems in large-scale systems. This is a must-have pragmatic guide to engineering for production systems. If you're a software developer, and you don't want to get alerts every night for the rest of your life, help is here. With a combination of case studies about huge losses - lost revenue, lost reputation, lost time, lost opportunity - and practical, down-to-earth advice that was all gained through painful experience, this book helps you avoid the pitfalls that cost companies millions of dollars in downtime and reputation. Eighty percent of project life-cycle cost is in production, yet few books address this topic. This updated edition deals with the production of today's systems - larger, more complex, and heavily virtualized - and includes information on chaos engineering, the discipline of applying randomness and deliberate stress to reveal systematic problems. Build systems that survive the real world, avoid downtime, implement zero-downtime upgrades and continuous delivery, and make cloud-native applications resilient. Examine ways to architect, design, and build software - particularly distributed systems - that stands up to the typhoon winds of a flash mob, a Slashdotting, or a link on Reddit. Take a hard look at software that failed the test and find ways to make sure your software survives. To skip the pain and get the experience...get this book.",
+    "pageCount": 490,
+    "overrideCat": "Engineering",
+    "id": 37,
+    "accession": "BB-0037",
+    "author": "Michael T. Nygard",
+    "category": "Engineering",
+    "thumbnail": "https://books.google.com/books/content?id=gMlYEQAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2018 Edition"
+  },
+  {
+    "rawTitle": "Site Reliability Engineering Google",
+    "authors": [],
+    "publisher": "",
+    "publishedDate": "",
+    "googleCats": [],
+    "isbn13": "9781492029472",
+    "coverGrid": "https://books.google.com/books/content?id=kElmDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=kElmDwAAQBAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "",
+    "pageCount": 508,
+    "overrideCat": "Engineering",
+    "id": 38,
+    "accession": "BB-0038",
+    "author": "",
+    "category": "Engineering",
+    "thumbnail": "https://books.google.com/books/content?id=kElmDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 4,
+    "addedDate": "2026-08-29",
+    "edition": ""
+  },
+  {
+    "rawTitle": "Cracking the Coding Interview, 6th Edition",
+    "authors": [
+      "Gayle Laakmann McDowell"
+    ],
+    "publisher": "",
+    "publishedDate": "2015-10-23",
+    "googleCats": [],
+    "isbn13": "9780984782864",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780984782864-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780984782864-L.jpg?default=false",
+    "description": "",
+    "pageCount": null,
+    "overrideCat": "Algorithms & DS",
+    "id": 39,
+    "accession": "BB-0039",
+    "author": "Gayle Laakmann McDowell",
+    "category": "Algorithms & DS",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780984782864-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "2015 Edition"
+  },
+  {
+    "rawTitle": "Elements of Programming Interviews",
+    "authors": [
+      "Adnan Aziz",
+      "Tsung-Hsien Lee",
+      "Amit Prakash"
+    ],
+    "publisher": "EPI",
+    "publishedDate": "2012",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9781479274833",
+    "coverGrid": "https://books.google.com/books/content?id=y6FLBQAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=y6FLBQAAQBAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "The core of EPI is a collection of over 300 problems with detailed solutions, including 100 figures, 250 tested programs, and 150 variants. The problems are representative of questions asked at the leading software companies. The book begins with a summary of the nontechnical aspects of interviewing, such as common mistakes, strategies for a great interview, perspectives from the other side of the table, tips on negotiating the best offer, and a guide to the best ways to use EPI. The technical core of EPI is a sequence of chapters on basic and advanced data structures, searching, sorting, broad algorithmic principles, concurrency, and system design. Each chapter consists of a brief review, followed by a broad and thought-provoking series of problems. We include a summary of data structure, algorithm, and problem solving patterns.",
+    "pageCount": 530,
+    "overrideCat": "Algorithms & DS",
+    "id": 40,
+    "accession": "BB-0040",
+    "author": "Adnan Aziz, Tsung-Hsien Lee, Amit Prakash",
+    "category": "Algorithms & DS",
+    "thumbnail": "https://books.google.com/books/content?id=y6FLBQAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 2,
+    "addedDate": "2026-08-29",
+    "edition": "2012 Edition"
+  },
+  {
+    "rawTitle": "Programming Pearls",
+    "authors": [
+      "Bentley"
+    ],
+    "publisher": "Pearson Education India",
+    "publishedDate": "",
+    "googleCats": [],
+    "isbn13": "9788178080222",
+    "coverGrid": "https://books.google.com/books/content?id=LKF5k91xpCUC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=LKF5k91xpCUC&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "",
+    "pageCount": 256,
+    "overrideCat": "Computer Science",
+    "id": 41,
+    "accession": "BB-0041",
+    "author": "Bentley",
+    "category": "Computer Science",
+    "thumbnail": "https://books.google.com/books/content?id=LKF5k91xpCUC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 4,
+    "addedDate": "2026-08-29",
+    "edition": ""
+  },
+  {
+    "rawTitle": "The C Programming Language",
+    "authors": [
+      "Brian W. Kernighan",
+      "Dennis M. Ritchie"
+    ],
+    "publisher": "Pearson Educación",
+    "publishedDate": "1988",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9789688802052",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9789688802052-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9789688802052-L.jpg?default=false",
+    "description": "On the c programming language",
+    "pageCount": 312,
+    "overrideCat": "Computer Science",
+    "id": 42,
+    "accession": "BB-0042",
+    "author": "Brian W. Kernighan, Dennis M. Ritchie",
+    "category": "Computer Science",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9789688802052-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 2,
+    "addedDate": "2026-08-29",
+    "edition": "1988 Edition"
+  },
+  {
+    "rawTitle": "Python Crash Course",
+    "authors": [
+      "Jason Scratch"
+    ],
+    "publisher": "",
+    "publishedDate": "2021-02-14",
+    "googleCats": [],
+    "isbn13": "9781914183287",
+    "coverGrid": "https://books.google.com/books/content?id=4Oo9zgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=4Oo9zgEACAAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "♦55% discount for bookstores! Now at $34,95 instead of 44,95!♦ Do you want to learn the basics of Python and its machine? If yes, then this is the right book for you! Your customers will never stop using this amazing book! Python is among the top programming languages that universities and industries prefer to teach and use, respectively. The charm of Python is hidden in the fact that it has extensive applications in a wide range of fields. Most people hate Python because of its use in building artificial intelligence models. This fast-paced, thorough introduction to programming with Python will have you writing programs, solving problems, and making things that work in no time. Python is very easy to read and learn. You can easily read source codes for different programs that are created by other programmers. But, it needs, like all the other programming languages, dedicated practice. You will have to get to the Python editor and practice all codes. In this book, you'll learn basic programming concepts, such as variables, lists, classes, and loops, and practice writing clean code with exercises for each topic. You'll also learn how to make your programs interactive and test your code safely before adding it to a project. In the end, you'll put your new knowledge into practice. This book covers the following topics: Evolution of Python Introduction to Python Variables and constants in Python How to install Python Designing and using Functions A modular approach to program organization Using methods Reading and writing files in Python And much more If you've been thinking about digging into programming, Python Crash Course will get you writing real programs fast.This book will teach you how to develop basic programming structures, including loops. Then you will move on to expressions, variables, and operators. You will also explore unique data structures, such as tuples. You will also learn how to create various python programs using loops and control statements. Why wait any longer? Buy it NOW and let your customers become addicted to this incredible book!!",
+    "pageCount": 134,
+    "overrideCat": "Computer Science",
+    "id": 43,
+    "accession": "BB-0043",
+    "author": "Jason Scratch",
+    "category": "Computer Science",
+    "thumbnail": "https://books.google.com/books/content?id=4Oo9zgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 4,
+    "addedDate": "2026-08-29",
+    "edition": "2021 Edition"
+  },
+  {
+    "rawTitle": "Calculus: Early Transcendentals",
+    "authors": [
+      "James Stewart"
+    ],
+    "publisher": "Cengage Learning",
+    "publishedDate": "2010-11-19",
+    "googleCats": [
+      "Mathematics"
+    ],
+    "isbn13": "9780538497909",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780538497909-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780538497909-L.jpg?default=false",
+    "description": "James Stewart's CALCULUS: EARLY TRANSCENDENTALS texts are widely renowned for their mathematical precision and accuracy, clarity of exposition, and outstanding examples and problem sets. Millions of students worldwide have explored calculus through Stewart's trademark style, while instructors have turned to his approach time and time again. In the Seventh Edition of CALCULUS: EARLY TRANSCENDENTALS, Stewart continues to set the standard for the course while adding carefully revised content. The patient explanations, superb exercises, focus on problem solving, and carefully graded problem sets that have made Stewart's texts best-sellers continue to provide a strong foundation for the Seventh Edition. From the most unprepared student to the most mathematically gifted, Stewart's writing and presentation serve to enhance understanding and build confidence. Important Notice: Media content referenced within the product description or the product text may not be available in the ebook version.",
+    "pageCount": 1344,
+    "overrideCat": "Mathematics",
+    "id": 44,
+    "accession": "BB-0044",
+    "author": "James Stewart",
+    "category": "Mathematics",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780538497909-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 5,
+    "addedDate": "2026-08-29",
+    "edition": "2010 Edition"
+  },
+  {
+    "rawTitle": "Probability & Statistics for Engineers & Scientists, Global Edition",
+    "authors": [
+      "Ronald E. Walpole",
+      "Raymond H. Myers",
+      "Sharon L. Myers",
+      "Keying E. Ye"
+    ],
+    "publisher": "Pearson Higher Ed",
+    "publishedDate": "2016-10-21",
+    "googleCats": [
+      "Mathematics"
+    ],
+    "isbn13": "9781292161419",
+    "coverGrid": "https://books.google.com/books/content?id=Th3aDAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=Th3aDAAAQBAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "For junior/senior undergraduates taking probability and statistics as applied to engineering, science, or computer science. This classic text provides a rigorous introduction to basic probability theory and statistical inference, with a unique balance between theory and methodology. Interesting, relevant applications use real data from actual studies, showing how the concepts and methods can be used to solve problems in the field. This revision focuses on improved clarity and deeper understanding. The full text downloaded to your computer With eBooks you can: search for key concepts, words and phrases make highlights and notes as you study share your notes with friends eBooks are downloaded to your computer and accessible either offline through the Bookshelf (available as a free download), available online and also via the iPad and Android apps. Upon purchase, you'll gain instant access to this eBook. Time limit The eBooks products do not have an expiry date. You will continue to access your digital ebook products whilst you have your Bookshelf installed.",
+    "pageCount": 812,
+    "overrideCat": "Mathematics",
+    "id": 45,
+    "accession": "BB-0045",
+    "author": "Ronald E. Walpole, Raymond H. Myers, Sharon L. Myers, Keying E. Ye",
+    "category": "Mathematics",
+    "thumbnail": "https://books.google.com/books/content?id=Th3aDAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2016 Edition"
+  },
+  {
+    "rawTitle": "Introduction to Probability, Second Edition",
+    "authors": [
+      "Joseph K. Blitzstein",
+      "Jessica Hwang"
+    ],
+    "publisher": "CRC Press",
+    "publishedDate": "2019-02-08",
+    "googleCats": [
+      "Mathematics"
+    ],
+    "isbn13": "9780429766749",
+    "coverGrid": "https://books.google.com/books/content?id=LciHDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=LciHDwAAQBAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "Developed from celebrated Harvard statistics lectures, Introduction to Probability provides essential language and toolsfor understanding statistics, randomness, and uncertainty. The book explores a wide variety of applications and examples, ranging from coincidences and paradoxes to Google PageRank and Markov chain Monte Carlo (MCMC). Additional application areas explored include genetics, medicine, computer science, and information theory. The authors present the material in an accessible style and motivate concepts using real-world examples. Throughout, they use stories to uncover connections between the fundamental distributions in statistics and conditioning to reduce complicated problems to manageable pieces. The book includes many intuitive explanations, diagrams, and practice problems. Each chapter ends with a section showing how to perform relevant simulations and calculations in R, a free statistical software environment. The second edition adds many new examples, exercises, and explanations, to deepen understanding of the ideas, clarify subtle concepts, and respond to feedback from many students and readers. New supplementary online resources have been developed, including animations and interactive visualizations, and the book has been updated to dovetail with these resources. Supplementary material is available on Joseph Blitzstein’s website www. stat110.net. The supplements include: Solutions to selected exercises Additional practice problems Handouts including review material and sample exams Animations and interactive visualizations created in connection with the edX online version of Stat 110. Links to lecture videos available on ITunes U and YouTube There is also a complete instructor's solutions manual available to instructors who require the book for a course.",
+    "pageCount": 636,
+    "overrideCat": "Mathematics",
+    "id": 46,
+    "accession": "BB-0046",
+    "author": "Joseph K. Blitzstein, Jessica Hwang",
+    "category": "Mathematics",
+    "thumbnail": "https://books.google.com/books/content?id=LciHDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2019 Edition"
+  },
+  {
+    "rawTitle": "Sapiens",
+    "authors": [
+      "Yuval Noah Harari"
+    ],
+    "publisher": "Harper Collins",
+    "publishedDate": "2015-02-10",
+    "googleCats": [
+      "History"
+    ],
+    "isbn13": "9780062316103",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780062316103-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780062316103-L.jpg?default=false",
+    "description": "#1 New York Times Bestseller • New York Times Readers’ Pick: Top 100 Books of the 21st Century • The Summer Reading Pick for President Barack Obama and Bill Gates Official U.S. edition with full color illustrations throughout. From renowned historian Yuval Noah Harari comes a groundbreaking narrative of humanity’s creation and evolution—a #1 international bestseller—that explores the ways in which biology and history have defined us and enhanced our understanding of what it means to be “human.” One hundred thousand years ago, at least six different species of humans inhabited Earth. Yet today there is only one—homo sapiens. What happened to the others? And what may happen to us? Most books about the history of humanity pursue either a historical or a biological approach, but Dr. Yuval Noah Harari breaks the mold with this highly original book that begins about 70,000 years ago with the appearance of modern cognition. From examining the role evolving humans have played in the global ecosystem to charting the rise of empires, Sapiens integrates history and science to reconsider accepted narratives, connect past developments with contemporary concerns, and examine specific events within the context of larger ideas. Dr. Harari also compels us to look ahead, because over the last few decades humans have begun to bend laws of natural selection that have governed life for the past four billion years. We are acquiring the ability to design not only the world around us, but also ourselves. Where is this leading us, and what do we want to become? Featuring 27 photographs, 6 maps, and 25 illustrations/diagrams, this provocative and insightful work is sure to spark debate and is essential reading for aficionados of Jared Diamond, James Gleick, Matt Ridley, Robert Wright, and Sharon Moalem.",
+    "pageCount": 403,
+    "overrideCat": "Fiction",
+    "id": 47,
+    "accession": "BB-0047",
+    "author": "Yuval Noah Harari",
+    "category": "Fiction",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780062316103-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2015 Edition"
+  },
+  {
+    "rawTitle": "Atomic Habits (Tamil)",
+    "authors": [
+      "James Clear"
+    ],
+    "publisher": "Manjul Publishing",
+    "publishedDate": "2023-07-14",
+    "googleCats": [
+      "Self-Help"
+    ],
+    "isbn13": "9789388241908",
+    "coverGrid": "https://books.google.com/books/content?id=WmqyDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=WmqyDwAAQBAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "நீங்கள் உங்கள் வாழ்க்கையை மாற்ற விரும்பினால், நீங்கள் பிரம்மாண்டமாக சிந்திக்க வேண்டும் என்று மக்கள் நினைக்கின்றனர். ஆனால், பழக்கங்களைப் பற்றி விரிவாக ஆய்வு செய்து அதில் உலகப் புகழ்பெற்ற நிபுணர்களில் ஒருவராகத் திகழுகின்ற ஜேம்ஸ் கிளியர் அதற்கு வேறொரு வழியைக் கண்டுபிடித்துள்ளார். தினமும் காலையில் ஐந்து நிமிடங்கள் முன்னதாகவே எழுந்திருத்தல், ஒரு பதினைந்து நிமிடங்கள் மெதுவோட்டத்தில் ஈடுபடுதல், கூடுதலாக ஒரு பக்கம் படித்தல் போன்ற நூற்றுக்கணக்கான சிறிய தீர்மானங்களின் கூட்டு விளைவிலிருந்துதான் உண்மையான மாற்றம் வருகிறது என்று அவர் கூறுகிறார்.<br>இந்தக் கடுகளவு மாற்றங்கள் எப்படி உங்கள் வாழ்க்கையைப் பெரிதும் மாற்றக்கூடிய விளைவுகளாக உருவெடுக்கின்றன என்பதை ஜேம்ஸ் இப்புத்தகத்தில் தெளிவாக வெளிப்படுத்துகிறார். அதற்கு அறிவியற்பூர்வமான விளக்கங்களையும் அவர் கொடுக்கிறார். ஒலிம்பிக்கில் தங்கப் பதக்கம் வென்றவர்கள், முன்னணி நிறுவனத் தலைவர்கள், புகழ்பெற்ற அறிவியலறிஞர்கள் ஆகியோரைப் பற்றிய உத்வேகமூட்டும் கதைகளைப் பயன்படுத்தி அவர் தன்னுடைய கோட்பாடுகளை விளக்கும் விதம் சுவாரசியமூட்டுவதாக இருக்கிறது.<br>இச்சிறு மாற்றங்கள் உங்கள் தொழில்வாழ்க்கையின்மீதும் உங்கள் உறவுகளின்மீதும் உங்கள் தனிப்பட்ட வாழ்வின்மீதும் அளப்பரிய தாக்கம் ஏற்படுத்தி அவற்றைப் பரிபூரணமாக மாற்றும் என்பது உறுதி.",
+    "pageCount": 306,
+    "overrideCat": "Psychology",
+    "id": 48,
+    "accession": "BB-0048",
+    "author": "James Clear",
+    "category": "Psychology",
+    "thumbnail": "https://books.google.com/books/content?id=WmqyDwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2023 Edition"
+  },
+  {
+    "rawTitle": "Deep Work",
+    "authors": [
+      "Cal Newport"
+    ],
+    "publisher": "Hachette UK",
+    "publishedDate": "2016-01-05",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9780349411910",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780349411910-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780349411910-L.jpg?default=false",
+    "description": "One of the most valuable skills in our economy is becoming increasingly rare. If you master this skill, you'll achieve extraordinary results. Deep Work is an indispensable guide to anyone seeking focused success in a distracted world. 'Cal Newport is exceptional in the realm of self-help authors' New York Times 'Deep work' is the ability to focus without distraction on a cognitively demanding task. Coined by author and professor Cal Newport on his popular blog Study Hacks, deep work will make you better at what you do, let you achieve more in less time and provide the sense of true fulfilment that comes from the mastery of a skill. In short, deep work is like a superpower in our increasingly competitive economy. And yet most people, whether knowledge workers in noisy open-plan offices or creatives struggling to sharpen their vision, have lost the ability to go deep - spending their days instead in a frantic blur of email and social media, not even realising there's a better way. A mix of cultural criticism and actionable advice, Deep Work takes the reader on a journey through memorable stories -- from Carl Jung building a stone tower in the woods to focus his mind, to a social media pioneer buying a round-trip business class ticket to Tokyo to write a book free from distraction in the air -- and surprising suggestions, such as the claim that most serious professionals should quit social media and that you should practice being bored. Put simply: developing and cultivating a deep work practice is one of the best decisions you can make in an increasingly distracted world. This book will point the way.",
+    "pageCount": 190,
+    "overrideCat": "Psychology",
+    "id": 49,
+    "accession": "BB-0049",
+    "author": "Cal Newport",
+    "category": "Psychology",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780349411910-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 2,
+    "addedDate": "2026-08-29",
+    "edition": "2016 Edition"
+  },
+  {
+    "rawTitle": "Summary | Zero to One",
+    "authors": [
+      "FastDigest-Summary"
+    ],
+    "publisher": "Createspace Independent Publishing Platform",
+    "publishedDate": "2018-02-08",
+    "googleCats": [],
+    "isbn13": "9781985238794",
+    "coverGrid": "https://books.google.com/books/content?id=sZzBtAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=sZzBtAEACAAJ&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "A Complete Summary - Zero to One: Notes on Startups, Or How to Build the Future Zero to One is a book by Peter Thiel, co-founder of Pay-Pal. It presents a collection of advice and hints for startup companies. This book, before it was even transformed into a book, was a collection of lessons and lectures. Back in 2012 Thiel decided that he could gather together all of his lessons, advice and other useful information into one book, which became Zero to One. What is it all about? Why write a book that is just a collection of advice? Peter Thiel, together with several other 'nerds, ' decided to found Pay-Pal back in late nineties. As we see that today, that decision was definitely a good one. Thiel, along with his fellow co-founders, is now a multi-millionaire. With such clear evidence of his business success, Thiel decided that it would be a great idea for him to share the many things that he has learned from years of experience in running a business. The result was this book. Zero to One, in addition to being a collection of experience and advice, is also a great source of help for anyone who has recently started or wants to start their own business. Fun, educational, and information-rich, it is a book worth reading and studying. Here Is A Preview Of What You Will Get: In Zero to One, you will get a summarized version of the book. In Zero to One, you will find the book analyzed to further strengthen your knowledge. In Zero to One, you will get some fun multiple choice quizzes, along with answers to help you learn about the book. Get a copy, and learn everything about Zero to One .",
+    "pageCount": 40,
+    "overrideCat": "Management",
+    "id": 50,
+    "accession": "BB-0050",
+    "author": "FastDigest-Summary",
+    "category": "Management",
+    "thumbnail": "https://books.google.com/books/content?id=sZzBtAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2018 Edition"
+  },
+  {
+    "rawTitle": "The Lean Startup",
+    "authors": [
+      "Eric Ries"
+    ],
+    "publisher": "Crown Currency",
+    "publishedDate": "2011-09-13",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9780307887917",
+    "coverGrid": "https://books.google.com/books/content?id=tvfyz-4JILwC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=tvfyz-4JILwC&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "Most startups fail. But many of those failures are preventable. The Lean Startup is a new approach being adopted across the globe, changing the way companies are built and new products are launched. Eric Ries defines a startup as an organization dedicated to creating something new under conditions of extreme uncertainty. This is just as true for one person in a garage or a group of seasoned professionals in a Fortune 500 boardroom. What they have in common is a mission to penetrate that fog of uncertainty to discover a successful path to a sustainable business. The Lean Startup approach fosters companies that are both more capital efficient and that leverage human creativity more effectively. Inspired by lessons from lean manufacturing, it relies on “validated learning,” rapid scientific experimentation, as well as a number of counter-intuitive practices that shorten product development cycles, measure actual progress without resorting to vanity metrics, and learn what customers really want. It enables a company to shift directions with agility, altering plans inch by inch, minute by minute. Rather than wasting time creating elaborate business plans, The Lean Startup offers entrepreneurs—in companies of all sizes—a way to test their vision continuously, to adapt and adjust before it’s too late. Ries provides a scientific approach to creating and managing successful startups in a age when companies need to innovate more than ever.",
+    "pageCount": 337,
+    "overrideCat": "Management",
+    "id": 51,
+    "accession": "BB-0051",
+    "author": "Eric Ries",
+    "category": "Management",
+    "thumbnail": "https://books.google.com/books/content?id=tvfyz-4JILwC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 2,
+    "addedDate": "2026-08-29",
+    "edition": "2011 Edition"
+  },
+  {
+    "rawTitle": "Drive",
+    "authors": [
+      "Daniel H. Pink"
+    ],
+    "publisher": "Canongate Books",
+    "publishedDate": "2010-01-20",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9781847678881",
+    "coverGrid": "https://books.google.com/books/content?id=l6x0a-jkoGUC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "coverLarge": "https://books.google.com/books/content?id=l6x0a-jkoGUC&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+    "description": "A book that will change how you think and transform how you live Forget everything you thought you knew about how to motivate people - at work, at school, at home. It is wrong. As Daniel H. Pink explains in his paradigm-shattering book Drive, the secret to high performance and satisfaction in today's world is the deeply human need to direct our own lives, to learn and create new things, and to do better by ourselves and the world. Along the way, he takes us to companies that are enlisting new approaches to motivation, and introduces us to the scientists and entrepreneurs who are pointing a bold way forward.",
+    "pageCount": 257,
+    "overrideCat": "Psychology",
+    "id": 52,
+    "accession": "BB-0052",
+    "author": "Daniel H. Pink",
+    "category": "Psychology",
+    "thumbnail": "https://books.google.com/books/content?id=l6x0a-jkoGUC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 3,
+    "addedDate": "2026-08-29",
+    "edition": "2010 Edition"
+  }
+]
