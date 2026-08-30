@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button } from '../components/Button'
 import { DueDatePocket } from '../components/DueDatePocket'
 import { CatalogCard } from '../components/CatalogCard'
-import { ALL_BOOKS, SPINE, coverUrl } from '../data/books'
+import { ALL_BOOKS, SPINE, coverLargeUrl, coverGridUrl } from '../data/books'
 
 /* ── Helpers ─────────────────────────────────────────────── */
 
@@ -203,9 +203,27 @@ export default function BookDetailPage({ accession }) {
   const spineColor = SPINE[book.category] || '#2B2620'
   const copiesAvail = (book.availableCopies ?? (book.available ? 1 : 0)) > 0
 
-  /* ── Detail cover: real image with colored-box fallback ── */
-  const [imgFailed, setImgFailed] = useState(false)
-  const showCoverImg = book.isbn && !imgFailed
+  /* ── Detail cover ──────────────────────────────────────────
+     Two-stage fallback:
+       1. coverLarge (OL-L with ?default=false → real 404 on miss)
+       2. coverGrid  (Google best-field, if OL 404s)
+       3. Styled title placeholder (Fraunces, spine background)
+     onError swaps through the stages; never leaves a bare div.
+     ───────────────────────────────────────────────────── */
+  const largeSrc = coverLargeUrl(book)
+  const gridSrc  = coverGridUrl(book)
+  // 0 = show large, 1 = show grid (OL failed), 2 = show placeholder
+  const [coverStage, setCoverStage] = useState(0)
+  const coverSrc = coverStage === 0 ? largeSrc : (coverStage === 1 ? gridSrc : null)
+  const showCoverImg = coverSrc !== null
+
+  function handleCoverError() {
+    if (coverStage === 0 && gridSrc && gridSrc !== largeSrc) {
+      setCoverStage(1)   // try grid URL (Google)
+    } else {
+      setCoverStage(2)   // give up → styled placeholder
+    }
+  }
 
   return (
     <div className="detail-page">
@@ -229,13 +247,16 @@ export default function BookDetailPage({ accession }) {
         <div className="detail-cover-col">
           <div
             className="detail-cover-block"
-            style={{ backgroundColor: spineColor, position: 'relative' }}
+            style={{
+              backgroundColor: spineColor,
+              position: 'relative',
+            }}
           >
             {showCoverImg ? (
               <img
-                src={coverUrl(book.isbn)}
+                src={coverSrc}
                 alt={`Cover of ${book.title}`}
-                onError={() => setImgFailed(true)}
+                onError={handleCoverError}
                 style={{
                   position: 'absolute',
                   inset: 0,
@@ -248,6 +269,7 @@ export default function BookDetailPage({ accession }) {
                 }}
               />
             ) : (
+              /* Styled placeholder: spine-colour background + Fraunces title */
               <div className="detail-cover-title">
                 <span>{book.title}</span>
               </div>
