@@ -94,9 +94,56 @@ function Field({ id, label, type = 'text', value, onChange, placeholder, autoCom
 function LoginForm({ onSwitch }) {
   const [email,    setEmail]    = useState('')
   const [password, setPassword] = useState('')
+  const [error,    setError]    = useState('')
+  const [loading,  setLoading]  = useState(false)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    if (!email || !password) {
+      setError('Please enter both email and password.')
+      return
+    }
+    setLoading(true)
+    try {
+      const res = await fetch('http://localhost:8001/api/auth/login/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), password }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        const msg = data.detail || (data.non_field_errors && data.non_field_errors[0]) || 'Invalid email or password.'
+        setError(msg)
+        return
+      }
+      localStorage.setItem('bb_access', data.access)
+      localStorage.setItem('bb_refresh', data.refresh)
+      localStorage.setItem('bb_user', JSON.stringify(data.user))
+      window.location.hash = '#account'
+    } catch (err) {
+      setError('Could not connect to backend server at http://localhost:8001')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
-    <form className="auth-form" onSubmit={e => e.preventDefault()} noValidate>
+    <form className="auth-form" onSubmit={handleSubmit} noValidate>
+      {error && (
+        <div style={{
+          background: 'rgba(180, 40, 40, 0.1)',
+          border: '1px solid rgba(180, 40, 40, 0.3)',
+          color: '#b42828',
+          padding: '10px 14px',
+          borderRadius: '4px',
+          fontSize: '0.875rem',
+          marginBottom: '14px',
+        }}>
+          {error}
+        </div>
+      )}
+
       <Field
         id="login-email" label="Email address" type="email"
         value={email} onChange={setEmail}
@@ -117,9 +164,10 @@ function LoginForm({ onSwitch }) {
       <Button
         variant="ochre"
         type="submit"
+        disabled={loading}
         style={{ width: '100%', padding: '13px 20px', fontSize: '0.9375rem', justifyContent: 'center' }}
       >
-        Sign in
+        {loading ? 'Signing in...' : 'Sign in'}
       </Button>
 
       <p className="auth-switch">
@@ -140,9 +188,68 @@ function RegisterForm({ onSwitch }) {
   const [email,     setEmail]     = useState('')
   const [password,  setPassword]  = useState('')
   const [confirm,   setConfirm]   = useState('')
+  const [error,     setError]     = useState('')
+  const [loading,   setLoading]   = useState(false)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    if (!name || !studentId || !email || !password || !confirm) {
+      setError('Please fill in all fields.')
+      return
+    }
+    if (password !== confirm) {
+      setError('Passwords do not match.')
+      return
+    }
+    setLoading(true)
+    try {
+      const res = await fetch('http://localhost:8001/api/auth/register/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: name.trim(),
+          enrollment_number: studentId.trim(),
+          email: email.trim(),
+          password,
+          confirm_password: confirm,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        const firstKey = Object.keys(data)[0]
+        const firstVal = data[firstKey]
+        const msg = Array.isArray(firstVal) ? firstVal[0] : (typeof firstVal === 'string' ? firstVal : 'Registration failed.')
+        setError(msg)
+        return
+      }
+      localStorage.setItem('bb_access', data.access)
+      localStorage.setItem('bb_refresh', data.refresh)
+      localStorage.setItem('bb_user', JSON.stringify(data.user))
+      window.location.hash = '#account'
+    } catch (err) {
+      setError('Could not connect to backend server at http://localhost:8001')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
-    <form className="auth-form" onSubmit={e => e.preventDefault()} noValidate>
+    <form className="auth-form" onSubmit={handleSubmit} noValidate>
+      {error && (
+        <div style={{
+          background: 'rgba(180, 40, 40, 0.1)',
+          border: '1px solid rgba(180, 40, 40, 0.3)',
+          color: '#b42828',
+          padding: '10px 14px',
+          borderRadius: '4px',
+          fontSize: '0.875rem',
+          marginBottom: '14px',
+        }}>
+          {error}
+        </div>
+      )}
+
       <Field
         id="reg-name" label="Full name"
         value={name} onChange={setName}
@@ -172,9 +279,10 @@ function RegisterForm({ onSwitch }) {
       <Button
         variant="ochre"
         type="submit"
+        disabled={loading}
         style={{ width: '100%', padding: '13px 20px', fontSize: '0.9375rem', justifyContent: 'center', marginTop: '4px' }}
       >
-        Create account
+        {loading ? 'Creating account...' : 'Create account'}
       </Button>
 
       <p className="auth-switch">

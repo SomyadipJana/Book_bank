@@ -16,6 +16,10 @@ dist/
 build/
 .next/
 dist-ssr/
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
 
 # OS/editor noise
 .DS_Store

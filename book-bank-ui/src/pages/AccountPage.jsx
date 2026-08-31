@@ -12,6 +12,23 @@ const USER_PROFILE = {
   expires: 'JUN 2027',
 }
 
+function getStoredUser() {
+  try {
+    const raw = localStorage.getItem('bb_user')
+    if (raw) {
+      const u = JSON.parse(raw)
+      return {
+        name: u.full_name || USER_PROFILE.name,
+        enrollmentNo: u.email || USER_PROFILE.enrollmentNo,
+        role: u.role ? u.role.toUpperCase() : USER_PROFILE.role,
+        joined: 'ACTIVE',
+        expires: '2027',
+      }
+    }
+  } catch (e) {}
+  return USER_PROFILE
+}
+
 const INITIAL_LOANS = [
   {
     id: 'loan-1',
@@ -288,16 +305,21 @@ export default function AccountPage({ initialTab = 'loans' }) {
       <main className="account-main">
         {/* ── Top Identity & Stat Chips Strip ── */}
         <header className="account-header">
-          <div className="account-id-block">
-            <h1 className="account-user-name">{USER_PROFILE.name}</h1>
-            <div className="account-id-meta">
-              <span className="account-mono-pill">ID: {USER_PROFILE.enrollmentNo}</span>
-              <span className="account-meta-dot" aria-hidden="true">&middot;</span>
-              <span className="account-role-text">{USER_PROFILE.role}</span>
-              <span className="account-meta-dot" aria-hidden="true">&middot;</span>
-              <span className="account-role-text">VALID THRU {USER_PROFILE.expires}</span>
-            </div>
-          </div>
+          {(() => {
+            const user = getStoredUser()
+            return (
+              <div className="account-id-block">
+                <h1 className="account-user-name">{user.name}</h1>
+                <div className="account-id-meta">
+                  <span className="account-mono-pill">ID: {user.enrollmentNo}</span>
+                  <span className="account-meta-dot" aria-hidden="true">&middot;</span>
+                  <span className="account-role-text">{user.role}</span>
+                  <span className="account-meta-dot" aria-hidden="true">&middot;</span>
+                  <span className="account-role-text">VALID THRU {user.expires}</span>
+                </div>
+              </div>
+            )
+          })()}
 
           {/* 3 Plex Mono Stat Chips */}
           <div className="account-stat-strip" aria-label="Account summary statistics">
