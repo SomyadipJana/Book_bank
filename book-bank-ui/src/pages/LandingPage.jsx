@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Button } from '../components/Button'
 import { DueDatePocket } from '../components/DueDatePocket'
+import { useAuth } from '../context/AuthContext'
 
 /* ── Data ────────────────────────────────────────────────── */
 
@@ -179,6 +180,7 @@ const STEPS = [
 /* ── Sub-components ──────────────────────────────────────── */
 
 function Nav() {
+  const { user, logout } = useAuth()
   return (
     <nav className="nav">
       <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -204,13 +206,29 @@ function Nav() {
         ))}
       </ul>
 
-      <Button
-        variant="primary"
-        style={{ fontSize: '0.8125rem', padding: '9px 18px' }}
-        onClick={() => { window.location.hash = '#login' }}
-      >
-        Sign In
-      </Button>
+      {user ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span className="account-nav-user" title={user.name}>
+            <span className="account-nav-avatar">{user.name[0].toUpperCase()}</span>
+            <span className="account-nav-name">{user.name}</span>
+          </span>
+          <button
+            type="button"
+            className="account-nav-signout"
+            onClick={() => { logout(); window.location.hash = '#login' }}
+          >
+            Sign Out
+          </button>
+        </div>
+      ) : (
+        <Button
+          variant="primary"
+          style={{ fontSize: '0.8125rem', padding: '9px 18px' }}
+          onClick={() => { window.location.hash = '#login' }}
+        >
+          Sign In
+        </Button>
+      )}
     </nav>
   )
 }
@@ -269,8 +287,6 @@ function Hero() {
       <div className="hero">
         {/* Content */}
         <div className="hero__content">
-          <span className="section-eyebrow">Book Bank — Student Library</span>
-
           <h1
             className="font-display tracking-display"
             style={{ fontSize: 'clamp(2.25rem, 5vw, 3.75rem)', fontWeight: 700, color: 'var(--color-ink)', lineHeight: 1.05, marginBottom: '20px' }}
@@ -480,20 +496,20 @@ function Footer() {
           <div className="footer__nav-group">
             <span className="footer__nav-heading">Library</span>
             <a href="#catalog" className="footer__nav-link">Browse Catalogue</a>
-            <a href="#" className="footer__nav-link">New Arrivals</a>
-            <a href="#" className="footer__nav-link">Reservations</a>
+            <a href="#catalog" className="footer__nav-link">New Arrivals</a>
+            <a href="#reservations" className="footer__nav-link">Reservations</a>
           </div>
           <div className="footer__nav-group">
             <span className="footer__nav-heading">Account</span>
-            <a href="#" className="footer__nav-link">Sign In</a>
-            <a href="#" className="footer__nav-link">Register</a>
-            <a href="#" className="footer__nav-link">My Loans</a>
+            <a href="#login" className="footer__nav-link">Sign In</a>
+            <a href="#register" className="footer__nav-link">Register</a>
+            <a href="#loans" className="footer__nav-link">My Loans</a>
           </div>
           <div className="footer__nav-group">
             <span className="footer__nav-heading">Information</span>
-            <a href="#" className="footer__nav-link">Library Hours</a>
-            <a href="#" className="footer__nav-link">Fine Policy</a>
-            <a href="#" className="footer__nav-link">Contact</a>
+            <a href="#" className="footer__nav-link" onClick={e => e.preventDefault()}>Library Hours</a>
+            <a href="#" className="footer__nav-link" onClick={e => e.preventDefault()}>Fine Policy</a>
+            <a href="#" className="footer__nav-link" onClick={e => e.preventDefault()}>Contact</a>
           </div>
         </nav>
       </div>
@@ -503,6 +519,11 @@ function Footer() {
         <div className="footer__bottom">
           <p className="footer__copy">
             &copy; {year} Book Bank Management System. Software Engineering Lab Project.
+            {' • '}
+            {/* TODO: remove this link once real role-based auth + a proper admin entry point exist. */}
+            <a href="#admin/dashboard" style={{ color: 'var(--color-charcoal-60)', textDecoration: 'underline' }}>
+              Admin (dev only)
+            </a>
           </p>
         </div>
       </div>

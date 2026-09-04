@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '../components/Button'
 import { SPINE } from '../data/books'
+import { useAuth } from '../context/AuthContext'
 
 /* ── Mock Account Data ───────────────────────────────────── */
 
-const USER_PROFILE = {
-  name: 'Eleanor Vance',
-  enrollmentNo: 'LIB-2024-8841',
-  role: 'Undergraduate — Literature & Computing',
-  joined: 'OCT 2023',
+// Fallback profile used only when no auth user is found (should not happen in normal flow)
+const FALLBACK_PROFILE = {
+  name: 'Student',
+  enrollmentNo: 'LIB-0000-0000',
+  role: 'Undergraduate',
+  joined: 'JAN 2024',
   expires: 'JUN 2027',
 }
 
@@ -169,7 +171,7 @@ const INITIAL_FINES = [
 
 /* ── Navigation Header ───────────────────────────────────── */
 
-function AccountNav() {
+function AccountNav({ activeTab = 'loans', userName = '', onLogout }) {
   return (
     <nav className="nav" role="navigation" aria-label="Main navigation">
       <a
@@ -192,10 +194,10 @@ function AccountNav() {
 
       <ul className="nav__links" aria-label="Site sections">
         {[
-          { label: 'Catalogue',    href: '#catalog',  active: false },
-          { label: 'My Loans',     href: '#account',  active: true  },
-          { label: 'Reservations', href: '#account',  active: false },
-          { label: 'About',        href: '#',         active: false },
+          { label: 'Catalogue',    href: '#catalog',      active: false },
+          { label: 'My Loans',     href: '#loans',        active: activeTab === 'loans' },
+          { label: 'Reservations', href: '#reservations', active: activeTab === 'reservations' },
+          { label: 'About',        href: '#',             active: false },
         ].map(l => (
           <li key={l.label}>
             <a
@@ -215,14 +217,14 @@ function AccountNav() {
       </ul>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <span className="account-nav-user" title={USER_PROFILE.name}>
-          <span className="account-nav-avatar">{USER_PROFILE.name[0]}</span>
-          <span className="account-nav-name">{USER_PROFILE.name}</span>
+        <span className="account-nav-user" title={userName}>
+          <span className="account-nav-avatar">{userName ? userName[0].toUpperCase() : '?'}</span>
+          <span className="account-nav-name">{userName}</span>
         </span>
         <button
           type="button"
           className="account-nav-signout"
-          onClick={() => { window.location.hash = '#login' }}
+          onClick={onLogout}
         >
           Sign Out
         </button>
@@ -246,6 +248,17 @@ function BookThumb({ title, category, accession }) {
 /* ── Main Component ──────────────────────────────────────── */
 
 export default function AccountPage({ initialTab = 'loans' }) {
+  const { user, logout } = useAuth()
+
+  // Build profile from auth context; fall back to defaults for mock fields that aren't in auth
+  const USER_PROFILE = {
+    name: user?.name || FALLBACK_PROFILE.name,
+    enrollmentNo: user?.enrollmentNo || FALLBACK_PROFILE.enrollmentNo,
+    role: user?.role === 'librarian' ? 'Librarian' : (user?.studentRole || FALLBACK_PROFILE.role),
+    joined: user?.joined || FALLBACK_PROFILE.joined,
+    expires: user?.expires || FALLBACK_PROFILE.expires,
+  }
+
   const [activeTab, setActiveTab] = useState(initialTab)
   const [loans, setLoans] = useState(INITIAL_LOANS)
   const [reservations, setReservations] = useState(INITIAL_RESERVATIONS)
@@ -281,9 +294,22 @@ export default function AccountPage({ initialTab = 'loans' }) {
     setFines(prev => prev.map(f => f.id === fineId ? { ...f, status: 'Settled' } : f))
   }
 
+  useEffect(() => {
+    setActiveTab(initialTab)
+  }, [initialTab])
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab)
+    window.history.replaceState(null, '', `#${tab}`)
+  }
+
   return (
     <div className="account-page">
-      <AccountNav />
+      <AccountNav
+        activeTab={activeTab}
+        userName={USER_PROFILE.name}
+        onLogout={() => { logout(); window.location.hash = '#login' }}
+      />
 
       <main className="account-main">
         {/* ── Top Identity & Stat Chips Strip ── */}
@@ -327,7 +353,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
               aria-selected={activeTab === 'loans'}
               aria-controls="panel-loans"
               className={`account-tab${activeTab === 'loans' ? ' active' : ''}`}
-              onClick={() => setActiveTab('loans')}
+              onClick={() => handleTabChange('loans')}
             >
               Current loans <span className="account-tab-count">{loans.length}</span>
             </button>
@@ -337,7 +363,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
               aria-selected={activeTab === 'reservations'}
               aria-controls="panel-reservations"
               className={`account-tab${activeTab === 'reservations' ? ' active' : ''}`}
-              onClick={() => setActiveTab('reservations')}
+              onClick={() => handleTabChange('reservations')}
             >
               Reservations <span className="account-tab-count">{reservations.length}</span>
             </button>
@@ -347,7 +373,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
               aria-selected={activeTab === 'history'}
               aria-controls="panel-history"
               className={`account-tab${activeTab === 'history' ? ' active' : ''}`}
-              onClick={() => setActiveTab('history')}
+              onClick={() => handleTabChange('history')}
             >
               History <span className="account-tab-count">{HISTORY_RECORDS.length}</span>
             </button>
@@ -357,7 +383,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
               aria-selected={activeTab === 'fines'}
               aria-controls="panel-fines"
               className={`account-tab${activeTab === 'fines' ? ' active' : ''}`}
-              onClick={() => setActiveTab('fines')}
+              onClick={() => handleTabChange('fines')}
             >
               Fines {totalUnpaidFines > 0 && <span className="account-tab-count account-tab-count--alert">${totalUnpaidFines.toFixed(2)}</span>}
             </button>

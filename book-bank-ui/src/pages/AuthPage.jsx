@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from '../components/Button'
+import { useAuth } from '../context/AuthContext'
 
 /* ── Left-panel fanned book silhouettes ──────────────────── */
 
@@ -94,9 +95,21 @@ function Field({ id, label, type = 'text', value, onChange, placeholder, autoCom
 function LoginForm({ onSwitch }) {
   const [email,    setEmail]    = useState('')
   const [password, setPassword] = useState('')
+  const { login } = useAuth()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!email) return
+    const loggedUser = login(email, password, '') // name comes from stored session or email prefix
+    if (loggedUser.role === 'librarian') {
+      window.location.hash = '#admin/dashboard'
+    } else {
+      window.location.hash = '#catalog'
+    }
+  }
 
   return (
-    <form className="auth-form" onSubmit={e => e.preventDefault()} noValidate>
+    <form className="auth-form" onSubmit={handleSubmit} noValidate>
       <Field
         id="login-email" label="Email address" type="email"
         value={email} onChange={setEmail}
@@ -140,9 +153,22 @@ function RegisterForm({ onSwitch }) {
   const [email,     setEmail]     = useState('')
   const [password,  setPassword]  = useState('')
   const [confirm,   setConfirm]   = useState('')
+  const { login } = useAuth()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!email || !name) return
+    // Pass the user's typed name so it's stored in the session
+    const loggedUser = login(email, password, name)
+    if (loggedUser.role === 'librarian') {
+      window.location.hash = '#admin/dashboard'
+    } else {
+      window.location.hash = '#catalog'
+    }
+  }
 
   return (
-    <form className="auth-form" onSubmit={e => e.preventDefault()} noValidate>
+    <form className="auth-form" onSubmit={handleSubmit} noValidate>
       <Field
         id="reg-name" label="Full name"
         value={name} onChange={setName}
