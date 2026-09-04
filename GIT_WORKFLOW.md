@@ -1,4 +1,4 @@
-﻿# Book Bank - Git Workflow Guide
+# Book Bank - Git Workflow Guide
 
 This document defines the Git branching strategy and daily workflow for the **Book Bank Management System** team.
 
@@ -8,29 +8,30 @@ This document defines the Git branching strategy and daily workflow for the **Bo
 
 ```
 main
- L develop
-      |-- frontend
-      L-- backend
+ └── develop
+      ├── frontend
+      └── backend
 ```
 
-| Branch     | Purpose                                                        | Who works here          |
-|------------|----------------------------------------------------------------|-------------------------|
-| `main`     | Stable, production-ready releases only                         | Merged from `develop`   |
-| `develop`  | Integration branch - all finished features land here first     | Both team members (via PRs) |
-| `frontend` | Long-lived branch for all frontend (React/Vite) development    | Friend (frontend dev)   |
-| `backend`  | Long-lived branch for all backend (Django/Python/PostgreSQL)   | Backend developer (you) |
+| Branch     | Purpose                                                        | Who works here              |
+|------------|----------------------------------------------------------------|-----------------------------|
+| `main`     | Stable, production-ready releases only                         | Merged from `develop`       |
+| `develop`  | Integration branch — all finished features land here first     | Both team members (via PRs) |
+| `frontend` | Long-lived branch for all frontend (React/Vite) development    | Friend (frontend dev)       |
+| `backend`  | Long-lived branch for all backend (Django/Python/PostgreSQL)   | Krish (backend dev)         |
 
 ---
 
 ## Ground Rules
 
-- NEVER commit directly to `main` or `develop`
-- NEVER force-push any shared branch (`main`, `develop`, `frontend`, `backend`)
-- NEVER use `git reset --hard` on shared branches
-- ALWAYS `pull` / `fetch` before starting work
-- Use Pull Requests to merge `frontend` -> `develop` and `backend` -> `develop`
+- **NEVER** commit directly to `main` or `develop`
+- **NEVER** force-push any shared branch (`main`, `develop`, `frontend`, `backend`)
+- **NEVER** use `git reset --hard` on shared/published branches
+- **ALWAYS** `pull` / `fetch` before starting work
+- Use Pull Requests to merge `frontend` → `develop` and `backend` → `develop`
 - Merge `develop` into your working branch to receive integrated updates
 - Write meaningful, descriptive commit messages
+- Resolve merge conflicts carefully — never discard your teammate's valid work
 
 ---
 
@@ -54,13 +55,13 @@ git push origin frontend
 ```
 
 Then open a **Pull Request** on GitHub:
-> `frontend` -> `develop`
+> `frontend` → `develop`
 
-Have the other team member review and approve before merging.
+Have the other team member review and approve before merging. **Do not merge into `main` directly.**
 
 ---
 
-## B. Backend Developer Workflow (You)
+## B. Krish's Backend Workflow
 
 ```bash
 # 1. Switch to the backend branch
@@ -80,13 +81,13 @@ git push origin backend
 ```
 
 Then open a **Pull Request** on GitHub:
-> `backend` -> `develop`
+> `backend` → `develop`
 
-Have the other team member review and approve before merging.
+Have the other team member review and approve before merging. **Do not merge into `main` directly.**
 
 ---
 
-## C. How You Receive Your Friend's Latest Frontend Work
+## C. How Krish Gets the Latest Frontend Changes
 
 Once your friend's frontend changes are merged into `develop` via a Pull Request:
 
@@ -102,9 +103,9 @@ Resolve any merge conflicts carefully.
 
 ---
 
-## D. How Your Friend Receives Your Latest Backend Work
+## D. How the Friend Gets the Latest Backend Changes
 
-Once your backend changes are merged into `develop` via a Pull Request:
+Once Krish's backend changes are merged into `develop` via a Pull Request:
 
 ```bash
 git switch frontend
@@ -131,7 +132,9 @@ git pull origin develop
 git switch main
 git pull origin main
 
-# 3. Merge develop into main
+# 3. Open a Pull Request on GitHub: develop -> main
+#    (preferred — allows review before release)
+#    OR merge locally:
 git merge --no-ff develop -m "release: v1.0.0 - Book Bank initial release"
 
 # 4. Push the release to origin/main
@@ -151,18 +154,29 @@ backend   --PR--'
 
 ---
 
+## Remote Tracking Summary
+
+| Local Branch | Tracks Remote      |
+|--------------|--------------------|
+| `main`       | `origin/main`      |
+| `develop`    | `origin/develop`   |
+| `frontend`   | `origin/frontend`  |
+| `backend`    | `origin/backend`   |
+
+---
+
 ## Daily Sync Cheatsheet
 
-| Task | Command |
-|------|---------|
-| Start a work session | `git switch <your-branch>` then `git pull origin <your-branch>` |
-| Get integrated updates from team | `git fetch origin` then `git merge origin/develop` |
-| Stage all changes | `git add .` |
-| Commit | `git commit -m "type: short description"` |
-| Push to remote | `git push origin <your-branch>` |
-| See local branches | `git branch` |
-| See all branches (local + remote) | `git branch -a` |
-| See recent commits | `git log --oneline --decorate -10` |
+| Task                              | Command                                                  |
+|-----------------------------------|----------------------------------------------------------|
+| Start a work session              | `git switch <your-branch>` then `git pull origin <your-branch>` |
+| Get integrated updates from team  | `git fetch origin` then `git merge origin/develop`       |
+| Stage all changes                 | `git add .`                                              |
+| Commit                            | `git commit -m "type: short description"`                |
+| Push to remote                    | `git push origin <your-branch>`                          |
+| See local branches                | `git branch`                                             |
+| See all branches (local + remote) | `git branch -a`                                          |
+| See recent commits                | `git log --oneline --decorate -10`                       |
 
 ---
 
@@ -170,17 +184,17 @@ backend   --PR--'
 
 - Python + Django + Django REST Framework
 - PostgreSQL database configuration
-- Database models (Book, User, Loan, etc.)
+- Database models (Book, User, Loan, Fine, Reservation, etc.)
 - REST API endpoints
-- Authentication / Authorization
+- JWT Authentication / Role-based Authorization
 
-NOTE: Do not install or configure these technologies until the `backend` branch is active.
+> **Note:** Do not install or configure these technologies until you are actively working on the `backend` branch.
 
 ---
 
-## Repository
+## Repository Info
 
 - GitHub: https://github.com/SomyadipJana/Book_bank
 - Frontend dev server: http://localhost:5173 (Vite)
-- Backend API server: http://localhost:8000 (uvicorn)
-- API Docs: http://localhost:8000/docs
+- Backend API server: http://localhost:8000 (uvicorn / Django)
+- API Docs: http://localhost:8000/docs (FastAPI/Swagger)

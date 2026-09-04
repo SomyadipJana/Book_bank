@@ -5,6 +5,7 @@ import CatalogPage     from './pages/CatalogPage'
 import BookDetailPage  from './pages/BookDetailPage'
 import AuthPage        from './pages/AuthPage'
 import AccountPage     from './pages/AccountPage'
+import AdminPage       from './pages/AdminPage'
 
 function getRoute() {
   const h = window.location.hash
@@ -17,6 +18,8 @@ function getRoute() {
   if (h === '#fines')            return { page: 'account',      id: 'fines' }
   if (h.startsWith('#account/')) return { page: 'account',      id: h.slice(9) || 'loans' }
   if (h.startsWith('#book/'))    return { page: 'book',         id: h.slice(6) }
+  if (h === '#admin' || h === '#admin/dashboard') return { page: 'admin', id: 'dashboard' }
+  if (h.startsWith('#admin/'))    return { page: 'admin',        id: h.slice(7) }
   return                                { page: 'landing',      id: null }
 }
 
@@ -34,5 +37,6 @@ export default function App() {
   if (route.page === 'login')    return <AuthPage key="login" mode="login" />
   if (route.page === 'register') return <AuthPage key="register" mode="register" />
   if (route.page === 'account')  return <AccountPage key={route.id || 'loans'} initialTab={route.id || 'loans'} />
+  if (route.page === 'admin')    return <AdminPage currentTab={route.id} />
   return <LandingPage />
 }

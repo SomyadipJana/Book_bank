@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { DueDatePocket } from './DueDatePocket'
-import { SPINE, coverUrl } from '../data/books'
+import { SPINE, coverGridUrl } from '../data/books'
 
 function AvailBadge({ available }) {
   return (
@@ -13,46 +13,12 @@ function AvailBadge({ available }) {
   )
 }
 
-/* ── Cover — real image with colored-box fallback ─────────── */
-function BookCover({ book }) {
-  const spineColor = SPINE[book.category] || '#2B2620'
-  const [imgFailed, setImgFailed] = useState(false)
-
-  const showImg = book.isbn && !imgFailed
-
-  return (
-    <div
-      className="catalog-card__cover"
-      style={{ backgroundColor: spineColor, position: 'relative' }}
-    >
-      {showImg ? (
-        <img
-          src={coverUrl(book.isbn)}
-          alt={`Cover of ${book.title}`}
-          onError={() => setImgFailed(true)}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center top',
-            borderRadius: '4px 4px 0 0',
-            display: 'block',
-          }}
-        />
-      ) : (
-        /* Fallback: original dark-box-with-title style */
-        <div className="catalog-card__cover-title">
-          <span>{book.title}</span>
-        </div>
-      )}
-      <DueDatePocket accession={book.accession} />
-    </div>
-  )
-}
-
 export function CatalogCard({ book, onClick }) {
+  const spineColor        = SPINE[book.category] || '#2B2620'
+  const [imgFailed, setImgFailed] = useState(false)
+  const src     = coverGridUrl(book)
+  const showImg = src && !imgFailed
+
   return (
     <article
       className="catalog-card"
@@ -62,8 +28,47 @@ export function CatalogCard({ book, onClick }) {
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onClick?.() }}
       style={{ cursor: onClick ? 'pointer' : 'default' }}
     >
-      <BookCover book={book} />
+      {/*
+       * .catalog-card__cover  — position:relative, overflow:visible
+       *   ├─ .catalog-card__cover-img  — position:absolute inset:0,
+       *   │   overflow:hidden, border-radius inherited
+       *   │   (clips the <img> without clipping the pocket)
+       *   ├─ fallback title (position:absolute, inset:0)
+       *   └─ DueDatePocket (position:absolute, bottom:-1px right:14px)
+       *       peeks below because the cover itself is overflow:visible
+       */}
+      <div
+        className="catalog-card__cover"
+        style={{ backgroundColor: spineColor }}
+      >
+        {/* Inner clip wrapper — clips the image but NOT the pocket */}
+        <div className="catalog-card__cover-img">
+          {showImg ? (
+            <img
+              src={src}
+              alt={`Cover of ${book.title}`}
+              onError={() => setImgFailed(true)}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center top',
+                display: 'block',
+              }}
+            />
+          ) : (
+            /* Fallback: dark-box with centred title text */
+            <div className="catalog-card__cover-title">
+              <span>{book.title}</span>
+            </div>
+          )}
+        </div>
 
+        {/* Pocket is a sibling of the clip wrapper — never clipped */}
+        <DueDatePocket accession={book.accession} />
+      </div>
+
+      {/* ── Text body ── */}
       <div className="catalog-card__body">
         <h3 className="catalog-card__title">{book.title}</h3>
         <p className="catalog-card__author">{book.author}</p>

@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react'
 import { Button } from '../components/Button'
 import { CatalogCard } from '../components/CatalogCard'
 import { ALL_BOOKS, CATEGORIES, AVAILABILITIES, FORMATS } from '../data/books'
+import { useAuth } from '../context/AuthContext'
 
 const PER_PAGE = 12
 
@@ -27,6 +28,7 @@ function IconChevron() {
 /* ── Sub-components ──────────────────────────────────────── */
 
 function CatalogNav() {
+  const { user, logout } = useAuth()
   return (
     <nav className="nav" role="navigation" aria-label="Main navigation">
       <a
@@ -71,13 +73,29 @@ function CatalogNav() {
         ))}
       </ul>
 
-      <Button
-        variant="primary"
-        style={{ fontSize: '0.8125rem', padding: '9px 18px' }}
-        onClick={() => { window.location.hash = '#login' }}
-      >
-        Sign In
-      </Button>
+      {user ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span className="account-nav-user" title={user.name}>
+            <span className="account-nav-avatar">{user.name[0].toUpperCase()}</span>
+            <span className="account-nav-name">{user.name}</span>
+          </span>
+          <button
+            type="button"
+            className="account-nav-signout"
+            onClick={() => { logout(); window.location.hash = '#login' }}
+          >
+            Sign Out
+          </button>
+        </div>
+      ) : (
+        <Button
+          variant="primary"
+          style={{ fontSize: '0.8125rem', padding: '9px 18px' }}
+          onClick={() => { window.location.hash = '#login' }}
+        >
+          Sign In
+        </Button>
+      )}
     </nav>
   )
 }

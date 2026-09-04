@@ -692,6 +692,8 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
+  /* align-items: start keeps rows independent — no row stretching */
+  align-items: start;
 }
 
 /* ── Catalog card ────────────────────────────────────────── */
@@ -699,11 +701,14 @@ body {
   border: 1px solid rgba(30, 61, 50, 0.10);
   border-radius: 4px;
   background-color: var(--color-paper);
+  /* overflow:visible lets the DueDatePocket peek below the cover */
   overflow: visible;
   cursor: pointer;
   transition: border-color 140ms ease;
   display: flex;
   flex-direction: column;
+  /* width is fully governed by the grid — never shrink below 0 */
+  min-width: 0;
 }
 
 .catalog-card:hover {
@@ -713,10 +718,24 @@ body {
 .catalog-card__cover {
   position: relative;
   width: 100%;
-  height: 200px;
   border-radius: 3px 3px 0 0;
+  /* overflow:visible is required so DueDatePocket (bottom:-1px)
+     can peek below the cover edge into the card body area */
   overflow: visible;
-  /* line texture */
+  flex-shrink: 0;
+}
+
+/* Inner wrapper that clips the <img> to a 2:3 aspect ratio
+   without clipping the DueDatePocket (which is a sibling). */
+.catalog-card__cover-img {
+  position: relative;
+  width: 100%;
+  /* 2:3 = standard book cover proportion.
+     Every card cover is the same height regardless of image dimensions. */
+  aspect-ratio: 2 / 3;
+  border-radius: 3px 3px 0 0;
+  overflow: hidden;
+  /* lined texture — visible only for the fallback placeholder */
   background-image: repeating-linear-gradient(
     0deg,
     rgba(0,0,0,0.04) 0px,
@@ -724,6 +743,8 @@ body {
     transparent 1px,
     transparent 10px
   );
+  /* Inherit the spine background colour from the parent cover div */
+  background-color: inherit;
 }
 
 .catalog-card__cover-title {
@@ -2331,4 +2352,199 @@ body {
 .text-oxblood {
   color: var(--color-oxblood) !important;
 }
+
+/* ── Admin Panel Styles ─────────────────────────────────── */
+.admin-panel {
+  font-size: 14px; /* base font size 14px not 16px */
+  color: var(--color-charcoal);
+  min-height: 100vh;
+  display: flex;
+  background-color: var(--color-paper);
+}
+
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 240px;
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px 0 24px 0;
+  border-right: var(--border-elevation);
+  box-sizing: border-box;
+  z-index: 100;
+}
+
+.admin-sidebar__top {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.admin-sidebar__logo {
+  padding: 0 24px;
+}
+
+.admin-sidebar__logo-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-paper);
+  display: block;
+}
+
+.admin-sidebar__logo-admin {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--color-ochre);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 4px;
+}
+
+.admin-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-sidebar__nav-link {
+  display: block;
+  padding: 10px 24px;
+  color: rgba(250, 247, 240, 0.7); /* paper-at-70%-opacity */
+  text-decoration: none;
+  font-size: 0.875rem;
+  border-left: 3px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.admin-sidebar__nav-link:hover {
+  color: var(--color-paper);
+}
+
+.admin-sidebar__nav-link--active {
+  color: var(--color-paper);
+  font-weight: 600;
+  border-left-color: var(--color-ochre);
+  background-color: rgba(250, 247, 240, 0.04);
+}
+
+.admin-sidebar__bottom {
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid rgba(250, 247, 240, 0.1);
+  padding-top: 16px;
+}
+
+.admin-sidebar__user-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-paper);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-sidebar__logout {
+  font-size: 0.75rem;
+  color: var(--color-ochre);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  display: inline-block;
+  width: fit-content;
+}
+
+.admin-sidebar__logout:hover {
+  color: var(--color-paper);
+}
+
+.admin-main {
+  margin-left: 240px;
+  flex-grow: 1;
+  background-color: var(--color-paper);
+  min-height: 100vh;
+  padding: 32px 48px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  border-bottom: 1px solid rgba(30, 61, 50, 0.08);
+  padding-bottom: 20px;
+}
+
+.admin-header__title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-charcoal);
+  margin: 0;
+}
+
+/* Table rules: row height 40px, no excessive spacing */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.admin-table th {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-charcoal-60);
+  text-align: left;
+  border-bottom: 1px solid rgba(30, 61, 50, 0.12);
+  padding: 8px 12px;
+}
+
+.admin-table tr {
+  height: 40px; /* table rows 40px tall */
+}
+
+.admin-table td {
+  border-bottom: 1px solid rgba(30, 61, 50, 0.06);
+  padding: 4px 12px;
+  vertical-align: middle;
+}
+
+.admin-table tr:hover td {
+  background-color: rgba(30, 61, 50, 0.02);
+}
+
+/* Dashboard stat row */
+.admin-stats-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+/* Working tool style, no shadows or decorative spacing */
+.admin-panel .account-stat-chip {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(30, 61, 50, 0.12);
+  border-radius: 4px;
+  box-shadow: none; /* no shadows */
+  margin: 0;
+}
+
 
