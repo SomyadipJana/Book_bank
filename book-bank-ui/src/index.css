@@ -1313,12 +1313,11 @@ body {
 .auth-left {
   background-color: var(--color-ink);
   color: var(--color-paper);
-  padding: 40px 32px 60px;
+  padding: 32px 0 0;            /* no horizontal padding — shelf edge-to-edge */
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   min-height: 280px;
 }
 
@@ -1328,6 +1327,7 @@ body {
   gap: 2px;
   position: relative;
   z-index: 2;
+  padding: 0 32px;          /* restore horizontal padding for text */
 }
 
 .auth-left__logo-name {
@@ -1346,10 +1346,26 @@ body {
   color: rgba(250, 247, 240, 0.6);
 }
 
+.auth-left__shelf {
+  flex: 1;                  /* take all remaining height between logo and quote */
+  min-height: 200px;
+  position: relative;
+  z-index: 1;
+  /* Tint the shelf to better harmonize with ink background */
+  filter: brightness(0.9) saturate(0.85);
+}
+
 .auth-left__body {
-  margin: 48px 0;
+  padding: 28px 32px 36px;  /* restore horizontal padding, tighter top */
   position: relative;
   z-index: 2;
+  background: linear-gradient(
+    180deg,
+    rgba(30, 61, 50, 0.0) 0%,
+    rgba(30, 61, 50, 0.6) 30%,
+    var(--color-ink) 100%
+  );
+  margin-top: -60px;        /* bleed up over shelf bottom edge */
 }
 
 .auth-left__quote {
@@ -1371,25 +1387,7 @@ body {
   font-style: normal;
 }
 
-/* Fanned book silhouettes */
-.auth-fan {
-  position: absolute;
-  bottom: -30px;
-  left: 0;
-  right: 0;
-  height: 220px;
-  pointer-events: none;
-  overflow: hidden;
-}
 
-.auth-fan__book {
-  position: absolute;
-  bottom: 0;
-  background-color: var(--color-paper);
-  border-radius: 4px 4px 0 0;
-  transform-origin: bottom center;
-  transition: transform 300ms ease;
-}
 
 /* ── Right paper panel (55% on desktop) ──────────────────── */
 .auth-right {

@@ -1,36 +1,7 @@
 import React, { useState } from 'react'
 import { Button } from '../components/Button'
 import { useAuth } from '../context/AuthContext'
-
-/* ── Left-panel fanned book silhouettes ──────────────────── */
-
-const FAN_BOOKS = [
-  { rotate: -24, left: '8%',  w: 70,  h: 178, opacity: 0.07 },
-  { rotate: -12, left: '22%', w: 82,  h: 205, opacity: 0.10 },
-  { rotate:   0, left: '36%', w: 90,  h: 222, opacity: 0.12 },
-  { rotate:  12, left: '50%', w: 82,  h: 205, opacity: 0.10 },
-  { rotate:  24, left: '62%', w: 70,  h: 178, opacity: 0.07 },
-]
-
-function BookFan() {
-  return (
-    <div className="auth-fan" aria-hidden="true">
-      {FAN_BOOKS.map((b, i) => (
-        <div
-          key={i}
-          className="auth-fan__book"
-          style={{
-            left:      b.left,
-            width:     b.w,
-            height:    b.h,
-            transform: `rotate(${b.rotate}deg)`,
-            opacity:   b.opacity,
-          }}
-        />
-      ))}
-    </div>
-  )
-}
+import { Shelf } from '../components/Shelf'
 
 /* ── Icons ───────────────────────────────────────────────── */
 
@@ -235,6 +206,11 @@ export default function AuthPage({ mode = 'login' }) {
           <span className="auth-left__logo-sub">Management System</span>
         </div>
 
+        {/* Interactive bookshelf fills the gap */}
+        <div className="auth-left__shelf">
+          <Shelf idleLabel="Hover a book" />
+        </div>
+
         {/* Quote */}
         <div className="auth-left__body">
           <blockquote className="auth-left__quote">
@@ -242,9 +218,6 @@ export default function AuthPage({ mode = 'login' }) {
           </blockquote>
           <cite className="auth-left__cite">— The Book Bank</cite>
         </div>
-
-        {/* Fanned silhouettes at bottom */}
-        <BookFan />
       </aside>
 
       {/* ── Right — form panel ── */}
