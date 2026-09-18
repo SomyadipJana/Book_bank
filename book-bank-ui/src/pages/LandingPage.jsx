@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button } from '../components/Button'
 import { DueDatePocket } from '../components/DueDatePocket'
 import { useAuth } from '../context/AuthContext'
+import { Shelf } from '../components/Shelf'
 
 /* ── Data ────────────────────────────────────────────────── */
 
@@ -473,6 +474,32 @@ function HowItWorks() {
   )
 }
 
+/* ── Dark Hero Shelf Banner ─────────────────────────────── */
+function DarkHeroShelf() {
+  return (
+    <section className="dark-hero">
+      {/* Wordmark — mirrors the nav branding */}
+      <div className="dark-hero__wordmark">
+        <span className="dark-hero__wordmark-name">Book Bank</span>
+        <span className="dark-hero__wordmark-sub">Management System</span>
+      </div>
+
+      {/* Interactive bookshelf */}
+      <div className="dark-hero__shelf-wrap">
+        <Shelf idleLabel="Hover a book to explore" />
+      </div>
+
+      {/* Quote */}
+      <div className="dark-hero__quote">
+        <p className="dark-hero__quote-text">
+          Every borrowed page is a world returned.
+        </p>
+        <p className="dark-hero__quote-attr">— The Book Bank</p>
+      </div>
+    </section>
+  )
+}
+
 function Footer() {
   const year = new Date().getFullYear()
   return (
@@ -538,6 +565,7 @@ export default function LandingPage() {
     <div style={{ backgroundColor: 'var(--color-paper)' }}>
       <Nav />
       <Hero />
+      <DarkHeroShelf />
       <StatsStrip />
       <NewArrivals />
       <HowItWorks />
