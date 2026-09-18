@@ -2547,4 +2547,145 @@ body {
   margin: 0;
 }
 
+/* ── Admin Stat Chips (new design) ──────────────────────────── */
+.admin-stat-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 20px;
+  background-color: #ffffff;
+  border: 1px solid rgba(30, 61, 50, 0.10);
+  border-radius: 4px;
+  min-width: 140px;
+}
+
+.admin-stat-chip__value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-ink);
+}
+
+.admin-stat-chip__label {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-charcoal-60);
+}
+
+/* ── Admin Section Title ───────────────────────────────────── */
+.admin-section-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-charcoal);
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+
+/* ── Admin Status Badges ───────────────────────────────────── */
+.admin-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.admin-badge--avail {
+  background-color: rgba(30, 61, 50, 0.10);
+  color: var(--color-ink);
+}
+
+.admin-badge--loan {
+  background-color: rgba(198, 138, 46, 0.12);
+  color: #8B5C00;
+}
+
+.admin-badge--overdue {
+  background-color: rgba(122, 46, 39, 0.10);
+  color: var(--color-oxblood);
+}
+
+.admin-badge--muted {
+  background-color: rgba(43, 38, 32, 0.07);
+  color: var(--color-charcoal-60);
+}
+
+/* ── Admin Action Buttons (inline, text-style) ─────────────── */
+.admin-action-btn {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border: 1px solid rgba(30, 61, 50, 0.20);
+  border-radius: 3px;
+  background: none;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+  white-space: nowrap;
+}
+
+.admin-action-btn:hover {
+  background-color: rgba(30, 61, 50, 0.06);
+}
+
+.admin-action-btn--danger {
+  border-color: rgba(122, 46, 39, 0.25);
+  color: var(--color-oxblood);
+}
+
+.admin-action-btn--danger:hover {
+  background-color: rgba(122, 46, 39, 0.06);
+}
+
+/* ── Admin Search Input ────────────────────────────────────── */
+.admin-search {
+  padding: 8px 12px;
+  border: 1px solid rgba(30, 61, 50, 0.18);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--color-charcoal);
+  background-color: #ffffff;
+  outline: none;
+  transition: border-color 140ms ease;
+}
+
+.admin-search:focus {
+  border-color: var(--color-ochre);
+}
+
+/* ── Admin Select ──────────────────────────────────────────── */
+.admin-select {
+  padding: 8px 10px;
+  border: 1px solid rgba(30, 61, 50, 0.18);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--color-charcoal);
+  background-color: #ffffff;
+  outline: none;
+  cursor: pointer;
+}
+
+/* ── Admin Field Label ─────────────────────────────────────── */
+.admin-field-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-charcoal-60);
+  margin-bottom: 6px;
+}
 
