@@ -2379,6 +2379,7 @@ body {
   border-right: var(--border-elevation);
   box-sizing: border-box;
   z-index: 100;
+  overflow-y: auto;
 }
 
 .admin-sidebar__top {
@@ -2470,6 +2471,31 @@ body {
 
 .admin-sidebar__logout:hover {
   color: var(--color-paper);
+}
+
+.admin-sidebar__logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: rgba(250, 247, 240, 0.08);
+  border: 1px solid rgba(250, 247, 240, 0.15);
+  color: var(--color-paper);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.admin-sidebar__logout-btn:hover {
+  background-color: rgba(122, 46, 39, 0.35);
+  border-color: rgba(122, 46, 39, 0.55);
+  color: #ffb4ac;
 }
 
 .admin-main {

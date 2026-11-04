@@ -127,8 +127,39 @@ export default function AdminPage({ currentTab = 'dashboard' }) {
 
         {/* User + logout */}
         <div className="admin-sidebar__bottom">
-          <span className="admin-sidebar__user-name" title={user.name}>{user.name}</span>
-          <button onClick={handleLogout} className="admin-sidebar__logout">Log out</button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+            <span
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: '50%',
+                backgroundColor: 'rgba(250, 247, 240, 0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.8125rem',
+                fontWeight: 700,
+                color: 'var(--color-paper)',
+                flexShrink: 0,
+              }}
+            >
+              {user?.name ? user.name[0].toUpperCase() : 'L'}
+            </span>
+            <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+              <span className="admin-sidebar__user-name" title={user?.name}>{user?.name || 'Librarian'}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem', color: 'var(--color-ochre)', letterSpacing: '0.08em' }}>
+                LIBRARIAN
+              </span>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="admin-sidebar__logout-btn"
+            title="Sign out of Admin Panel"
+          >
+            Sign Out
+          </button>
         </div>
       </aside>
 
@@ -138,15 +169,78 @@ export default function AdminPage({ currentTab = 'dashboard' }) {
         {/* Page header */}
         <header className="admin-header">
           <h1 className="admin-header__title">{activeNav.label}</h1>
-          {activeNav.action && (
-            <Button
-              variant="ochre"
-              onClick={handleHeaderAction}
-              style={{ fontSize: '0.8125rem', padding: '9px 18px' }}
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            {activeNav.action && (
+              <Button
+                variant="ochre"
+                onClick={handleHeaderAction}
+                style={{ fontSize: '0.8125rem', padding: '9px 18px' }}
+              >
+                {activeNav.action}
+              </Button>
+            )}
+
+            <a
+              href="#catalog"
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.75rem',
+                letterSpacing: '0.04em',
+                color: 'var(--color-charcoal-60)',
+                textDecoration: 'none',
+                padding: '7px 12px',
+                borderRadius: '4px',
+                border: '1px solid rgba(30,61,50,0.15)',
+                backgroundColor: '#ffffff',
+                whiteSpace: 'nowrap',
+              }}
+              title="View the public catalogue"
             >
-              {activeNav.action}
-            </Button>
-          )}
+              Public Catalogue ↗
+            </a>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingLeft: '10px', borderLeft: '1px solid rgba(30,61,50,0.12)' }}>
+              <span className="account-nav-user" title={user?.name}>
+                <span className="account-nav-avatar">{user?.name ? user.name[0].toUpperCase() : 'L'}</span>
+                <span className="account-nav-name" style={{ fontWeight: 600 }}>{user?.name || 'Librarian'}</span>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.625rem',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    padding: '2px 6px',
+                    borderRadius: '3px',
+                    backgroundColor: 'rgba(198, 138, 46, 0.15)',
+                    color: 'var(--color-ochre)',
+                    border: '1px solid rgba(198, 138, 46, 0.35)',
+                    fontWeight: 600,
+                  }}
+                >
+                  Librarian
+                </span>
+              </span>
+
+              <button
+                type="button"
+                className="account-nav-signout"
+                onClick={handleLogout}
+                style={{
+                  padding: '7px 14px',
+                  borderRadius: '4px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid rgba(122, 46, 39, 0.3)',
+                  color: 'var(--color-oxblood)',
+                  fontWeight: 600,
+                  fontSize: '0.75rem',
+                }}
+                title="Sign out of Book Bank"
+              >
+                Sign Out
+              </button>
+            </div>
+          </div>
         </header>
 
         {/* Page body */}
