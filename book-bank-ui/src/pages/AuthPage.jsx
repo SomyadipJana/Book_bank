@@ -1,36 +1,8 @@
 import React, { useState } from 'react'
 import { Button } from '../components/Button'
 import { useAuth } from '../context/AuthContext'
-
-/* ── Left-panel fanned book silhouettes ──────────────────── */
-
-const FAN_BOOKS = [
-  { rotate: -24, left: '8%',  w: 70,  h: 178, opacity: 0.07 },
-  { rotate: -12, left: '22%', w: 82,  h: 205, opacity: 0.10 },
-  { rotate:   0, left: '36%', w: 90,  h: 222, opacity: 0.12 },
-  { rotate:  12, left: '50%', w: 82,  h: 205, opacity: 0.10 },
-  { rotate:  24, left: '62%', w: 70,  h: 178, opacity: 0.07 },
-]
-
-function BookFan() {
-  return (
-    <div className="auth-fan" aria-hidden="true">
-      {FAN_BOOKS.map((b, i) => (
-        <div
-          key={i}
-          className="auth-fan__book"
-          style={{
-            left:      b.left,
-            width:     b.w,
-            height:    b.h,
-            transform: `rotate(${b.rotate}deg)`,
-            opacity:   b.opacity,
-          }}
-        />
-      ))}
-    </div>
-  )
-}
+import { Shelf } from '../components/Shelf'
+import { useLibraryStore } from '../data/libraryStore'
 
 /* ── Icons ───────────────────────────────────────────────── */
 
@@ -100,9 +72,9 @@ function LoginForm({ onSwitch }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!email) return
-    const loggedUser = login(email, password, '') // name comes from stored session or email prefix
+    const loggedUser = login(email, password, '')
     if (loggedUser.role === 'librarian') {
-      window.location.hash = '#admin/dashboard'
+      window.location.hash = '#admin'
     } else {
       window.location.hash = '#catalog'
     }
@@ -150,37 +122,89 @@ function LoginForm({ onSwitch }) {
 function RegisterForm({ onSwitch }) {
   const [name,      setName]      = useState('')
   const [studentId, setStudentId] = useState('')
+  const [dept,      setDept]      = useState('Computer Science')
   const [email,     setEmail]     = useState('')
   const [password,  setPassword]  = useState('')
   const [confirm,   setConfirm]   = useState('')
-  const { login } = useAuth()
+  const [error,     setError]     = useState(null)
+  const { register } = useAuth()
+  const { registerMember } = useLibraryStore()
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!email || !name) return
-    // Pass the user's typed name so it's stored in the session
-    const loggedUser = login(email, password, name)
-    if (loggedUser.role === 'librarian') {
-      window.location.hash = '#admin/dashboard'
-    } else {
+    setError(null)
+    if (!email || !name) {
+      setError('Please provide your name and email address.')
+      return
+    }
+    if (password && confirm && password !== confirm) {
+      setError('Passwords do not match.')
+      return
+    }
+    const cleanSid = studentId.trim() || `STU-${String(Math.floor(100 + Math.random() * 900))}`
+
+    try {
+      // 1. Register member in the shared library store (rejects duplicates)
+      registerMember({
+        name,
+        email,
+        studentId: cleanSid,
+        dept,
+      })
+
+      // 2. Set active user in auth session
+      register(name, email, password, cleanSid, dept)
       window.location.hash = '#catalog'
+    } catch (err) {
+      setError(err.message)
     }
   }
 
   return (
     <form className="auth-form" onSubmit={handleSubmit} noValidate>
+      {error && (
+        <div style={{
+          padding: '10px 14px',
+          backgroundColor: 'rgba(122, 46, 39, 0.1)',
+          border: '1px solid var(--color-oxblood)',
+          color: 'var(--color-oxblood)',
+          borderRadius: 4,
+          fontSize: '0.8125rem',
+          lineHeight: 1.4,
+          marginBottom: 12,
+        }}>
+          {error}
+        </div>
+      )}
+
       <Field
-        id="reg-name" label="Full name"
+        id="reg-name" label="Full name *"
         value={name} onChange={setName}
         placeholder="Jane Smith" autoComplete="name"
       />
       <Field
-        id="reg-sid" label="Student / Staff ID"
+        id="reg-sid" label="Student ID *"
         value={studentId} onChange={setStudentId}
-        placeholder="S-20240001" autoComplete="off"
+        placeholder="STU-007" autoComplete="off"
       />
+      <div className="auth-field">
+        <label className="auth-label" htmlFor="reg-dept">Department</label>
+        <div className="auth-input-wrap">
+          <select
+            id="reg-dept"
+            className="auth-input"
+            value={dept}
+            onChange={e => setDept(e.target.value)}
+            style={{ width: '100%', padding: '10px 14px', backgroundColor: '#fff', cursor: 'pointer' }}
+          >
+            {['Computer Science', 'Mathematics', 'Engineering', 'Networks', 'Psychology', 'Management', 'Systems & OS', 'General'].map(d => (
+              <option key={d} value={d}>{d}</option>
+            ))}
+          </select>
+        </div>
+      </div>
       <Field
-        id="reg-email" label="University email" type="email"
+        id="reg-email" label="University email *" type="email"
         value={email} onChange={setEmail}
         placeholder="jsmith@university.edu" autoComplete="email"
       />
@@ -235,6 +259,11 @@ export default function AuthPage({ mode = 'login' }) {
           <span className="auth-left__logo-sub">Management System</span>
         </div>
 
+        {/* Interactive bookshelf fills the gap */}
+        <div className="auth-left__shelf">
+          <Shelf idleLabel="Hover a book" />
+        </div>
+
         {/* Quote */}
         <div className="auth-left__body">
           <blockquote className="auth-left__quote">
@@ -242,9 +271,6 @@ export default function AuthPage({ mode = 'login' }) {
           </blockquote>
           <cite className="auth-left__cite">— The Book Bank</cite>
         </div>
-
-        {/* Fanned silhouettes at bottom */}
-        <BookFan />
       </aside>
 
       {/* ── Right — form panel ── */}
