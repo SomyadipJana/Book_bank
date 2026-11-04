@@ -819,7 +819,11 @@ export default function AdminCatalogue({ externalSlideOver, onCloseExternalSlide
                         title={isRetired ? 'Already retired' : 'Retire book from catalogue'}
                         onClick={() => {
                           if (window.confirm(`Retire "${book.title}"? This marks it as Retired.`)) {
-                            retireBook(book.accession)
+                            try {
+                              retireBook(book.accession)
+                            } catch (err) {
+                              alert(err.message)
+                            }
                           }
                         }}
                       >

@@ -1,12 +1,13 @@
 /**
  * AdminMembers.jsx
  * Searchable member directory with student detail panel:
- * - Click row to inspect loans, history, and calculated fines (₹5/day overdue)
- * - Add & edit member support
- * - Connected to shared AdminStore
+ * - Filters: All, Has Overdue, Has Unpaid Fines, Suspended
+ * - Student detail panel: Current loans with due dates, reservations, history, fines, and student activity
+ * - Mark Paid action for unpaid fines
+ * - Active loan warning on suspension
  */
 import React, { useState, useMemo, useEffect } from 'react'
-import { useAdminStore } from '../../data/adminStore.jsx'
+import { useLibraryStore } from '../../data/libraryStore'
 import { Button } from '../../components'
 
 const DEPTS = [
@@ -26,6 +27,7 @@ function MemberForm({ member, onClose, onSave }) {
   const [form, setForm] = useState({
     id: member?.id || `STU-${String(Math.floor(100 + Math.random() * 900))}`,
     name: member?.name || '',
+    email: member?.email || '',
     dept: member?.dept || DEPTS[0],
     status: member?.status || 'active',
   })
@@ -51,6 +53,11 @@ function MemberForm({ member, onClose, onSave }) {
     textTransform: 'uppercase',
     color: 'var(--color-charcoal-60)',
     marginBottom: 5,
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSave(form)
   }
 
   return (
@@ -98,39 +105,48 @@ function MemberForm({ member, onClose, onSave }) {
               fontSize: 20,
               cursor: 'pointer',
               color: 'var(--color-charcoal-60)',
+              lineHeight: 1,
             }}
           >
             ✕
           </button>
         </div>
-        <form
-          onSubmit={e => {
-            e.preventDefault()
-            onSave(form)
-          }}
-          style={{ display: 'flex', flexDirection: 'column', gap: 14 }}
-        >
+
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div>
-            <label style={labelStyle}>Member ID *</label>
+            <label style={labelStyle}>Student / Member ID</label>
             <input
-              style={fieldStyle}
-              required
+              style={{ ...fieldStyle, fontFamily: 'var(--font-mono)' }}
               value={form.id}
+              onChange={e => set('id', e.target.value.toUpperCase())}
               disabled={isEdit}
-              onChange={e => set('id', e.target.value)}
+              required
             />
           </div>
+
           <div>
-            <label style={labelStyle}>Full Name *</label>
+            <label style={labelStyle}>Full Name</label>
             <input
               style={fieldStyle}
-              required
               value={form.name}
               onChange={e => set('name', e.target.value)}
+              required
             />
           </div>
+
           <div>
-            <label style={labelStyle}>Department *</label>
+            <label style={labelStyle}>Email Address</label>
+            <input
+              type="email"
+              style={fieldStyle}
+              value={form.email}
+              onChange={e => set('email', e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label style={labelStyle}>Department</label>
             <select
               style={fieldStyle}
               value={form.dept}
@@ -139,8 +155,9 @@ function MemberForm({ member, onClose, onSave }) {
               {DEPTS.map(d => <option key={d} value={d}>{d}</option>)}
             </select>
           </div>
+
           <div>
-            <label style={labelStyle}>Status</label>
+            <label style={labelStyle}>Account Status</label>
             <select
               style={fieldStyle}
               value={form.status}
@@ -150,9 +167,10 @@ function MemberForm({ member, onClose, onSave }) {
               <option value="suspended">Suspended</option>
             </select>
           </div>
-          <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
+
+          <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
             <Button type="submit" variant="ochre" style={{ flex: 1 }}>
-              {isEdit ? 'Save Changes' : 'Add Member'}
+              {isEdit ? 'Save Changes' : 'Create Member'}
             </Button>
             <Button type="button" variant="secondary" onClick={onClose} style={{ flex: 1 }}>
               Cancel
@@ -164,53 +182,56 @@ function MemberForm({ member, onClose, onSave }) {
   )
 }
 
-/* ── Student Detail Panel ── */
+/* ── Student Detail Slide Panel ── */
 function StudentDetailPanel({ member, onClose }) {
-  const { books, loans, toggleSuspendMember } = useAdminStore()
-  const [tab, setTab] = useState('loans') // 'loans' | 'history' | 'fines'
+  const {
+    today,
+    books,
+    loans,
+    reservations,
+    fines,
+    activityLog,
+    toggleSuspendMember,
+    markFinePaid,
+  } = useLibraryStore()
 
-  // Get active / overdue loans for this student
+  const [tab, setTab] = useState('loans') // 'loans' | 'reservations' | 'history' | 'fines' | 'activity'
+
   const activeLoans = useMemo(() => {
-    return loans.filter(
-      l => l.memberId === member.id && (l.status === 'active' || l.status === 'overdue')
-    )
+    return loans.filter(l => l.memberId === member.id && l.status === 'active')
   }, [loans, member.id])
 
-  // Get returned history
   const historyLoans = useMemo(() => {
     return loans.filter(l => l.memberId === member.id && l.status === 'returned')
   }, [loans, member.id])
 
-  // Calculate overdue fines (₹5 per day overdue)
-  const overdueBreakdown = useMemo(() => {
-    const today = new Date()
-    return activeLoans
-      .filter(l => {
-        const dueDate = new Date(l.dueDate)
-        return l.status === 'overdue' || dueDate < today
-      })
-      .map(l => {
-        const due = new Date(l.dueDate)
-        const days = Math.max(1, Math.floor((today - due) / 86400000))
-        const fineAmount = days * 5
-        const book = books.find(b => b.accession === l.accession)
-        return {
-          loanId: l.id,
-          title: book?.title || l.accession,
-          accession: l.accession,
-          dueDate: l.dueDate,
-          daysOverdue: days,
-          fineAmount,
-        }
-      })
-  }, [activeLoans, books])
+  const memberReservations = useMemo(() => {
+    return reservations.filter(r => r.memberId === member.id && (r.status === 'ready' || r.status === 'waiting'))
+  }, [reservations, member.id])
 
-  const calculatedFinesTotal = overdueBreakdown.reduce((sum, item) => sum + item.fineAmount, 0)
-  const totalFinesDue = Math.max(calculatedFinesTotal, member.fines || 0)
+  const memberFines = useMemo(() => {
+    return fines.filter(f => f.memberId === member.id)
+  }, [fines, member.id])
+
+  const memberActivity = useMemo(() => {
+    return activityLog.filter(a => a.memberId === member.id)
+  }, [activityLog, member.id])
+
+  // Overdue breakdown with live accrued fine
+  const overdueLoans = activeLoans.filter(l => l.isOverdue)
+  const totalFinesDue = member.totalFinesDue ?? 0
+
+  const handleToggleSuspend = () => {
+    if (member.status === 'active' && activeLoans.length > 0) {
+      if (!window.confirm(`Warning: ${member.name} currently holds ${activeLoans.length} active loan(s). Are you sure you want to suspend this account?`)) {
+        return
+      }
+    }
+    toggleSuspendMember(member.id, 'Librarian')
+  }
 
   return (
     <>
-      {/* Backdrop */}
       <div
         onClick={onClose}
         style={{
@@ -221,14 +242,13 @@ function StudentDetailPanel({ member, onClose }) {
         }}
       />
 
-      {/* Slide Panel */}
       <div className="member-detail-panel">
         {/* Top bar */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
               <span className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>
-                {member.id}
+                {member.studentId || member.id}
               </span>
               <span className={`admin-badge admin-badge--${member.status === 'active' ? 'avail' : 'overdue'}`}>
                 {member.status}
@@ -247,7 +267,7 @@ function StudentDetailPanel({ member, onClose }) {
               {member.name}
             </h2>
             <div style={{ fontSize: '0.85rem', color: 'var(--color-charcoal-60)', marginTop: 4 }}>
-              Department of {member.dept}
+              Department of {member.dept} · {member.email}
             </div>
           </div>
           <button
@@ -275,21 +295,23 @@ function StudentDetailPanel({ member, onClose }) {
               padding: '6px 14px',
               color: member.status === 'active' ? 'var(--color-oxblood)' : 'var(--color-ink)',
             }}
-            onClick={() => toggleSuspendMember(member.id)}
+            onClick={handleToggleSuspend}
           >
             {member.status === 'active' ? 'Suspend Account' : 'Reactivate Account'}
           </Button>
           <span style={{ fontSize: '0.75rem', color: 'var(--color-charcoal-60)', fontFamily: 'var(--font-mono)' }}>
-            Active loans: {activeLoans.length}
+            Active loans: {activeLoans.length} · Overdue: {overdueLoans.length}
           </span>
         </div>
 
         {/* Tabs */}
-        <div style={{ display: 'flex', borderBottom: '1px solid rgba(30,61,50,0.12)', gap: 16 }}>
+        <div style={{ display: 'flex', borderBottom: '1px solid rgba(30,61,50,0.12)', gap: 14, overflowX: 'auto' }}>
           {[
-            { id: 'loans', label: `Current Loans (${activeLoans.length})` },
+            { id: 'loans', label: `Loans (${activeLoans.length})` },
+            { id: 'reservations', label: `Reservations (${memberReservations.length})` },
             { id: 'history', label: `History (${historyLoans.length})` },
-            { id: 'fines', label: `Fines (${totalFinesDue > 0 ? `₹${totalFinesDue}` : '₹0'})` },
+            { id: 'fines', label: `Fines (${totalFinesDue > 0 ? `₹${totalFinesDue.toFixed(2)}` : '₹0'})` },
+            { id: 'activity', label: `Activity (${memberActivity.length})` },
           ].map(t => (
             <button
               key={t.id}
@@ -304,6 +326,7 @@ function StudentDetailPanel({ member, onClose }) {
                 fontWeight: tab === t.id ? 700 : 500,
                 color: tab === t.id ? 'var(--color-ink)' : 'var(--color-charcoal-60)',
                 borderBottom: tab === t.id ? '2px solid var(--color-ochre)' : '2px solid transparent',
+                whiteSpace: 'nowrap',
               }}
             >
               {t.label}
@@ -323,46 +346,77 @@ function StudentDetailPanel({ member, onClose }) {
                 <thead>
                   <tr>
                     <th>Book</th>
-                    <th>Issued</th>
                     <th>Due</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {activeLoans.map(l => {
-                    const book = books.find(b => b.accession === l.accession)
-                    const isOverdue = l.status === 'overdue' || new Date(l.dueDate) < new Date()
-                    return (
-                      <tr key={l.id}>
-                        <td>
-                          <div style={{ fontWeight: 500, fontSize: '0.8125rem' }}>
-                            {book?.title || l.accession}
-                          </div>
-                          <div className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>
-                            {l.accession}
-                          </div>
-                        </td>
-                        <td style={{ fontSize: '0.75rem', whiteSpace: 'nowrap' }}>{l.issuedDate}</td>
-                        <td
-                          style={{
-                            fontSize: '0.75rem',
-                            whiteSpace: 'nowrap',
-                            color: isOverdue ? 'var(--color-oxblood)' : 'inherit',
-                            fontWeight: isOverdue ? 600 : 400,
-                          }}
-                        >
-                          {l.dueDate}
-                        </td>
-                        <td>
-                          {isOverdue ? (
-                            <span className="admin-badge admin-badge--overdue">Overdue</span>
-                          ) : (
-                            <span className="admin-badge admin-badge--avail">Active</span>
-                          )}
-                        </td>
-                      </tr>
-                    )
-                  })}
+                  {activeLoans.map(l => (
+                    <tr key={l.id}>
+                      <td>
+                        <div style={{ fontWeight: 500, fontSize: '0.8125rem' }}>{l.bookTitle}</div>
+                        <div className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{l.accession}</div>
+                      </td>
+                      <td
+                        style={{
+                          fontSize: '0.75rem',
+                          whiteSpace: 'nowrap',
+                          color: l.isOverdue ? 'var(--color-oxblood)' : 'inherit',
+                          fontWeight: l.isOverdue ? 600 : 400,
+                        }}
+                      >
+                        {l.dueDate}
+                      </td>
+                      <td>
+                        {l.isOverdue ? (
+                          <span className="admin-badge admin-badge--overdue">Overdue (+{l.daysLate}d)</span>
+                        ) : (
+                          <span className="admin-badge admin-badge--avail">{l.daysLeft}d left</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+
+        {/* ── Tab Content: Reservations ── */}
+        {tab === 'reservations' && (
+          <div>
+            {memberReservations.length === 0 ? (
+              <div style={{ padding: '24px 0', textAlign: 'center', color: 'var(--color-charcoal-60)', fontSize: '0.85rem' }}>
+                No active reservations or waitlists.
+              </div>
+            ) : (
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Book</th>
+                    <th>Status</th>
+                    <th>Hold / Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {memberReservations.map(r => (
+                    <tr key={r.id}>
+                      <td>
+                        <div style={{ fontWeight: 500, fontSize: '0.8125rem' }}>{r.bookTitle}</div>
+                        <div className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{r.accession}</div>
+                      </td>
+                      <td>
+                        {r.status === 'ready' ? (
+                          <span className="admin-badge admin-badge--avail">Ready for pickup</span>
+                        ) : (
+                          <span className="admin-badge admin-badge--loan">Waitlist #{r.queuePosition}</span>
+                        )}
+                      </td>
+                      <td style={{ fontSize: '0.75rem' }}>
+                        {r.status === 'ready' ? `Hold expires ${r.holdExpiresAt}` : 'Queued for next return'}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             )}
@@ -386,25 +440,18 @@ function StudentDetailPanel({ member, onClose }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {historyLoans.map(l => {
-                    const book = books.find(b => b.accession === l.accession)
-                    return (
-                      <tr key={l.id}>
-                        <td>
-                          <div style={{ fontWeight: 500, fontSize: '0.8125rem' }}>
-                            {book?.title || l.accession}
-                          </div>
-                          <div className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>
-                            {l.accession}
-                          </div>
-                        </td>
-                        <td style={{ fontSize: '0.75rem', whiteSpace: 'nowrap' }}>{l.issuedDate}</td>
-                        <td style={{ fontSize: '0.75rem', whiteSpace: 'nowrap', color: 'var(--color-ink)' }}>
-                          {l.returnedDate || 'Returned'}
-                        </td>
-                      </tr>
-                    )
-                  })}
+                  {historyLoans.map(l => (
+                    <tr key={l.id}>
+                      <td>
+                        <div style={{ fontWeight: 500, fontSize: '0.8125rem' }}>{l.bookTitle}</div>
+                        <div className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{l.accession}</div>
+                      </td>
+                      <td style={{ fontSize: '0.75rem', whiteSpace: 'nowrap' }}>{l.issuedDate}</td>
+                      <td style={{ fontSize: '0.75rem', whiteSpace: 'nowrap', color: 'var(--color-ink)' }}>
+                        {l.returnedDate || 'Returned'}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             )}
@@ -441,37 +488,84 @@ function StudentDetailPanel({ member, onClose }) {
               </div>
             </div>
 
+            {/* Overdue live fines */}
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '0.95rem', margin: '8px 0 0', fontWeight: 600 }}>
-              Overdue Fine Breakdown
+              Accruing Overdue Penalties
             </h3>
-
-            {overdueBreakdown.length === 0 ? (
-              <div style={{ padding: '16px 0', color: 'var(--color-charcoal-60)', fontSize: '0.85rem' }}>
-                No active overdue penalties incurred.
-              </div>
+            {overdueLoans.length === 0 ? (
+              <div style={{ fontSize: '0.8rem', color: 'var(--color-charcoal-60)' }}>No items currently overdue.</div>
             ) : (
               <table className="admin-table">
                 <thead>
                   <tr>
                     <th>Item</th>
                     <th>Due Date</th>
-                    <th>Days Late</th>
-                    <th>Fine (₹5/day)</th>
+                    <th>Late</th>
+                    <th>Accrued</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {overdueBreakdown.map(o => (
-                    <tr key={o.loanId}>
+                  {overdueLoans.map(l => (
+                    <tr key={l.id}>
                       <td>
-                        <div style={{ fontWeight: 500, fontSize: '0.8125rem' }}>{o.title}</div>
-                        <div className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{o.accession}</div>
+                        <div style={{ fontWeight: 500, fontSize: '0.8125rem' }}>{l.bookTitle}</div>
+                        <div className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{l.accession}</div>
                       </td>
-                      <td style={{ fontSize: '0.75rem', color: 'var(--color-oxblood)' }}>{o.dueDate}</td>
-                      <td style={{ textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>
-                        {o.daysOverdue}d
-                      </td>
+                      <td style={{ fontSize: '0.75rem', color: 'var(--color-oxblood)' }}>{l.dueDate}</td>
+                      <td style={{ fontSize: '0.8rem', fontFamily: 'var(--font-mono)' }}>+{l.daysLate}d</td>
                       <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--color-oxblood)' }}>
-                        ₹{o.fineAmount.toFixed(2)}
+                        ₹{l.accruedFine.toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            {/* Invoiced Fixed Fines with Mark Paid */}
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '0.95rem', margin: '14px 0 0', fontWeight: 600 }}>
+              Fixed Fine Invoices
+            </h3>
+            {memberFines.length === 0 ? (
+              <div style={{ fontSize: '0.8rem', color: 'var(--color-charcoal-60)' }}>No invoice records.</div>
+            ) : (
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Invoice / Reason</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {memberFines.map(f => (
+                    <tr key={f.id}>
+                      <td>
+                        <div style={{ fontWeight: 500, fontSize: '0.8125rem' }}>{f.reason}</div>
+                        <div className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{f.id} · {f.dateIncurred}</div>
+                      </td>
+                      <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                        ₹{Number(f.amount).toFixed(2)}
+                      </td>
+                      <td>
+                        <span className={`admin-badge admin-badge--${f.status === 'paid' ? 'avail' : 'overdue'}`}>
+                          {f.status === 'paid' ? 'Paid' : 'Unpaid'}
+                        </span>
+                      </td>
+                      <td>
+                        {f.status === 'unpaid' ? (
+                          <button
+                            className="admin-action-btn"
+                            style={{ color: 'var(--color-ochre)', borderColor: 'var(--color-ochre)' }}
+                            onClick={() => markFinePaid(f.id, 'Librarian')}
+                            title="Mark this fine as settled / paid"
+                          >
+                            Mark Paid
+                          </button>
+                        ) : (
+                          <span style={{ fontSize: '0.75rem', color: 'var(--color-charcoal-60)' }}>Settled</span>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -480,6 +574,37 @@ function StudentDetailPanel({ member, onClose }) {
             )}
           </div>
         )}
+
+        {/* ── Tab Content: Activity ── */}
+        {tab === 'activity' && (
+          <div>
+            {memberActivity.length === 0 ? (
+              <div style={{ padding: '24px 0', textAlign: 'center', color: 'var(--color-charcoal-60)', fontSize: '0.85rem' }}>
+                No recent activity for this member.
+              </div>
+            ) : (
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {memberActivity.map(act => (
+                  <li key={act.id} style={{ fontSize: '0.8rem', paddingBottom: 8, borderBottom: '1px solid rgba(30,61,50,0.08)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, color: 'var(--color-ink)' }}>
+                        {act.action?.replace(/_/g, ' ').toUpperCase()}
+                      </span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--color-charcoal-60)' }}>
+                        {act.timestamp?.includes('T') ? act.timestamp.replace('T', ' ').slice(0, 16) : act.timestamp}
+                      </span>
+                    </div>
+                    <div>{act.description}</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--color-charcoal-60)', marginTop: 2 }}>
+                      Actor: {act.actor}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+
       </div>
     </>
   )
@@ -487,12 +612,12 @@ function StudentDetailPanel({ member, onClose }) {
 
 /* ── Main Members Component ── */
 export default function AdminMembers({ onAdd }) {
-  const { members, addMember, updateMember } = useAdminStore()
+  const { members, registerMember, toggleSuspendMember } = useLibraryStore()
   const [search, setSearch] = useState('')
+  const [filterType, setFilterType] = useState('all') // 'all' | 'overdue' | 'fines' | 'suspended'
   const [selectedMember, setSelectedMember] = useState(null)
   const [formSlideOver, setFormSlideOver] = useState(null) // null | 'add' | member object
 
-  // Expose "+ Add Member" action to parent header button if provided
   useEffect(() => {
     if (onAdd) {
       onAdd(() => setFormSlideOver('add'))
@@ -501,26 +626,41 @@ export default function AdminMembers({ onAdd }) {
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase()
-    return q
-      ? members.filter(
-          m =>
-            m.name.toLowerCase().includes(q) ||
-            m.id.toLowerCase().includes(q) ||
-            m.dept.toLowerCase().includes(q)
+    return members
+      .filter(m => {
+        if (filterType === 'overdue') return m.overdueCount > 0
+        if (filterType === 'fines') return m.totalFinesDue > 0
+        if (filterType === 'suspended') return m.status === 'suspended'
+        return true
+      })
+      .filter(m => {
+        if (!q) return true
+        return (
+          m.name.toLowerCase().includes(q) ||
+          m.id.toLowerCase().includes(q) ||
+          m.studentId?.toLowerCase().includes(q) ||
+          m.dept.toLowerCase().includes(q) ||
+          m.email?.toLowerCase().includes(q)
         )
-      : members
-  }, [search, members])
+      })
+  }, [search, filterType, members])
 
   const handleSaveMember = (data) => {
-    if (formSlideOver === 'add') {
-      addMember(data)
-    } else {
-      updateMember(data.id, data)
+    try {
+      if (formSlideOver === 'add') {
+        registerMember({
+          name: data.name,
+          email: data.email,
+          studentId: data.id,
+          dept: data.dept,
+        })
+      }
+      setFormSlideOver(null)
+    } catch (err) {
+      alert(err.message)
     }
-    setFormSlideOver(null)
   }
 
-  // Keep selectedMember up-to-date with store updates
   const activeSelectedMember = selectedMember
     ? members.find(m => m.id === selectedMember.id) || selectedMember
     : null
@@ -532,11 +672,24 @@ export default function AdminMembers({ onAdd }) {
         <input
           className="admin-search"
           type="search"
-          placeholder="Search name, ID, department…"
+          placeholder="Search name, student ID, department, email…"
           value={search}
           onChange={e => setSearch(e.target.value)}
           style={{ flex: '1 1 240px', minWidth: 200 }}
         />
+
+        {/* Filter dropdown */}
+        <select
+          className="admin-select"
+          value={filterType}
+          onChange={e => setFilterType(e.target.value)}
+        >
+          <option value="all">All Members ({members.length})</option>
+          <option value="overdue">Has Overdue Loans ({members.filter(m => m.overdueCount > 0).length})</option>
+          <option value="fines">Has Unpaid Fines ({members.filter(m => m.totalFinesDue > 0).length})</option>
+          <option value="suspended">Suspended Accounts ({members.filter(m => m.status === 'suspended').length})</option>
+        </select>
+
         <Button
           variant="secondary"
           style={{ fontSize: '0.8125rem', padding: '8px 16px' }}
@@ -544,6 +697,7 @@ export default function AdminMembers({ onAdd }) {
         >
           + Add Member
         </Button>
+
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--color-charcoal-60)' }}>
           {filtered.length} members (Click row to inspect)
         </span>
@@ -558,6 +712,7 @@ export default function AdminMembers({ onAdd }) {
               <th>Name</th>
               <th>Department</th>
               <th style={{ textAlign: 'center' }}>Books Out</th>
+              <th style={{ textAlign: 'center' }}>Overdue</th>
               <th>Fines (₹)</th>
               <th>Status</th>
               <th>Actions</th>
@@ -571,21 +726,27 @@ export default function AdminMembers({ onAdd }) {
                 style={{ cursor: 'pointer' }}
               >
                 <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>
-                  {m.id}
+                  {m.studentId || m.id}
                 </td>
                 <td style={{ fontWeight: 500 }}>{m.name}</td>
                 <td style={{ color: 'var(--color-charcoal-60)' }}>{m.dept}</td>
                 <td style={{ textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>
                   {m.booksOut}
                 </td>
+                <td style={{ textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>
+                  <span style={{ color: m.overdueCount > 0 ? 'var(--color-oxblood)' : 'inherit', fontWeight: m.overdueCount > 0 ? 700 : 400 }}>
+                    {m.overdueCount}
+                  </span>
+                </td>
                 <td
                   style={{
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.8rem',
-                    color: m.fines > 0 ? 'var(--color-oxblood)' : 'var(--color-charcoal-60)',
+                    color: m.totalFinesDue > 0 ? 'var(--color-oxblood)' : 'var(--color-charcoal-60)',
+                    fontWeight: m.totalFinesDue > 0 ? 600 : 400,
                   }}
                 >
-                  {m.fines > 0 ? `₹${m.fines.toFixed(2)}` : '—'}
+                  {m.totalFinesDue > 0 ? `₹${m.totalFinesDue.toFixed(2)}` : '—'}
                 </td>
                 <td>
                   <span className={`admin-badge admin-badge--${m.status === 'active' ? 'avail' : 'overdue'}`}>
@@ -596,15 +757,9 @@ export default function AdminMembers({ onAdd }) {
                   <div style={{ display: 'flex', gap: 6 }}>
                     <button
                       className="admin-action-btn"
-                      onClick={() => setFormSlideOver(m)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="admin-action-btn"
                       onClick={() => setSelectedMember(m)}
                     >
-                      View Details
+                      Inspect
                     </button>
                   </div>
                 </td>
@@ -622,7 +777,7 @@ export default function AdminMembers({ onAdd }) {
               fontSize: '0.8125rem',
             }}
           >
-            No members match your search.
+            No members match your search or filter.
           </div>
         )}
       </div>

@@ -1,20 +1,14 @@
 /**
  * AdminIssueReturn.jsx
  * Search a member + search a book, then one-click Issue or Return.
- * Connected to shared AdminStore.
+ * Connected to unified LibraryStore.
  */
 import React, { useState, useMemo } from 'react'
-import { useAdminStore } from '../../data/adminStore.jsx'
+import { useLibraryStore } from '../../data/libraryStore'
 import { Button } from '../../components'
 
-function addDays(date, days) {
-  const d = new Date(date)
-  d.setDate(d.getDate() + days)
-  return d.toISOString().split('T')[0]
-}
-
 export default function AdminIssueReturn() {
-  const { books, members, loans, issueLoan, returnLoan } = useAdminStore()
+  const { books, members, loans, issueBook, returnBook } = useLibraryStore()
 
   const [memberQ, setMemberQ] = useState('')
   const [bookQ,   setBookQ]   = useState('')
@@ -24,7 +18,7 @@ export default function AdminIssueReturn() {
 
   const showToast = (msg, type = 'success') => {
     setToast({ msg, type })
-    setTimeout(() => setToast(null), 3000)
+    setTimeout(() => setToast(null), 3500)
   }
 
   /* ── Member search ── */
@@ -35,6 +29,7 @@ export default function AdminIssueReturn() {
       .filter(m =>
         m.name.toLowerCase().includes(q) ||
         m.id.toLowerCase().includes(q) ||
+        m.studentId?.toLowerCase().includes(q) ||
         m.dept.toLowerCase().includes(q)
       )
       .slice(0, 6)
@@ -62,53 +57,69 @@ export default function AdminIssueReturn() {
   /* ── Active loan for selected book ── */
   const activeLoan = useMemo(() => {
     if (!liveBook) return null
+    if (selectedMember) {
+      return (
+        loans.find(
+          t =>
+            t.accession === liveBook.accession &&
+            t.memberId === selectedMember.id &&
+            t.status === 'active'
+        ) || null
+      )
+    }
     return (
       loans.find(
         t =>
           t.accession === liveBook.accession &&
-          (t.status === 'active' || t.status === 'overdue')
+          t.status === 'active'
       ) || null
     )
-  }, [loans, liveBook])
+  }, [loans, liveBook, selectedMember])
 
   const canIssue =
     selectedMember &&
     liveBook &&
-    !activeLoan &&
     (liveBook.availableCopies ?? 0) > 0
 
-  const canReturn = selectedMember && liveBook && activeLoan
-
-  const today = new Date().toISOString().split('T')[0]
-  const dueDate = addDays(today, 14)
+  const canReturn = liveBook && activeLoan
 
   const handleIssue = () => {
-    const newLoan = {
-      id: `LN-${String(loans.length + 1).padStart(4, '0')}`,
-      accession: liveBook.accession,
-      memberId: selectedMember.id,
-      memberName: selectedMember.name,
-      issuedDate: today,
-      dueDate,
-      returnedDate: null,
-      status: 'active',
-      renewCount: 0,
+    try {
+      const loan = issueBook({
+        accession: liveBook.accession,
+        memberId: selectedMember.id,
+        actor: 'Librarian',
+      })
+      showToast(`"${liveBook.title}" issued to ${selectedMember.name}. Due: ${loan.dueDate}`)
+      setSelectedMember(null)
+      setSelectedBook(null)
+      setMemberQ('')
+      setBookQ('')
+    } catch (err) {
+      showToast(err.message, 'error')
     }
-    issueLoan(newLoan)
-    showToast(`"${liveBook.title}" issued to ${selectedMember.name}. Due: ${dueDate}`)
-    setSelectedMember(null)
-    setSelectedBook(null)
-    setMemberQ('')
-    setBookQ('')
   }
 
   const handleReturn = () => {
-    returnLoan(activeLoan.id, today)
-    showToast(`"${liveBook.title}" returned by ${selectedMember.name}.`)
-    setSelectedMember(null)
-    setSelectedBook(null)
-    setMemberQ('')
-    setBookQ('')
+    if (!activeLoan) {
+      showToast('Cannot return: this title is not currently on loan.', 'error')
+      return
+    }
+    try {
+      const res = returnBook({
+        loanId: activeLoan.id,
+        actor: 'Librarian',
+      })
+      const fineMsg = res.fineAdded ? ` (Late fine assessed: ₹${res.fineAdded.amount.toFixed(2)})` : ''
+      const holdMsg = res.nextReservationHold ? ` (Hold placed for waitlisted member ${res.nextReservationHold.memberName})` : ''
+      showToast(`"${liveBook.title}" returned by ${selectedMember?.name || activeLoan.memberName}.${fineMsg}${holdMsg}`)
+      setSelectedMember(null)
+      setSelectedBook(null)
+      setMemberQ('')
+      setBookQ('')
+    } catch (err) {
+      showToast(err.message, 'error')
+    }
   }
 
   const inputStyle = {

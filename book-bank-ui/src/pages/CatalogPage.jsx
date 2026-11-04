@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import { Button } from '../components/Button'
 import { CatalogCard } from '../components/CatalogCard'
-import { ALL_BOOKS, CATEGORIES, AVAILABILITIES, FORMATS } from '../data/books'
+import { CATEGORIES, AVAILABILITIES, FORMATS } from '../data/books'
 import { useAuth } from '../context/AuthContext'
+import { useLibraryStore } from '../data/libraryStore'
 
 const PER_PAGE = 12
 
@@ -259,6 +260,7 @@ function Pagination({ page, totalPages, onChange }) {
 const INITIAL_FILTERS = { category: '', availability: '', format: '' }
 
 export default function CatalogPage() {
+  const { books } = useLibraryStore()
   const [search,      setSearch]      = useState('')
   const [filters,     setFilters]     = useState(INITIAL_FILTERS)
   const [currentPage, setCurrentPage] = useState(1)
@@ -281,18 +283,19 @@ export default function CatalogPage() {
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim()
-    return ALL_BOOKS.filter(b => {
+    // Do not show retired books in public catalogue
+    return books.filter(b => !b.retired && b.bookStatus !== 'Retired').filter(b => {
       if (q && !(
         b.title.toLowerCase().includes(q)     ||
         b.author.toLowerCase().includes(q)    ||
         b.accession.toLowerCase().includes(q)
       )) return false
-      if (filters.category     && b.category !== filters.category)                       return false
-      if (filters.availability && (filters.availability === 'Available') !== b.available) return false
-      if (filters.format       && b.format !== filters.format)                            return false
+      if (filters.category     && b.category !== filters.category) return false
+      if (filters.availability && (filters.availability === 'Available') !== (b.availableCopies > 0)) return false
+      if (filters.format       && b.format !== filters.format) return false
       return true
     })
-  }, [search, filters])
+  }, [books, search, filters])
 
   const totalPages = Math.ceil(filtered.length / PER_PAGE)
   const paginated  = filtered.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE)
