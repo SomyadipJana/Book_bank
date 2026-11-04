@@ -23,7 +23,7 @@
 
   /* Typography */
   --font-display: 'Fraunces', Georgia, serif;
-  --font-body:    'Inter', system-ui, sans-serif;
+  --font-body:    Arial, "Helvetica Neue", Helvetica, sans-serif;
   --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
 
   /* Border radius — 4px on cards/buttons only */
@@ -36,6 +36,10 @@
 
 /* Base */
 *, *::before, *::after { box-sizing: border-box; }
+
+input, button, select, textarea {
+  font-family: inherit;
+}
 
 html {
   font-size: 16px;
