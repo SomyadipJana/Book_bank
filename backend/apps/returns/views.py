@@ -1,4 +1,4 @@
-"""Book return views with automatic fine calculation and reservation fulfillment triggers."""
+"""Book return views with automatic fine calculation and reservation trigger."""
 from datetime import timedelta
 from django.db import transaction
 from django.utils import timezone
@@ -27,17 +27,17 @@ def return_list_create(request):
     """
     if request.method == "GET":
         if request.user.role == "librarian":
-            qs = Return.objects.select_related("issue__book", "issue__student__user").all()
+            qs = Return.objects.select_related("issue__book", "issue__student__user", "returned_to").all()
         else:
             try:
                 qs = Return.objects.filter(
                     issue__student=request.user.student_profile
-                ).select_related("issue__book")
+                ).select_related("issue__book", "returned_to")
             except Exception:
                 return Response([])
         return Response(ReturnSerializer(qs, many=True).data)
 
-    # POST: Only librarian can process returns
+    # POST: Librarian only
     if request.user.role != "librarian":
         return Response({"detail": "Only librarians can process returns."}, status=status.HTTP_403_FORBIDDEN)
 
@@ -51,30 +51,28 @@ def return_list_create(request):
     if data.get("issue_id"):
         try:
             issue = Issue.objects.select_related("book", "student__user").get(
-                id=data["issue_id"], status=Issue.Status.ACTIVE
+                id=data["issue_id"], status__in=[Issue.Status.ACTIVE, Issue.Status.OVERDUE]
             )
         except Issue.DoesNotExist:
-            return Response({"detail": "Active issue with specified ID not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"detail": "Active/overdue issue not found."}, status=status.HTTP_404_NOT_FOUND)
     else:
-        accession = data.get("accession")
-        enrollment = data.get("student_enrollment")
         try:
             issue = Issue.objects.select_related("book", "student__user").get(
-                book__accession_number=accession,
-                student__enrollment_number=enrollment,
-                status=Issue.Status.ACTIVE
+                book__accession_number=data["accession"],
+                student__enrollment_number=data["student_enrollment"],
+                status__in=[Issue.Status.ACTIVE, Issue.Status.OVERDUE],
             )
         except Issue.DoesNotExist:
             return Response(
-                {"detail": f"Active loan for accession '{accession}' and student '{enrollment}' not found."},
-                status=status.HTTP_404_NOT_FOUND
+                {"detail": f"Active loan for accession '{data['accession']}' and student '{data['student_enrollment']}' not found."},
+                status=status.HTTP_404_NOT_FOUND,
             )
         except Issue.MultipleObjectsReturned:
             issue = Issue.objects.filter(
-                book__accession_number=accession,
-                student__enrollment_number=enrollment,
-                status=Issue.Status.ACTIVE
-            ).first()
+                book__accession_number=data["accession"],
+                student__enrollment_number=data["student_enrollment"],
+                status__in=[Issue.Status.ACTIVE, Issue.Status.OVERDUE],
+            ).order_by("-issue_date").first()
 
     today = timezone.now().date()
     days_late = max(0, (today - issue.due_date).days)
@@ -83,12 +81,12 @@ def return_list_create(request):
 
     with transaction.atomic():
         book = Book.objects.select_for_update().get(pk=issue.book.pk)
-        
-        # 1. Update Issue
+
+        # 1. Mark issue returned
         issue.status = Issue.Status.RETURNED
         issue.save(update_fields=["status"])
 
-        # 2. Create Return record
+        # 2. Create return record
         ret = Return.objects.create(
             issue=issue,
             returned_to=request.user,
@@ -97,7 +95,7 @@ def return_list_create(request):
             days_late=days_late,
         )
 
-        # 3. Create Fine if late
+        # 3. Create fine if late
         if was_late:
             fine_amount = days_late * settings.FINE_PER_DAY
             fine_record = Fine.objects.create(
@@ -109,21 +107,21 @@ def return_list_create(request):
                 days_late=days_late,
                 amount=fine_amount,
                 status=Fine.Status.UNPAID,
-                notes=f"Overdue by {days_late} days. Fine calculated at ₹{settings.FINE_PER_DAY}/day."
+                notes=f"Overdue by {days_late} days. ₹{settings.FINE_PER_DAY}/day.",
             )
             send_notification(
                 recipient=issue.student.user,
-                notification_type="overdue",
+                notification_type="fine_raised",
                 title=f"Late Return Fine: ₹{fine_amount}",
-                message=f"Book '{book.title}' was returned {days_late} days late. A fine of ₹{fine_amount} has been added.",
+                message=f"'{book.title}' was returned {days_late} days late. Fine: ₹{fine_amount}.",
                 related_book=book,
             )
 
-        # 4. Increment available copies
+        # 4. Restore available copy
         book.available_copies += 1
         book.save(update_fields=["available_copies"])
 
-        # 5. Check reservation queue
+        # 5. Trigger reservation queue
         waiting_res = Reservation.objects.filter(
             book=book, status=Reservation.Status.WAITING
         ).order_by("reserved_date", "id").first()
@@ -139,16 +137,20 @@ def return_list_create(request):
                 recipient=waiting_res.student.user,
                 notification_type="reservation_ready",
                 title=f"Reserved Book Ready: {book.title}",
-                message=f"Your reserved book '{book.title}' is now available for pickup at {waiting_res.pickup_location}. Please collect it before {pickup_deadline.strftime('%d %b %Y')}.",
+                message=(
+                    f"Your reserved book '{book.title}' is now available for pickup at "
+                    f"{waiting_res.pickup_location}. "
+                    f"Please collect it before {pickup_deadline.strftime('%d %b %Y')}."
+                ),
                 related_book=book,
             )
 
-        # 6. Notify student of successful return
+        # 6. Confirm return to student
         send_notification(
             recipient=issue.student.user,
-            notification_type="other",
+            notification_type="return_confirmed",
             title=f"Book Returned: {book.title}",
-            message=f"Book '{book.title}' has been successfully returned and recorded.",
+            message=f"'{book.title}' has been successfully returned and recorded.",
             related_book=book,
         )
 
@@ -166,9 +168,9 @@ def return_list_create(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def return_detail(request, pk):
-    """Retrieve details of a single return record."""
+    """Retrieve a single return record."""
     try:
-        ret = Return.objects.select_related("issue__book", "issue__student__user").get(pk=pk)
+        ret = Return.objects.select_related("issue__book", "issue__student__user", "returned_to").get(pk=pk)
     except Return.DoesNotExist:
         return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
@@ -176,3 +178,4 @@ def return_detail(request, pk):
         return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
 
     return Response(ReturnSerializer(ret).data)
+

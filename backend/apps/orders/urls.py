@@ -1,8 +1,10 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import OrderViewSet
+"""URL patterns for order endpoints."""
+from django.urls import path
+from . import views
 
-router = DefaultRouter()
-router.register("", OrderViewSet, basename="order")
+urlpatterns = [
+    path("",                      views.order_list_create,    name="order-list"),
+    path("<int:pk>/",             views.order_detail_update,  name="order-detail"),
+    path("<int:pk>/items/",       views.add_order_item,       name="order-add-item"),
+]
 
-urlpatterns = [path("", include(router.urls))]

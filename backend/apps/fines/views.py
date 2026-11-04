@@ -1,4 +1,4 @@
-"""Fine management views for tracking and clearing overdue penalties."""
+"""Fine views — list, detail, pay, waive."""
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -15,32 +15,31 @@ from .serializers import FineSerializer
 @permission_classes([IsAuthenticated])
 def fine_list(request):
     """
-    GET — List fines (Librarian: all, Student: own).
-    Supports query parameter ?status=unpaid|paid|waived
+    GET /api/fines/?status=unpaid
+    Librarian: all fines. Student: own fines.
     """
-    status_filter = request.query_params.get("status")
+    fine_status = request.query_params.get("status", "")
     if request.user.role == "librarian":
-        qs = Fine.objects.select_related("book", "student__user").all()
+        qs = Fine.objects.select_related("student__user", "book").all()
     else:
         try:
             qs = Fine.objects.filter(student=request.user.student_profile).select_related("book")
         except Exception:
             return Response([])
 
-    if status_filter:
-        qs = qs.filter(status=status_filter)
-
+    if fine_status:
+        qs = qs.filter(status=fine_status)
     return Response(FineSerializer(qs, many=True).data)
 
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def fine_detail(request, pk):
-    """Retrieve details of a single fine."""
+    """Retrieve a single fine."""
     try:
-        fine = Fine.objects.select_related("book", "student__user").get(pk=pk)
+        fine = Fine.objects.select_related("student__user", "book").get(pk=pk)
     except Fine.DoesNotExist:
-        return Response({"detail": "Fine not found."}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
     if request.user.role != "librarian" and fine.student.user != request.user:
         return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
@@ -48,56 +47,77 @@ def fine_detail(request, pk):
     return Response(FineSerializer(fine).data)
 
 
-@api_view(["PUT", "POST"])
+@api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def pay_fine(request, pk):
-    """Mark a fine as paid."""
+    """
+    Mark a fine as paid.
+    POST /api/fines/<pk>/pay/
+    Librarian: can pay any. Student: can pay own (self-service).
+    """
     try:
         fine = Fine.objects.select_related("student__user", "book").get(pk=pk)
     except Fine.DoesNotExist:
-        return Response({"detail": "Fine not found."}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
     if request.user.role != "librarian" and fine.student.user != request.user:
         return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
 
-    if fine.status == Fine.Status.PAID:
-        return Response({"detail": "Fine is already paid."}, status=status.HTTP_400_BAD_REQUEST)
+    if fine.status != Fine.Status.UNPAID:
+        return Response(
+            {"detail": f"Fine is already {fine.status}."},
+            status=status.HTTP_409_CONFLICT,
+        )
 
     fine.status = Fine.Status.PAID
     fine.paid_at = timezone.now()
-    fine.notes = f"{fine.notes}\nPaid on {fine.paid_at.strftime('%Y-%m-%d %H:%M')}".strip()
-    fine.save(update_fields=["status", "paid_at", "notes"])
+    fine.save(update_fields=["status", "paid_at"])
 
     send_notification(
         recipient=fine.student.user,
         notification_type="other",
-        title=f"Fine Paid: ₹{fine.amount}",
-        message=f"Your fine payment of ₹{fine.amount} for '{fine.book.title}' has been successfully recorded.",
+        title="Fine Paid",
+        message=f"Your fine of ₹{fine.amount} for '{fine.book.title}' has been recorded as paid.",
         related_book=fine.book,
     )
 
     return Response(FineSerializer(fine).data)
 
 
-@api_view(["PUT", "POST"])
+@api_view(["POST"])
 @permission_classes([IsAuthenticated, IsLibrarian])
 def waive_fine(request, pk):
-    """Librarian waives an unpaid fine."""
+    """
+    Librarian waives a fine.
+    POST /api/fines/<pk>/waive/
+    Body: { notes: "reason" } (optional)
+    """
     try:
         fine = Fine.objects.select_related("student__user", "book").get(pk=pk)
     except Fine.DoesNotExist:
-        return Response({"detail": "Fine not found."}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
+    if fine.status != Fine.Status.UNPAID:
+        return Response(
+            {"detail": f"Fine is already {fine.status}."},
+            status=status.HTTP_409_CONFLICT,
+        )
+
+    notes = request.data.get("notes", "").strip()
     fine.status = Fine.Status.WAIVED
-    fine.notes = f"{fine.notes}\nWaived by librarian {request.user.full_name} on {timezone.now().strftime('%Y-%m-%d')}".strip()
-    fine.save(update_fields=["status", "notes"])
+    fine.waived_by = request.user
+    fine.paid_at = timezone.now()
+    if notes:
+        fine.notes = (fine.notes + "\n" + notes).strip()
+    fine.save(update_fields=["status", "waived_by", "paid_at", "notes"])
 
     send_notification(
         recipient=fine.student.user,
         notification_type="other",
-        title=f"Fine Waived: ₹{fine.amount}",
-        message=f"Your fine of ₹{fine.amount} for '{fine.book.title}' has been waived by the library administration.",
+        title="Fine Waived",
+        message=f"Your fine of ₹{fine.amount} for '{fine.book.title}' has been waived by the librarian.",
         related_book=fine.book,
     )
 
     return Response(FineSerializer(fine).data)
+

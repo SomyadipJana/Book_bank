@@ -26,6 +26,12 @@ class RegisterSerializer(serializers.Serializer):
             raise serializers.ValidationError("A user with this email already exists.")
         return value
 
+    def validate_enrollment_number(self, value):
+        from apps.students.models import StudentProfile
+        if StudentProfile.objects.filter(enrollment_number=value).exists():
+            raise serializers.ValidationError("This enrollment number is already registered.")
+        return value
+
     def validate(self, data):
         if data["password"] != data["confirm_password"]:
             raise serializers.ValidationError({"confirm_password": "Passwords do not match."})
@@ -71,3 +77,15 @@ class LoginSerializer(serializers.Serializer):
                 "role": user.role,
             },
         }
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True, min_length=8)
+    confirm_new_password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        if data["new_password"] != data["confirm_new_password"]:
+            raise serializers.ValidationError({"confirm_new_password": "New passwords do not match."})
+        return data
+

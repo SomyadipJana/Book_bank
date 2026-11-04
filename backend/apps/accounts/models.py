@@ -45,3 +45,4 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.full_name} <{self.email}> [{self.role}]"
+

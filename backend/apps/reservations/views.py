@@ -1,4 +1,4 @@
-"""Reservation views for booking unavailable books and queue management."""
+"""Reservation queue views."""
 from datetime import timedelta
 from django.db import transaction
 from django.utils import timezone
@@ -9,9 +9,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.accounts.permissions import IsLibrarian
-from apps.books.models import Book
-from apps.issues.models import Issue
 from apps.notifications.models import send_notification
+from apps.issues.models import Issue
+from apps.books.models import Book
 from .models import Reservation
 from .serializers import ReservationSerializer, ReservationCreateSerializer
 
@@ -20,8 +20,8 @@ from .serializers import ReservationSerializer, ReservationCreateSerializer
 @permission_classes([IsAuthenticated])
 def reservation_list_create(request):
     """
-    GET  — List reservations (Librarian: all, Student: own).
-    POST — Reserve an unavailable book (Student only).
+    GET  — List reservations. Librarian: all; Student: own.
+    POST — Student creates a reservation for an unavailable book.
     """
     if request.method == "GET":
         if request.user.role == "librarian":
@@ -35,8 +35,9 @@ def reservation_list_create(request):
                 return Response([])
         return Response(ReservationSerializer(qs, many=True).data)
 
+    # POST — only students can reserve
     if request.user.role != "student":
-        return Response({"detail": "Only students can place reservations."}, status=status.HTTP_403_FORBIDDEN)
+        return Response({"detail": "Only students can make reservations."}, status=status.HTTP_403_FORBIDDEN)
 
     serializer = ReservationCreateSerializer(data=request.data)
     if not serializer.is_valid():
@@ -49,45 +50,48 @@ def reservation_list_create(request):
     except Exception:
         return Response({"detail": "Student profile not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    # If book has available copies, encourage direct borrowing instead
+    # Can't reserve if copies are available (issue instead)
     if book.available_copies > 0:
         return Response(
-            {"detail": "This book is currently available! You can request an issue directly."},
-            status=status.HTTP_400_BAD_REQUEST
+            {"detail": "Copies are available. Please issue this book directly instead of reserving."},
+            status=status.HTTP_409_CONFLICT,
         )
 
-    # Check if student already has a pending/waiting/ready reservation for this book
-    existing = Reservation.objects.filter(
-        book=book,
-        student=student,
-        status__in=[Reservation.Status.WAITING, Reservation.Status.READY]
+    # Duplicate check
+    already = Reservation.objects.filter(
+        book=book, student=student, status__in=["waiting", "ready"]
     ).exists()
-    if existing:
+    if already:
         return Response(
             {"detail": "You already have an active reservation for this book."},
-            status=status.HTTP_409_CONFLICT
+            status=status.HTTP_409_CONFLICT,
         )
 
-    # Compute queue position
-    queue_count = Reservation.objects.filter(
-        book=book,
-        status=Reservation.Status.WAITING
-    ).count()
+    # Also check if student already has the book on loan
+    if Issue.objects.filter(book=book, student=student, status__in=["active", "pending"]).exists():
+        return Response(
+            {"detail": "You already have this book on loan."},
+            status=status.HTTP_409_CONFLICT,
+        )
 
-    reservation = Reservation.objects.create(
-        book=book,
-        student=student,
-        status=Reservation.Status.WAITING,
-        queue_position=queue_count + 1,
-    )
+    with transaction.atomic():
+        queue_pos = (
+            Reservation.objects.filter(book=book, status=Reservation.Status.WAITING).count() + 1
+        )
+        reservation = Reservation.objects.create(
+            book=book,
+            student=student,
+            status=Reservation.Status.WAITING,
+            queue_position=queue_pos,
+        )
 
-    send_notification(
-        recipient=request.user,
-        notification_type="other",
-        title=f"Reservation Confirmed: {book.title}",
-        message=f"You are position #{queue_count + 1} in queue for '{book.title}'. We will notify you when a copy becomes available.",
-        related_book=book,
-    )
+        send_notification(
+            recipient=request.user,
+            notification_type="other",
+            title=f"Reservation Confirmed: {book.title}",
+            message=f"You are #{queue_pos} in the queue for '{book.title}'. We'll notify you when it's available.",
+            related_book=book,
+        )
 
     return Response(ReservationSerializer(reservation).data, status=status.HTTP_201_CREATED)
 
@@ -95,7 +99,7 @@ def reservation_list_create(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def reservation_detail(request, pk):
-    """Retrieve details of a single reservation."""
+    """Retrieve a single reservation."""
     try:
         res = Reservation.objects.select_related("book", "student__user").get(pk=pk)
     except Reservation.DoesNotExist:
@@ -107,51 +111,70 @@ def reservation_detail(request, pk):
     return Response(ReservationSerializer(res).data)
 
 
-@api_view(["PUT", "POST"])
+@api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def cancel_reservation(request, pk):
-    """Cancel an existing reservation."""
+    """
+    Cancel a waiting/ready reservation.
+    PUT /api/reservations/<pk>/cancel/
+    Students can cancel own; librarian can cancel any.
+    """
     try:
-        res = Reservation.objects.get(pk=pk)
+        res = Reservation.objects.select_related("book", "student__user").get(pk=pk)
     except Reservation.DoesNotExist:
-        return Response({"detail": "Reservation not found."}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
     if request.user.role != "librarian" and res.student.user != request.user:
         return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
 
+    if res.status not in (Reservation.Status.WAITING, Reservation.Status.READY):
+        return Response(
+            {"detail": f"Cannot cancel a reservation with status '{res.status}'."},
+            status=status.HTTP_409_CONFLICT,
+        )
+
     res.status = Reservation.Status.CANCELLED
     res.save(update_fields=["status"])
-    return Response({"detail": "Reservation cancelled.", "reservation": ReservationSerializer(res).data})
+
+    return Response({"detail": "Reservation cancelled.", "id": res.id})
 
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticated, IsLibrarian])
+@permission_classes([IsAuthenticated])
 def fulfill_reservation(request, pk):
-    """Librarian fulfills a ready reservation by converting it into an active Issue."""
+    """
+    Librarian fulfills a READY reservation — creates an active Issue.
+    POST /api/reservations/<pk>/fulfill/
+    """
+    if request.user.role != "librarian":
+        return Response({"detail": "Librarian only."}, status=status.HTTP_403_FORBIDDEN)
+
     try:
         res = Reservation.objects.select_related("book", "student__user").get(
             pk=pk, status=Reservation.Status.READY
         )
     except Reservation.DoesNotExist:
+        return Response({"detail": "Ready reservation not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    if not res.student.can_borrow:
         return Response(
-            {"detail": "Ready reservation with specified ID not found."},
-            status=status.HTTP_404_NOT_FOUND
+            {"detail": "Student has reached their borrowing limit."},
+            status=status.HTTP_409_CONFLICT,
         )
 
     with transaction.atomic():
         book = Book.objects.select_for_update().get(pk=res.book.pk)
         if book.available_copies <= 0:
-            return Response({"detail": "No copy available to issue."}, status=status.HTTP_409_CONFLICT)
+            return Response({"detail": "No copies available."}, status=status.HTTP_409_CONFLICT)
 
-        due_date = timezone.now().date() + timedelta(days=settings.LOAN_DURATION_DAYS)
+        due = timezone.now().date() + timedelta(days=settings.LOAN_DURATION_DAYS)
         issue = Issue.objects.create(
             book=book,
             student=res.student,
             issued_by=request.user,
-            due_date=due_date,
-            status=Issue.Status.ACTIVE
+            due_date=due,
+            status=Issue.Status.ACTIVE,
         )
-
         book.available_copies -= 1
         book.save(update_fields=["available_copies"])
 
@@ -161,12 +184,11 @@ def fulfill_reservation(request, pk):
         send_notification(
             recipient=res.student.user,
             notification_type="book_issued",
-            title=f"Reserved Book Collected: {book.title}",
-            message=f"Your reservation for '{book.title}' has been fulfilled. Due date: {due_date.strftime('%d %b %Y')}.",
+            title=f"Reservation Fulfilled: {book.title}",
+            message=f"Your reserved copy of '{book.title}' has been issued. Due date: {due.strftime('%d %b %Y')}.",
             related_book=book,
         )
 
-    return Response({
-        "detail": "Reservation fulfilled and loan created.",
-        "reservation": ReservationSerializer(res).data,
-    })
+    from apps.issues.serializers import IssueSerializer
+    return Response(IssueSerializer(issue).data, status=status.HTTP_201_CREATED)
+

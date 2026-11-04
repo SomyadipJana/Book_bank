@@ -1,4 +1,4 @@
-"""Book issue views with atomic checkout logic."""
+"""Book issue views with atomic checkout and renewal logic."""
 from datetime import timedelta
 from django.db import transaction
 from django.utils import timezone
@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from apps.accounts.permissions import IsLibrarian, IsStudent
+from apps.accounts.permissions import IsLibrarian
 from apps.notifications.models import send_notification
 from .models import Issue
 from .serializers import IssueSerializer, IssueCreateSerializer
@@ -19,12 +19,12 @@ from .serializers import IssueSerializer, IssueCreateSerializer
 def issue_list_create(request):
     """
     GET  — List issues. Librarian sees all; students see own.
-    POST — Student requests a book issue.
+    POST — Student requests a book checkout.
     """
     if request.method == "GET":
         user = request.user
         if user.role == "librarian":
-            qs = Issue.objects.select_related("book", "student__user").all()
+            qs = Issue.objects.select_related("book", "student__user", "issued_by").all()
         else:
             try:
                 qs = Issue.objects.filter(student=user.student_profile).select_related("book")
@@ -32,9 +32,12 @@ def issue_list_create(request):
                 return Response([], status=status.HTTP_200_OK)
         return Response(IssueSerializer(qs, many=True).data)
 
-    # POST — student requests book issue
+    # POST — only students can request issues
     if request.user.role != "student":
-        return Response({"detail": "Only students can request book issues."}, status=status.HTTP_403_FORBIDDEN)
+        return Response(
+            {"detail": "Only students can request book checkouts."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
 
     serializer = IssueCreateSerializer(data=request.data)
     if not serializer.is_valid():
@@ -50,7 +53,7 @@ def issue_list_create(request):
     # Business rule checks
     if not student.can_borrow:
         return Response(
-            {"detail": f"Borrowing limit ({student.borrowing_limit}) reached."},
+            {"detail": f"Borrowing limit ({student.borrowing_limit}) reached. Return a book first."},
             status=status.HTTP_409_CONFLICT,
         )
     if book.available_copies <= 0:
@@ -66,10 +69,21 @@ def issue_list_create(request):
 
     with transaction.atomic():
         b = type(book).objects.select_for_update().get(pk=book.pk)
+        if b.available_copies <= 0:
+            return Response(
+                {"detail": "No copies available (concurrent request). Please try again."},
+                status=status.HTTP_409_CONFLICT,
+            )
         due = timezone.now().date() + timedelta(days=settings.LOAN_DURATION_DAYS)
-        issue = Issue.objects.create(book=b, student=student, due_date=due, status=Issue.Status.ACTIVE)
+        issue = Issue.objects.create(
+            book=b,
+            student=student,
+            due_date=due,
+            status=Issue.Status.ACTIVE,
+        )
         b.available_copies -= 1
         b.save(update_fields=["available_copies"])
+
         send_notification(
             recipient=request.user,
             notification_type="book_issued",
@@ -86,32 +100,74 @@ def issue_list_create(request):
 def issue_detail(request, pk):
     """Retrieve a single issue record."""
     try:
-        issue = Issue.objects.select_related("book", "student__user").get(pk=pk)
+        issue = Issue.objects.select_related("book", "student__user", "issued_by").get(pk=pk)
     except Issue.DoesNotExist:
         return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    # Permission: librarian sees all; student only sees own
+    if request.user.role != "librarian" and issue.student.user != request.user:
+        return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+
     return Response(IssueSerializer(issue).data)
 
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticated, IsLibrarian])
+@permission_classes([IsAuthenticated])
 def renew_issue(request, pk):
-    """Librarian or student renews a book loan."""
+    """
+    Renew a book loan. Both students (own) and librarians can renew.
+    POST /api/issues/<pk>/renew/
+    """
     try:
-        issue = Issue.objects.select_related("book").get(pk=pk, status=Issue.Status.ACTIVE)
+        issue = Issue.objects.select_related("book", "student__user").get(pk=pk, status=Issue.Status.ACTIVE)
     except Issue.DoesNotExist:
         return Response({"detail": "Active issue not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    if issue.renewal_count >= settings.MAX_RENEWALS:
-        return Response({"detail": "Maximum renewals reached."}, status=status.HTTP_409_CONFLICT)
+    # Students can only renew their own
+    if request.user.role == "student" and issue.student.user != request.user:
+        return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
 
-    has_reservation = issue.book.reservations.filter(status="waiting").exists()
-    if has_reservation:
+    if issue.renewal_count >= settings.MAX_RENEWALS:
         return Response(
-            {"detail": "Cannot renew — this book has a pending reservation."},
+            {"detail": f"Maximum renewals ({settings.MAX_RENEWALS}) reached."},
+            status=status.HTTP_409_CONFLICT,
+        )
+
+    if issue.book.reservations.filter(status="waiting").exists():
+        return Response(
+            {"detail": "Cannot renew — this book has pending reservations."},
             status=status.HTTP_409_CONFLICT,
         )
 
     issue.due_date += timedelta(days=settings.LOAN_DURATION_DAYS)
     issue.renewal_count += 1
     issue.save(update_fields=["due_date", "renewal_count"])
+
+    send_notification(
+        recipient=issue.student.user,
+        notification_type="book_issued",
+        title=f"Loan Renewed: {issue.book.title}",
+        message=f"Your loan for '{issue.book.title}' has been renewed. New due date: {issue.due_date.strftime('%d %b %Y')}.",
+        related_book=issue.book,
+    )
+
     return Response(IssueSerializer(issue).data)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def mark_overdue(request):
+    """
+    Librarian utility: scan all active issues past due date and mark them overdue.
+    POST /api/issues/mark-overdue/
+    """
+    if request.user.role != "librarian":
+        return Response({"detail": "Librarian only."}, status=status.HTTP_403_FORBIDDEN)
+
+    today = timezone.now().date()
+    updated = Issue.objects.filter(
+        status=Issue.Status.ACTIVE, due_date__lt=today
+    ).update(status=Issue.Status.OVERDUE)
+
+    return Response({"detail": f"{updated} issue(s) marked overdue."})
+

@@ -1,4 +1,4 @@
-"""Book reservation model for queueing requests when copies are unavailable."""
+"""Book reservation model for queue management."""
 from django.db import models
 from django.utils import timezone
 
@@ -21,7 +21,6 @@ class Reservation(models.Model):
 
     class Meta:
         ordering = ["reserved_date", "id"]
-        unique_together = ("book", "student", "status")
 
     def __str__(self):
         return f"Reservation of {self.book} by {self.student} [{self.status}]"
@@ -29,3 +28,4 @@ class Reservation(models.Model):
     @property
     def is_ready(self):
         return self.status == self.Status.READY
+

@@ -19,6 +19,9 @@ class Fine(models.Model):
     amount = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.UNPAID)
     paid_at = models.DateTimeField(null=True, blank=True)
+    waived_by = models.ForeignKey(
+        "accounts.User", on_delete=models.SET_NULL, null=True, blank=True, related_name="waived_fines"
+    )
     notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -27,3 +30,4 @@ class Fine(models.Model):
 
     def __str__(self):
         return f"Fine: ₹{self.amount} for {self.student} on {self.book} [{self.status}]"
+

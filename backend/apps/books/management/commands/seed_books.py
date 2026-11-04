@@ -1,356 +1,76 @@
-"""Management command to seed the initial book catalog matching the frontend books.js."""
+"""
+Management command: seed_books
+
+Seeds the database with sample books matching the frontend mock data.
+Run once after migrations:
+    python manage.py seed_books
+"""
 from django.core.management.base import BaseCommand
 from apps.books.models import Book
 
-SEED_DATA = [
-    {
-        "accession_number": "BB-0001",
-        "category": "Algorithms & DS",
-        "format": "Book",
-        "isbn": "9780262046305",
-        "title": "Introduction to Algorithms",
-        "author": "Cormen, Leiserson, Rivest, Stein",
-        "edition": "4th Edition",
-        "publisher": "MIT Press",
-        "total_copies": 5,
-        "available_copies": 3,
-        "description": "Universally known as CLRS, this is the definitive undergraduate and graduate textbook on algorithms. Covers sorting, graph algorithms, dynamic programming, NP-completeness, and more with rigorous mathematical analysis and clear pseudocode.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780262046305-L.jpg",
-    },
-    {
-        "accession_number": "BB-0002",
-        "category": "Algorithms & DS",
-        "format": "Book",
-        "isbn": "9783030542559",
-        "title": "The Algorithm Design Manual",
-        "author": "Steven S. Skiena",
-        "edition": "3rd Edition",
-        "publisher": "Springer",
-        "total_copies": 3,
-        "available_copies": 0,
-        "description": "Skiena balances theory with practice — the first half covers design techniques (dynamic programming, backtracking, heuristics) while the second half is a unique 'hitchhiker's guide' catalog of algorithmic problems and off-the-shelf solutions.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9783030542559-L.jpg",
-    },
-    {
-        "accession_number": "BB-0003",
-        "category": "Algorithms & DS",
-        "format": "Book",
-        "isbn": "9780133907681",
-        "title": "Data Structures and Algorithm Analysis in C++",
-        "author": "Mark Allen Weiss",
-        "edition": "4th Edition",
-        "publisher": "Pearson",
-        "total_copies": 4,
-        "available_copies": 2,
-        "description": "A focused treatment of fundamental data structures — lists, trees, heaps, hash tables, graphs — alongside algorithm analysis using Big-O notation. Written in C++ with clean implementations and end-of-chapter exercises widely used in university courses.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780133907681-L.jpg",
-    },
-    {
-        "accession_number": "BB-0004",
-        "category": "Computer Science",
-        "format": "Book",
-        "isbn": "9781133187790",
-        "title": "Introduction to the Theory of Computation",
-        "author": "Michael Sipser",
-        "edition": "3rd Edition",
-        "publisher": "Cengage Learning",
-        "total_copies": 4,
-        "available_copies": 2,
-        "description": "Sipser's accessible and precise introduction to automata theory, formal languages, computability, and complexity. The go-to textbook for any undergraduate course on theory of computation, praised for its clarity and well-crafted problem sets.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9781133187790-L.jpg",
-    },
-    {
-        "accession_number": "BB-0005",
-        "category": "Computer Science",
-        "format": "Book",
-        "isbn": "9780132051347",
-        "title": "Automata, Computability and Complexity",
-        "author": "Elaine Rich",
-        "edition": "1st Edition",
-        "publisher": "Pearson",
-        "total_copies": 3,
-        "available_copies": 3,
-        "description": "A comprehensive and modern treatment of automata theory, computability, and computational complexity with strong coverage of reductions, NP-completeness proofs, and approximation algorithms. Well-suited for advanced undergraduate courses.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780132051347-L.jpg",
-    },
-    {
-        "accession_number": "BB-0006",
-        "category": "Engineering",
-        "format": "Book",
-        "isbn": "9780132350884",
-        "title": "Clean Code",
-        "author": "Robert C. Martin",
-        "edition": "1st Edition",
-        "publisher": "Prentice Hall",
-        "total_copies": 4,
-        "available_copies": 0,
-        "description": "Martin's influential guide to writing clean, readable, and maintainable code, complete with examples of bad code transformed into good code. Essential reading for any developer who cares about long-term software quality.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg",
-    },
-    {
-        "accession_number": "BB-0007",
-        "category": "Engineering",
-        "format": "Book",
-        "isbn": "9780201633610",
-        "title": "Design Patterns",
-        "author": "Gamma, Helm, Johnson, Vlissides (Gang of Four)",
-        "edition": "1st Edition",
-        "publisher": "Addison-Wesley",
-        "total_copies": 3,
-        "available_copies": 1,
-        "description": "The seminal catalog of 23 reusable object-oriented design patterns that solve common software architecture problems. An essential reference that introduced a shared vocabulary for talking about design solutions.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780201633610-L.jpg",
-    },
-    {
-        "accession_number": "BB-0008",
-        "category": "Engineering",
-        "format": "Book",
-        "isbn": "9780135957059",
-        "title": "The Pragmatic Programmer",
-        "author": "David Thomas, Andrew Hunt",
-        "edition": "20th Anniversary Ed.",
-        "publisher": "Addison-Wesley",
-        "total_copies": 3,
-        "available_copies": 2,
-        "description": "A practical guide to becoming a better programmer through timeless principles and concrete advice, from career development to technical craftsmanship. Widely cited as the book that changed how developers think about their work.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780135957059-L.jpg",
-    },
-    {
-        "accession_number": "BB-0009",
-        "category": "Engineering",
-        "format": "Book",
-        "isbn": "9780133943030",
-        "title": "Software Engineering",
-        "author": "Ian Sommerville",
-        "edition": "10th Edition",
-        "publisher": "Pearson",
-        "total_copies": 5,
-        "available_copies": 0,
-        "description": "The standard undergraduate software engineering textbook covering requirements engineering, agile methods, architectural design, testing, and project management. A comprehensive survey of the discipline used in engineering programs worldwide.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780133943030-L.jpg",
-    },
-    {
-        "accession_number": "BB-0010",
-        "category": "Systems & OS",
-        "format": "Book",
-        "isbn": "9781119800361",
-        "title": "Operating System Concepts",
-        "author": "Silberschatz, Galvin, Gagne",
-        "edition": "10th Edition",
-        "publisher": "Wiley",
-        "total_copies": 5,
-        "available_copies": 3,
-        "description": "Known as the 'Dinosaur Book', this is the definitive text for operating systems courses. Covers processes, threads, CPU scheduling, memory management, file systems, I/O, and security with exercises linked to a Linux simulation environment.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9781119800361-L.jpg",
-    },
-    {
-        "accession_number": "BB-0011",
-        "category": "Systems & OS",
-        "format": "Book",
-        "isbn": "9780134997193",
-        "title": "Computer Organization and Architecture",
-        "author": "William Stallings",
-        "edition": "11th Edition",
-        "publisher": "Pearson",
-        "total_copies": 4,
-        "available_copies": 2,
-        "description": "A thorough treatment of CPU design, instruction sets, memory hierarchies, pipelining, and I/O organisation. Balances hardware concepts with software-level implications, making it suitable for both CS and ECE programmes.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780134997193-L.jpg",
-    },
-    {
-        "accession_number": "BB-0012",
-        "category": "Computer Science",
-        "format": "Book",
-        "isbn": "9780078022159",
-        "title": "Database System Concepts",
-        "author": "Silberschatz, Korth, Sudarshan",
-        "edition": "7th Edition",
-        "publisher": "McGraw-Hill",
-        "total_copies": 4,
-        "available_copies": 0,
-        "description": "The leading database textbook covering the relational model, SQL, normalisation, transactions, concurrency control, recovery, and NoSQL systems. Used in both introductory and advanced database courses at universities worldwide.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780078022159-L.jpg",
-    },
-    {
-        "accession_number": "BB-0013",
-        "category": "Networks",
-        "format": "Book",
-        "isbn": "9780136439677",
-        "title": "Computer Networks",
-        "author": "Andrew S. Tanenbaum",
-        "edition": "6th Edition",
-        "publisher": "Pearson",
-        "total_copies": 4,
-        "available_copies": 3,
-        "description": "Tanenbaum's comprehensive treatment of the layered network model, covering physical layer, data link, network, transport, and application protocols with detailed examples. A classic reference used in networking courses for four decades.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780136439677-L.jpg",
-    },
-    {
-        "accession_number": "BB-0014",
-        "category": "Networks",
-        "format": "Book",
-        "isbn": "9780136681557",
-        "title": "Computer Networking: A Top-Down Approach",
-        "author": "James F. Kurose, Keith W. Ross",
-        "edition": "8th Edition",
-        "publisher": "Pearson",
-        "total_copies": 3,
-        "available_copies": 1,
-        "description": "Takes a unique top-down approach, starting from application-layer protocols (HTTP, DNS, SMTP) before descending to transport, network, and link layers. Widely adopted for its intuitive explanations and Wireshark lab exercises.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780136681557-L.jpg",
-    },
-    {
-        "accession_number": "BB-0015",
-        "category": "Mathematics",
-        "format": "Book",
-        "isbn": "9780072899054",
-        "title": "Discrete Mathematics and Its Applications",
-        "author": "Kenneth H. Rosen",
-        "edition": "8th Edition",
-        "publisher": "McGraw-Hill",
-        "total_copies": 6,
-        "available_copies": 2,
-        "description": "The standard discrete mathematics textbook for computer science students, covering logic, sets, functions, number theory, induction, combinatorics, graph theory, and Boolean algebra with hundreds of examples and exercises.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780072899054-L.jpg",
-    },
-    {
-        "accession_number": "BB-0016",
-        "category": "Mathematics",
-        "format": "Book",
-        "isbn": "9780980232776",
-        "title": "Linear Algebra and Its Applications",
-        "author": "Gilbert Strang",
-        "edition": "5th Edition",
-        "publisher": "Cengage Learning",
-        "total_copies": 4,
-        "available_copies": 0,
-        "description": "Strang's celebrated textbook makes linear algebra both accessible and profound, emphasising geometric intuition alongside computation. Accompanied by MIT OpenCourseWare lectures, it is the most-watched mathematics course on the internet.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780980232776-L.jpg",
-    },
-    {
-        "accession_number": "BB-0017",
-        "category": "Management",
-        "format": "Book",
-        "isbn": "9780201835953",
-        "title": "The Mythical Man-Month",
-        "author": "Frederick P. Brooks Jr.",
-        "edition": "Anniversary Edition",
-        "publisher": "Addison-Wesley",
-        "total_copies": 3,
-        "available_copies": 1,
-        "description": "Brooks's classic essays on software project management, most famous for the observation that adding manpower to a late project makes it later. Remarkably relevant decades after its first publication.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780201835953-L.jpg",
-    },
-    {
-        "accession_number": "BB-0018",
-        "category": "Psychology",
-        "format": "Book",
-        "isbn": "9780374533557",
-        "title": "Thinking, Fast and Slow",
-        "author": "Daniel Kahneman",
-        "edition": "1st Edition",
-        "publisher": "Farrar, Straus and Giroux",
-        "total_copies": 3,
-        "available_copies": 2,
-        "description": "Kahneman explains the two systems that drive human thought — fast, intuitive System 1 and slow, deliberate System 2 — and how their interplay leads to predictable errors of judgment. Essential reading for engineers and managers alike.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780374533557-L.jpg",
-    },
-    {
-        "accession_number": "BB-0019",
-        "category": "Fiction",
-        "format": "Book",
-        "isbn": "9780330508537",
-        "title": "The Hitchhiker's Guide to the Galaxy",
-        "author": "Douglas Adams",
-        "edition": "25th Anniversary Ed.",
-        "publisher": "Pan Books",
-        "total_copies": 3,
-        "available_copies": 2,
-        "description": "Adams's comedic sci-fi classic follows Arthur Dent after Earth is demolished to make way for a hyperspace bypass. A beloved staple of any college library, it teaches systems thinking through absurdist wit.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780330508537-L.jpg",
-    },
-    {
-        "accession_number": "BB-0020",
-        "category": "Management",
-        "format": "Book",
-        "isbn": "9781942788294",
-        "title": "The Phoenix Project",
-        "author": "Gene Kim, Kevin Behr, George Spafford",
-        "edition": "5th Anniversary Ed.",
-        "publisher": "IT Revolution Press",
-        "total_copies": 3,
-        "available_copies": 0,
-        "description": "A novel about IT, DevOps, and helping your business win. Bill Palmer must save a failing IT project in 90 days, learning along the way that IT work is just like manufacturing plant work. The go-to book for understanding DevOps culture.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9781942788294-L.jpg",
-    },
-    {
-        "accession_number": "BB-0021",
-        "category": "Computer Science",
-        "format": "Reference",
-        "isbn": "9780199688975",
-        "title": "Oxford Dictionary of Computer Science",
-        "author": "Oxford University Press",
-        "edition": "6th Edition",
-        "publisher": "Oxford University Press",
-        "total_copies": 2,
-        "available_copies": 2,
-        "description": "A comprehensive reference covering over 6,500 terms across all areas of computing, from algorithms and data structures to networks and artificial intelligence. An authoritative desk reference for students and practitioners alike.",
-        "cover_url": "https://covers.openlibrary.org/b/isbn/9780199688975-L.jpg",
-    },
+SAMPLE_BOOKS = [
+    {"accession_number": "BB-0001", "title": "Introduction to Algorithms", "author": "Cormen, Leiserson, Rivest, Stein", "isbn": "978-0262033848", "category": "Algorithms & DS", "edition": "4th", "publisher": "MIT Press", "total_copies": 5, "available_copies": 5},
+    {"accession_number": "BB-0002", "title": "Clean Code", "author": "Robert C. Martin", "isbn": "978-0132350884", "category": "Computer Science", "edition": "1st", "publisher": "Prentice Hall", "total_copies": 4, "available_copies": 4},
+    {"accession_number": "BB-0003", "title": "The Pragmatic Programmer", "author": "David Thomas, Andrew Hunt", "isbn": "978-0135957059", "category": "Computer Science", "edition": "2nd", "publisher": "Addison-Wesley", "total_copies": 3, "available_copies": 3},
+    {"accession_number": "BB-0004", "title": "Design Patterns", "author": "Gang of Four", "isbn": "978-0201633610", "category": "Computer Science", "edition": "1st", "publisher": "Addison-Wesley", "total_copies": 3, "available_copies": 3},
+    {"accession_number": "BB-0005", "title": "Operating System Concepts", "author": "Silberschatz, Galvin, Gagne", "isbn": "978-1119800361", "category": "Systems & OS", "edition": "10th", "publisher": "Wiley", "total_copies": 6, "available_copies": 6},
+    {"accession_number": "BB-0006", "title": "Computer Networks", "author": "Andrew S. Tanenbaum", "isbn": "978-0132126953", "category": "Networks", "edition": "5th", "publisher": "Prentice Hall", "total_copies": 4, "available_copies": 4},
+    {"accession_number": "BB-0007", "title": "Database System Concepts", "author": "Silberschatz, Korth, Sudarshan", "isbn": "978-0078022159", "category": "Computer Science", "edition": "7th", "publisher": "McGraw-Hill", "total_copies": 4, "available_copies": 4},
+    {"accession_number": "BB-0008", "title": "Structure and Interpretation of Computer Programs", "author": "Abelson, Sussman", "isbn": "978-0262510875", "category": "Computer Science", "edition": "2nd", "publisher": "MIT Press", "total_copies": 2, "available_copies": 2},
+    {"accession_number": "BB-0009", "title": "Compilers: Principles, Techniques, and Tools", "author": "Aho, Lam, Sethi, Ullman", "isbn": "978-0321486813", "category": "Systems & OS", "edition": "2nd", "publisher": "Addison-Wesley", "total_copies": 3, "available_copies": 3},
+    {"accession_number": "BB-0010", "title": "Discrete Mathematics and Its Applications", "author": "Kenneth H. Rosen", "isbn": "978-0073383095", "category": "Mathematics", "edition": "8th", "publisher": "McGraw-Hill", "total_copies": 5, "available_copies": 5},
+    {"accession_number": "BB-0011", "title": "Linear Algebra and Its Applications", "author": "David C. Lay", "isbn": "978-0321982384", "category": "Mathematics", "edition": "5th", "publisher": "Pearson", "total_copies": 4, "available_copies": 4},
+    {"accession_number": "BB-0012", "title": "Calculus: Early Transcendentals", "author": "James Stewart", "isbn": "978-1285741550", "category": "Mathematics", "edition": "8th", "publisher": "Cengage", "total_copies": 5, "available_copies": 5},
+    {"accession_number": "BB-0013", "title": "Artificial Intelligence: A Modern Approach", "author": "Russell, Norvig", "isbn": "978-0134610993", "category": "Computer Science", "edition": "4th", "publisher": "Pearson", "total_copies": 4, "available_copies": 4},
+    {"accession_number": "BB-0014", "title": "Deep Learning", "author": "Goodfellow, Bengio, Courville", "isbn": "978-0262035613", "category": "Computer Science", "edition": "1st", "publisher": "MIT Press", "total_copies": 3, "available_copies": 3},
+    {"accession_number": "BB-0015", "title": "The Art of Computer Programming Vol. 1", "author": "Donald E. Knuth", "isbn": "978-0201896831", "category": "Algorithms & DS", "edition": "3rd", "publisher": "Addison-Wesley", "total_copies": 2, "available_copies": 2},
+    {"accession_number": "BB-0016", "title": "Computer Organization and Design", "author": "Patterson, Hennessy", "isbn": "978-0128201091", "category": "Engineering", "edition": "6th", "publisher": "Morgan Kaufmann", "total_copies": 4, "available_copies": 4},
+    {"accession_number": "BB-0017", "title": "Engineering Mathematics", "author": "K.A. Stroud", "isbn": "978-1352010275", "category": "Mathematics", "edition": "8th", "publisher": "Red Globe Press", "total_copies": 5, "available_copies": 5},
+    {"accession_number": "BB-0018", "title": "Data Communications and Networking", "author": "Behrouz A. Forouzan", "isbn": "978-0073376226", "category": "Networks", "edition": "5th", "publisher": "McGraw-Hill", "total_copies": 3, "available_copies": 3},
+    {"accession_number": "BB-0019", "title": "Software Engineering", "author": "Ian Sommerville", "isbn": "978-0133943030", "category": "Computer Science", "edition": "10th", "publisher": "Pearson", "total_copies": 4, "available_copies": 4},
+    {"accession_number": "BB-0020", "title": "Python Crash Course", "author": "Eric Matthes", "isbn": "978-1718502703", "category": "Computer Science", "edition": "3rd", "publisher": "No Starch Press", "total_copies": 5, "available_copies": 5},
+    {"accession_number": "BB-0021", "title": "Thinking, Fast and Slow", "author": "Daniel Kahneman", "isbn": "978-0374533557", "category": "Psychology", "edition": "1st", "publisher": "Farrar, Straus and Giroux", "total_copies": 3, "available_copies": 3},
+    {"accession_number": "BB-0022", "title": "Sapiens: A Brief History of Humankind", "author": "Yuval Noah Harari", "isbn": "978-0062316097", "category": "History", "edition": "1st", "publisher": "Harper", "total_copies": 4, "available_copies": 4},
+    {"accession_number": "BB-0023", "title": "The Design of Everyday Things", "author": "Don Norman", "isbn": "978-0465050659", "category": "Design", "edition": "Revised", "publisher": "Basic Books", "total_copies": 3, "available_copies": 3},
+    {"accession_number": "BB-0024", "title": "Atomic Habits", "author": "James Clear", "isbn": "978-0735211292", "category": "Management", "edition": "1st", "publisher": "Avery", "total_copies": 5, "available_copies": 5},
+    {"accession_number": "BB-0025", "title": "The Lean Startup", "author": "Eric Ries", "isbn": "978-0307887894", "category": "Management", "edition": "1st", "publisher": "Crown Business", "total_copies": 3, "available_copies": 3},
+    {"accession_number": "BB-0026", "title": "1984", "author": "George Orwell", "isbn": "978-0451524935", "category": "Fiction", "edition": "Signet Classic", "publisher": "Signet Classic", "total_copies": 4, "available_copies": 4},
+    {"accession_number": "BB-0027", "title": "To Kill a Mockingbird", "author": "Harper Lee", "isbn": "978-0061935466", "category": "Fiction", "edition": "Perennial Modern Classics", "publisher": "Harper Perennial", "total_copies": 3, "available_copies": 3},
+    {"accession_number": "BB-0028", "title": "The Great Gatsby", "author": "F. Scott Fitzgerald", "isbn": "978-0743273565", "category": "Fiction", "edition": "1st Scribner", "publisher": "Scribner", "total_copies": 4, "available_copies": 4},
+    {"accession_number": "BB-0029", "title": "Introduction to the Theory of Computation", "author": "Michael Sipser", "isbn": "978-1133187790", "category": "Computer Science", "edition": "3rd", "publisher": "Cengage", "total_copies": 3, "available_copies": 3},
+    {"accession_number": "BB-0030", "title": "Cracking the Coding Interview", "author": "Gayle Laakmann McDowell", "isbn": "978-0984782857", "category": "Computer Science", "edition": "6th", "publisher": "CareerCup", "total_copies": 5, "available_copies": 5},
 ]
 
 
 class Command(BaseCommand):
-    help = "Seed initial books into the Book Bank database matching the frontend catalog"
+    help = "Seed the database with sample book records."
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--clear",
+            action="store_true",
+            help="Delete all existing books before seeding.",
+        )
 
     def handle(self, *args, **options):
-        import json
-        from pathlib import Path
-        from django.conf import settings
+        if options["clear"]:
+            deleted, _ = Book.objects.all().delete()
+            self.stdout.write(self.style.WARNING(f"Deleted {deleted} existing book(s)."))
 
-        mock_path = Path(settings.BASE_DIR).parent / "book-bank-ui" / "src" / "data" / "mockBooks.json"
-        
-        books_to_seed = []
-        if mock_path.exists():
-            try:
-                with open(mock_path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                    for item in data:
-                        books_to_seed.append({
-                            "accession_number": item.get("accession") or f"BB-{item.get('id', 1):04d}",
-                            "title": item.get("rawTitle") or item.get("title", ""),
-                            "author": item.get("author") or ", ".join(item.get("authors", [])),
-                            "isbn": item.get("isbn13") or item.get("isbn", ""),
-                            "category": item.get("category") or item.get("overrideCat", "Other"),
-                            "format": item.get("format", "Book"),
-                            "edition": item.get("edition", "1st Edition"),
-                            "publisher": item.get("publisher", ""),
-                            "total_copies": item.get("totalCopies", 3),
-                            "available_copies": item.get("availableCopies", 1),
-                            "description": item.get("description", ""),
-                            "cover_url": item.get("coverLarge") or item.get("coverGrid") or item.get("thumbnail", ""),
-                        })
-            except Exception as e:
-                self.stdout.write(self.style.WARNING(f"Could not load mockBooks.json ({e}), falling back to built-in seed data."))
+        created = 0
+        skipped = 0
 
-        if not books_to_seed:
-            books_to_seed = SEED_DATA
-
-        created_count = 0
-        updated_count = 0
-        for item in books_to_seed:
-            acc = item["accession_number"]
-            book, created = Book.objects.update_or_create(
-                accession_number=acc,
-                defaults=item,
+        for book_data in SAMPLE_BOOKS:
+            _, was_created = Book.objects.get_or_create(
+                accession_number=book_data["accession_number"],
+                defaults=book_data,
             )
-            if created:
-                created_count += 1
+            if was_created:
+                created += 1
             else:
-                updated_count += 1
+                skipped += 1
 
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"Book seeding complete: {created_count} created, {updated_count} updated. Total: {len(books_to_seed)}"
-            )
-        )
+        self.stdout.write(self.style.SUCCESS(
+            f"Seeding complete: {created} book(s) created, {skipped} already existed."
+        ))
+

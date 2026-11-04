@@ -4,7 +4,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-# ── Django Admin Branding ─────────────────────────────────────────────────────
+# Django Admin branding
 admin.site.site_header = "Book Bank — Administration"
 admin.site.site_title = "Book Bank Admin Portal"
 admin.site.index_title = "Library System Administration"
@@ -23,3 +23,4 @@ urlpatterns = [
     path("api/notifications/", include("apps.notifications.urls")),
     path("api/reports/",       include("apps.reports.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

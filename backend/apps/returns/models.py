@@ -14,3 +14,4 @@ class Return(models.Model):
 
     def __str__(self):
         return f"Return of {self.issue.book} by {self.issue.student}"
+

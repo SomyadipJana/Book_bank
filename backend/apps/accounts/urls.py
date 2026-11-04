@@ -1,10 +1,14 @@
+"""URL patterns for authentication endpoints."""
 from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("register/",  views.register,      name="auth-register"),
-    path("login/",     views.login,          name="auth-login"),
-    path("logout/",    views.logout,         name="auth-logout"),
-    path("refresh/",   views.token_refresh,  name="auth-refresh"),
-    path("me/",        views.me,             name="auth-me"),
+    path("register/",       views.register,          name="auth-register"),
+    path("login/",          views.login,              name="auth-login"),
+    path("logout/",         views.logout,             name="auth-logout"),
+    path("refresh/",        views.token_refresh,      name="auth-refresh"),
+    path("me/",             views.me,                 name="auth-me"),
+    path("change-password/",views.change_password,    name="auth-change-password"),
+    path("create-vendor/",  views.create_vendor_user, name="auth-create-vendor"),
 ]
+

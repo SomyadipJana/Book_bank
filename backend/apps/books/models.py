@@ -52,3 +52,4 @@ class Book(models.Model):
     @property
     def available(self):
         return self.available_copies > 0
+

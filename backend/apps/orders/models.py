@@ -28,6 +28,14 @@ class PurchaseOrder(models.Model):
     def total_items_count(self):
         return sum(item.quantity for item in self.items.all())
 
+    @property
+    def total_value(self):
+        total = sum(
+            (item.unit_price or 0) * item.quantity
+            for item in self.items.all()
+        )
+        return total
+
 
 class PurchaseOrderItem(models.Model):
     order = models.ForeignKey(PurchaseOrder, on_delete=models.CASCADE, related_name="items")
@@ -40,3 +48,4 @@ class PurchaseOrderItem(models.Model):
 
     def __str__(self):
         return f"{self.book_title} x {self.quantity} (PO #{self.order.id})"
+

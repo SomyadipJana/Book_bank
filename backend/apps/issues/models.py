@@ -19,7 +19,7 @@ class Issue(models.Model):
     )
     issue_date = models.DateField(auto_now_add=True)
     due_date = models.DateField()
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.ACTIVE)
     renewal_count = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
@@ -39,5 +39,5 @@ class Issue(models.Model):
 
     @property
     def days_remaining(self):
-        delta = self.due_date - timezone.now().date()
-        return delta.days
+        return (self.due_date - timezone.now().date()).days
+

@@ -5,7 +5,7 @@ from apps.accounts.models import User
 
 class StudentProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="student_profile")
-    enrollment_number = models.CharField(max_length=50, unique=True)
+    enrollment_number = models.CharField(max_length=50, unique=True, db_index=True)
     date_of_birth = models.DateField(null=True, blank=True)
     department = models.CharField(max_length=255, blank=True)
     year_of_study = models.PositiveSmallIntegerField(null=True, blank=True)
@@ -28,8 +28,16 @@ class StudentProfile(models.Model):
     def can_borrow(self):
         return self.active_loans_count < self.borrowing_limit
 
+    @property
+    def total_unpaid_fines(self):
+        from django.db.models import Sum
+        result = self.fines.filter(status="unpaid").aggregate(total=Sum("amount"))
+        return result["total"] or 0
+
 
 class Document(models.Model):
+    """Student verification documents (uploaded files)."""
+
     class DocType(models.TextChoices):
         ID_CARD = "id_card", "ID Card"
         ENROLLMENT_PROOF = "enrollment_proof", "Enrollment Proof"
@@ -40,6 +48,8 @@ class Document(models.Model):
     document_type = models.CharField(max_length=30, choices=DocType.choices, default=DocType.OTHER)
     file = models.FileField(upload_to="documents/%Y/%m/")
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    notes = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return f"{self.student} — {self.document_type}"
+
