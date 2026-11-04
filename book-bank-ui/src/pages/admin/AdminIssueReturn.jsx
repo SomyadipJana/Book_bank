@@ -4,7 +4,7 @@
  * Connected to shared AdminStore.
  */
 import React, { useState, useMemo } from 'react'
-import { useAdminStore } from '../../data/adminStore'
+import { useAdminStore } from '../../data/adminStore.jsx'
 import { Button } from '../../components'
 
 function addDays(date, days) {

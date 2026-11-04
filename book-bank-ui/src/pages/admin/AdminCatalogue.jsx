@@ -8,7 +8,7 @@
  */
 import React, { useState, useMemo, useRef } from 'react'
 import { CATEGORIES, coverGridUrl } from '../../data/books'
-import { useAdminStore } from '../../data/adminStore'
+import { useAdminStore } from '../../data/adminStore.jsx'
 import { Button } from '../../components'
 
 /* ── Tiny cover thumbnail ── */

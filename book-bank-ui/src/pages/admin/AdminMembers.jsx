@@ -6,7 +6,7 @@
  * - Connected to shared AdminStore
  */
 import React, { useState, useMemo, useEffect } from 'react'
-import { useAdminStore } from '../../data/adminStore'
+import { useAdminStore } from '../../data/adminStore.jsx'
 import { Button } from '../../components'
 
 const DEPTS = [

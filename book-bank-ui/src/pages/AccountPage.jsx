@@ -139,14 +139,17 @@ const HISTORY_RECORDS = [
   },
 ]
 
+// Fine rate: ₹5 per working day overdue (Mon–Sat, excluding Sundays)
+const FINE_RATE_PER_WORKING_DAY = 5
+
 const INITIAL_FINES = [
   {
     id: 'fine-1',
     date: '2026-08-25',
     accession: 'BB-0018',
     item: 'The Design of Everyday Things',
-    reason: 'Overdue loan (5 days @ $0.50/day)',
-    amount: 2.50,
+    reason: 'Overdue loan (5 working days @ ₹5/day)',
+    amount: 25,   // 5 working days × ₹5
     status: 'Unpaid',
   },
   {
@@ -154,8 +157,8 @@ const INITIAL_FINES = [
     date: '2026-06-18',
     accession: 'BB-0020',
     item: 'The Elements of Typographic Style',
-    reason: 'Overdue loan (2 days @ $1.00/day)',
-    amount: 2.00,
+    reason: 'Overdue loan (2 working days @ ₹5/day)',
+    amount: 10,   // 2 working days × ₹5
     status: 'Unpaid',
   },
   {
@@ -164,7 +167,7 @@ const INITIAL_FINES = [
     accession: 'BB-0003',
     item: 'The Brothers Karamazov',
     reason: 'Replacement barcode label fee',
-    amount: 1.50,
+    amount: 50,
     status: 'Settled',
   },
 ]
@@ -252,11 +255,21 @@ function BookThumb({ title, category, accession }) {
 export default function AccountPage({ initialTab = 'loans' }) {
   const { user, logout } = useAuth()
 
+  useEffect(() => {
+    if (user?.role === 'librarian') {
+      window.location.hash = '#admin'
+    }
+  }, [user])
+
+  if (user?.role === 'librarian') {
+    return null
+  }
+
   // Build profile from auth context; fall back to defaults for mock fields that aren't in auth
   const USER_PROFILE = {
     name: user?.name || FALLBACK_PROFILE.name,
     enrollmentNo: user?.enrollmentNo || FALLBACK_PROFILE.enrollmentNo,
-    role: user?.role === 'librarian' ? 'Librarian' : (user?.studentRole || FALLBACK_PROFILE.role),
+    role: user?.studentRole || FALLBACK_PROFILE.role,
     joined: user?.joined || FALLBACK_PROFILE.joined,
     expires: user?.expires || FALLBACK_PROFILE.expires,
   }
@@ -340,7 +353,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
             <div className={`account-stat-chip${totalUnpaidFines > 0 ? ' account-stat-chip--alert' : ''}`}>
               <span className="account-stat-chip__label">FINES DUE</span>
               <span className="account-stat-chip__value">
-                ${totalUnpaidFines.toFixed(2)}
+                ₹{totalUnpaidFines.toFixed(0)}
               </span>
             </div>
           </div>
@@ -387,7 +400,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
               className={`account-tab${activeTab === 'fines' ? ' active' : ''}`}
               onClick={() => handleTabChange('fines')}
             >
-              Fines {totalUnpaidFines > 0 && <span className="account-tab-count account-tab-count--alert">${totalUnpaidFines.toFixed(2)}</span>}
+              Fines {totalUnpaidFines > 0 && <span className="account-tab-count account-tab-count--alert">₹{totalUnpaidFines.toFixed(0)}</span>}
             </button>
           </div>
         </div>
@@ -640,7 +653,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
             <div id="panel-fines" role="tabpanel" aria-labelledby="tab-fines" className="account-panel">
               <div className="account-panel-header">
                 <span className="account-section-eyebrow">ASSESSED FINES &amp; CHARGES</span>
-                <span className="account-loan-policy">Daily late fee: $0.50/day standard &middot; $1.00/day reserved titles</span>
+                <span className="account-loan-policy">Daily late fee: ₹5/working day (Mon–Sat) on all overdue loans</span>
               </div>
 
               <div className="account-table-wrapper">
@@ -672,7 +685,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
                           </span>
                         </td>
                         <td className="account-fine-amount" style={{ textAlign: 'right' }}>
-                          ${fine.amount.toFixed(2)}
+                          ₹{fine.amount.toFixed(0)}
                         </td>
                         <td style={{ textAlign: 'right' }}>
                           {fine.status === 'Unpaid' ? (

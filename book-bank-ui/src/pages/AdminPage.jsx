@@ -44,13 +44,26 @@ export default function AdminPage({ currentTab = 'dashboard' }) {
   const isLibrarian = user?.role === 'librarian'
 
   useEffect(() => {
-    if (!isLibrarian) window.location.hash = '#login'
-  }, [isLibrarian])
+    if (!user) {
+      window.location.hash = '#login'
+    } else if (!isLibrarian) {
+      sessionStorage.setItem('bb_flash_msg', 'Not authorised')
+      window.location.hash = '#catalog'
+    }
+  }, [user, isLibrarian])
+
+  if (!user) {
+    return (
+      <div style={{ padding: 40, fontFamily: 'var(--font-mono)', color: 'var(--color-charcoal-60)', fontSize: 14 }}>
+        Redirecting to Sign In…
+      </div>
+    )
+  }
 
   if (!isLibrarian) {
     return (
       <div style={{ padding: 40, fontFamily: 'var(--font-mono)', color: 'var(--color-oxblood)', fontSize: 14 }}>
-        Redirecting to Sign In…
+        Not authorised. Redirecting to Catalogue…
       </div>
     )
   }

@@ -29,6 +29,21 @@ function IconChevron() {
 
 function CatalogNav() {
   const { user, logout } = useAuth()
+  const isLibrarian = user?.role === 'librarian'
+
+  const navItems = isLibrarian
+    ? [
+        { label: 'Catalogue', href: '#catalog', active: true },
+        { label: 'Admin',     href: '#admin',   active: false },
+        { label: 'About',     href: '#',        active: false },
+      ]
+    : [
+        { label: 'Catalogue',    href: '#catalog',      active: true  },
+        { label: 'My Loans',     href: '#loans',        active: false },
+        { label: 'Reservations', href: '#reservations', active: false },
+        { label: 'About',        href: '#',             active: false },
+      ]
+
   return (
     <nav className="nav" role="navigation" aria-label="Main navigation">
       <a
@@ -50,13 +65,7 @@ function CatalogNav() {
       </a>
 
       <ul className="nav__links" aria-label="Site sections">
-        {[
-          { label: 'Catalogue',    href: '#catalog',      active: true  },
-          { label: 'My Loans',     href: '#loans',        active: false },
-          { label: 'Reservations', href: '#reservations', active: false },
-          { label: 'About',        href: '#',             active: false },
-          ...(user?.role === 'librarian' ? [{ label: 'Admin', href: '#admin', active: false }] : []),
-        ].map(l => (
+        {navItems.map(l => (
           <li key={l.label}>
             <a
               href={l.href}
@@ -76,9 +85,33 @@ function CatalogNav() {
 
       {user ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <span className="account-nav-user" title={user.name}>
-            <span className="account-nav-avatar">{user.name[0].toUpperCase()}</span>
+          <span
+            className="account-nav-user"
+            title={user.name}
+            style={{ cursor: 'pointer' }}
+            onClick={() => { window.location.hash = isLibrarian ? '#admin' : '#loans' }}
+          >
+            <span className="account-nav-avatar">{user.name ? user.name[0].toUpperCase() : 'U'}</span>
             <span className="account-nav-name">{user.name}</span>
+            {isLibrarian && (
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.625rem',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  padding: '2px 6px',
+                  borderRadius: '3px',
+                  backgroundColor: 'rgba(198, 138, 46, 0.15)',
+                  color: 'var(--color-ochre)',
+                  border: '1px solid rgba(198, 138, 46, 0.35)',
+                  fontWeight: 600,
+                  marginLeft: 4,
+                }}
+              >
+                Librarian
+              </span>
+            )}
           </span>
           <button
             type="button"
@@ -274,9 +307,39 @@ export default function CatalogPage() {
     window.location.hash = `#book/${accession}`
   }, [])
 
+  const [flashMsg, setFlashMsg] = useState(() => {
+    const msg = sessionStorage.getItem('bb_flash_msg')
+    if (msg) sessionStorage.removeItem('bb_flash_msg')
+    return msg
+  })
+
   return (
     <div className="catalog-page">
       <CatalogNav />
+
+      {flashMsg && (
+        <div style={{
+          backgroundColor: 'var(--color-oxblood)',
+          color: 'var(--color-paper)',
+          padding: '10px 24px',
+          textAlign: 'center',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.8125rem',
+          letterSpacing: '0.05em',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '16px'
+        }}>
+          <span>⚠ {flashMsg}</span>
+          <button
+            onClick={() => setFlashMsg(null)}
+            style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', fontSize: '1rem', lineHeight: 1 }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* ── Topbar ── */}
       <div className="catalog-topbar" role="search">

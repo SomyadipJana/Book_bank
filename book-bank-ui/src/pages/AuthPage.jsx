@@ -71,9 +71,9 @@ function LoginForm({ onSwitch }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!email) return
-    const loggedUser = login(email, password, '') // name comes from stored session or email prefix
+    const loggedUser = login(email, password, '')
     if (loggedUser.role === 'librarian') {
-      window.location.hash = '#admin/dashboard'
+      window.location.hash = '#admin'
     } else {
       window.location.hash = '#catalog'
     }
@@ -124,18 +124,14 @@ function RegisterForm({ onSwitch }) {
   const [email,     setEmail]     = useState('')
   const [password,  setPassword]  = useState('')
   const [confirm,   setConfirm]   = useState('')
-  const { login } = useAuth()
+  const { register } = useAuth()
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!email || !name) return
-    // Pass the user's typed name so it's stored in the session
-    const loggedUser = login(email, password, name)
-    if (loggedUser.role === 'librarian') {
-      window.location.hash = '#admin/dashboard'
-    } else {
-      window.location.hash = '#catalog'
-    }
+    // Registered accounts are always students
+    register(name, email, password, studentId)
+    window.location.hash = '#catalog'
   }
 
   return (

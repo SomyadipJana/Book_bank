@@ -4,7 +4,7 @@
  * Connected to shared AdminStore.
  */
 import React from 'react'
-import { useAdminStore } from '../../data/adminStore'
+import { useAdminStore } from '../../data/adminStore.jsx'
 import { MOCK_ORDERS } from '../../data/mockAdminData'
 
 export default function AdminDashboard() {

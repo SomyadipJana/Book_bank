@@ -4,7 +4,7 @@
  * Table of all active and overdue loans with real-time renewal logic and restriction checks.
  */
 import React, { useState, useMemo } from 'react'
-import { useAdminStore } from '../../data/adminStore'
+import { useAdminStore } from '../../data/adminStore.jsx'
 
 export default function AdminLoans() {
   const { books, loans, renewLoan } = useAdminStore()

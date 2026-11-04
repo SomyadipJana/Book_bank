@@ -14,18 +14,32 @@ export function AuthProvider({ children }) {
 
   const login = (email, password, name = '') => {
     const isLibrarian =
-      email.toLowerCase().includes('librarian') ||
-      (email === 'admin@bookbank.edu' && password === 'admin123')
+      (email.trim().toLowerCase() === 'admin@bookbank.edu' && password === 'admin123') ||
+      email.trim().toLowerCase().includes('librarian')
 
-    // Use the explicitly supplied name; fall back to a sensible default
-    const resolvedName =
-      name.trim() ||
-      (email === 'admin@bookbank.edu' ? 'Librarian Admin' : (isLibrarian ? 'Marian Paroo' : email.split('@')[0]))
+    const resolvedName = isLibrarian
+      ? 'Librarian'
+      : (name.trim() || email.split('@')[0])
 
+    // TODO: replace with the role returned by the real backend login response.
     const loggedUser = {
       name: resolvedName,
       email,
       role: isLibrarian ? 'librarian' : 'student',
+    }
+    setUser(loggedUser)
+    localStorage.setItem('bb_user', JSON.stringify(loggedUser))
+    return loggedUser
+  }
+
+  const register = (name, email, password, studentId = '') => {
+    // Registered accounts are always students
+    // TODO: replace with the role returned by the real backend login response.
+    const loggedUser = {
+      name: name.trim() || (email ? email.split('@')[0] : 'Student'),
+      email,
+      studentId,
+      role: 'student',
     }
     setUser(loggedUser)
     localStorage.setItem('bb_user', JSON.stringify(loggedUser))
@@ -38,7 +52,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   )
