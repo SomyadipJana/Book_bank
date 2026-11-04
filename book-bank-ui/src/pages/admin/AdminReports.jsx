@@ -2,10 +2,10 @@
  * AdminReports.jsx
  * 3 tabs: Overdue items, Inventory status, Most borrowed.
  * Export CSV button on each tab.
+ * Connected to shared AdminStore.
  */
 import React, { useState, useMemo } from 'react'
-import { ALL_BOOKS } from '../../data/books'
-import { MOCK_LOANS, getOverdueLoans } from '../../data/mockAdminData'
+import { useAdminStore } from '../../data/adminStore'
 import { Button } from '../../components'
 
 /* ── CSV export utility ── */
@@ -24,19 +24,22 @@ function downloadCSV(content, filename) {
   const blob = new Blob([content], { type: 'text/csv' })
   const url  = URL.createObjectURL(blob)
   const a    = document.createElement('a')
-  a.href = url; a.download = filename; a.click()
+  a.href = url
+  a.download = filename
+  a.click()
   URL.revokeObjectURL(url)
 }
 
 /* ── Tab: Overdue ── */
 function OverdueTab() {
-  const loans = getOverdueLoans()
+  const { books, loans } = useAdminStore()
+  const overdueLoans = useMemo(() => loans.filter(l => l.status === 'overdue'), [loans])
 
   const cols = [
     { label: 'Loan ID',    key: 'id' },
     { label: 'Member',     key: 'memberName' },
     { label: 'Accession',  key: 'accession' },
-    { label: 'Book Title', get: r => ALL_BOOKS.find(b => b.accession === r.accession)?.title ?? r.accession },
+    { label: 'Book Title', get: r => books.find(b => b.accession === r.accession)?.title ?? r.accession },
     { label: 'Due Date',   key: 'dueDate' },
     { label: 'Days Late',  get: r => {
       const diff = Math.floor((Date.now() - new Date(r.dueDate)) / 86400000)
@@ -44,7 +47,7 @@ function OverdueTab() {
     }},
   ]
 
-  const export_ = () => downloadCSV(toCSV(loans, cols), 'overdue_report.csv')
+  const export_ = () => downloadCSV(toCSV(overdueLoans, cols), 'overdue_report.csv')
 
   return (
     <div>
@@ -53,32 +56,34 @@ function OverdueTab() {
           Export CSV
         </Button>
       </div>
-      <table className="admin-table">
-        <thead>
-          <tr>{cols.map(c => <th key={c.label}>{c.label}</th>)}</tr>
-        </thead>
-        <tbody>
-          {loans.map(l => {
-            const book = ALL_BOOKS.find(b => b.accession === l.accession)
-            const daysLate = Math.floor((Date.now() - new Date(l.dueDate)) / 86400000)
-            return (
-              <tr key={l.id}>
-                <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{l.id}</td>
-                <td style={{ fontWeight: 500 }}>{l.memberName}</td>
-                <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{l.accession}</td>
-                <td style={{ maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {book?.title ?? l.accession}
-                </td>
-                <td style={{ color: 'var(--color-oxblood)', fontFamily: 'var(--font-mono)', fontSize: '0.78rem' }}>{l.dueDate}</td>
-                <td style={{ color: 'var(--color-oxblood)', fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 600 }}>
-                  {daysLate > 0 ? `+${daysLate}d` : '—'}
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-      {loans.length === 0 && (
+      <div style={{ overflowX: 'auto' }}>
+        <table className="admin-table">
+          <thead>
+            <tr>{cols.map(c => <th key={c.label}>{c.label}</th>)}</tr>
+          </thead>
+          <tbody>
+            {overdueLoans.map(l => {
+              const book = books.find(b => b.accession === l.accession)
+              const daysLate = Math.floor((Date.now() - new Date(l.dueDate)) / 86400000)
+              return (
+                <tr key={l.id}>
+                  <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{l.id}</td>
+                  <td style={{ fontWeight: 500 }}>{l.memberName}</td>
+                  <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{l.accession}</td>
+                  <td style={{ maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {book?.title ?? l.accession}
+                  </td>
+                  <td style={{ color: 'var(--color-oxblood)', fontFamily: 'var(--font-mono)', fontSize: '0.78rem' }}>{l.dueDate}</td>
+                  <td style={{ color: 'var(--color-oxblood)', fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 600 }}>
+                    {daysLate > 0 ? `+${daysLate}d` : '—'}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+      {overdueLoans.length === 0 && (
         <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--color-charcoal-60)', fontFamily: 'var(--font-mono)', fontSize: '0.8125rem' }}>
           No overdue loans. Great news!
         </div>
@@ -89,20 +94,27 @@ function OverdueTab() {
 
 /* ── Tab: Inventory ── */
 function InventoryTab() {
+  const { books } = useAdminStore()
+
   const cols = [
     { label: 'Accession',  key: 'accession' },
     { label: 'Title',      key: 'title' },
     { label: 'Category',   key: 'category' },
     { label: 'Total',      key: 'totalCopies' },
-    { label: 'Available',  get: b => b.availableCopies ?? (b.available ? 1 : 0) },
-    { label: 'On Loan',    get: b => (b.totalCopies || 1) - (b.availableCopies ?? (b.available ? 1 : 0)) },
+    { label: 'Available',  get: b => b.availableCopies ?? 0 },
+    { label: 'On Loan',    get: b => (b.totalCopies || 1) - (b.availableCopies ?? 0) },
   ]
 
-  const rows = ALL_BOOKS.map(b => ({ ...b })).sort((a, b) => {
-    const aAvail = a.availableCopies ?? (a.available ? 1 : 0)
-    const bAvail = b.availableCopies ?? (b.available ? 1 : 0)
-    return aAvail - bAvail // least available first
-  })
+  const rows = useMemo(() => {
+    return books
+      .filter(b => !b.retired && b.bookStatus !== 'Retired')
+      .map(b => ({ ...b }))
+      .sort((a, b) => {
+        const aAvail = a.availableCopies ?? 0
+        const bAvail = b.availableCopies ?? 0
+        return aAvail - bAvail // least available first
+      })
+  }, [books])
 
   const export_ = () => downloadCSV(toCSV(rows, cols), 'inventory_report.csv')
 
@@ -113,64 +125,71 @@ function InventoryTab() {
           Export CSV
         </Button>
       </div>
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>Accession</th>
-            <th>Title</th>
-            <th>Category</th>
-            <th style={{ textAlign: 'center' }}>Total</th>
-            <th style={{ textAlign: 'center' }}>Available</th>
-            <th style={{ textAlign: 'center' }}>On Loan</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map(b => {
-            const avail  = b.availableCopies ?? (b.available ? 1 : 0)
-            const onLoan = (b.totalCopies || 1) - avail
-            return (
-              <tr key={b.accession}>
-                <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{b.accession}</td>
-                <td style={{ fontWeight: 500, maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.title}</td>
-                <td>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', backgroundColor: 'rgba(30,61,50,0.07)', padding: '2px 6px', borderRadius: 3 }}>
-                    {b.category}
-                  </span>
-                </td>
-                <td style={{ textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>{b.totalCopies || 1}</td>
-                <td style={{ textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: avail === 0 ? 'var(--color-oxblood)' : 'var(--color-ink)' }}>
-                  {avail}
-                </td>
-                <td style={{ textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: onLoan > 0 ? 'var(--color-ochre)' : 'var(--color-charcoal-60)' }}>
-                  {onLoan}
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+      <div style={{ overflowX: 'auto' }}>
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Accession</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th style={{ textAlign: 'center' }}>Total</th>
+              <th style={{ textAlign: 'center' }}>Available</th>
+              <th style={{ textAlign: 'center' }}>On Loan</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(b => {
+              const avail  = b.availableCopies ?? 0
+              const onLoan = Math.max(0, (b.totalCopies || 1) - avail)
+              return (
+                <tr key={b.accession}>
+                  <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{b.accession}</td>
+                  <td style={{ fontWeight: 500, maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.title}</td>
+                  <td>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', backgroundColor: 'rgba(30,61,50,0.07)', padding: '2px 6px', borderRadius: 3 }}>
+                      {b.category}
+                    </span>
+                  </td>
+                  <td style={{ textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>{b.totalCopies || 1}</td>
+                  <td style={{ textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: avail === 0 ? 'var(--color-oxblood)' : 'var(--color-ink)' }}>
+                    {avail}
+                  </td>
+                  <td style={{ textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: onLoan > 0 ? 'var(--color-ochre)' : 'var(--color-charcoal-60)' }}>
+                    {onLoan}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
 
 /* ── Tab: Most Borrowed ── */
 function MostBorrowedTab() {
-  // Count loan occurrences per accession
-  const counts = {}
-  MOCK_LOANS.forEach(l => { counts[l.accession] = (counts[l.accession] || 0) + 1 })
+  const { books, loans } = useAdminStore()
 
-  const rows = ALL_BOOKS
-    .map(b => ({ ...b, borrowCount: counts[b.accession] || 0 }))
-    .sort((a, b) => b.borrowCount - a.borrowCount)
-    .slice(0, 50)
+  const { rows, cols } = useMemo(() => {
+    // Count loan occurrences per accession
+    const counts = {}
+    loans.forEach(l => { counts[l.accession] = (counts[l.accession] || 0) + 1 })
 
-  const cols = [
-    { label: 'Rank',       get: (_, i) => i + 1 },
-    { label: 'Accession',  key: 'accession' },
-    { label: 'Title',      key: 'title' },
-    { label: 'Category',   key: 'category' },
-    { label: 'Times Issued', key: 'borrowCount' },
-  ]
+    const r = books
+      .map(b => ({ ...b, borrowCount: counts[b.accession] || 0 }))
+      .sort((a, b) => b.borrowCount - a.borrowCount)
+      .slice(0, 50)
+
+    const c = [
+      { label: 'Rank',       get: (_, i) => i + 1 },
+      { label: 'Accession',  key: 'accession' },
+      { label: 'Title',      key: 'title' },
+      { label: 'Category',   key: 'category' },
+      { label: 'Times Issued', key: 'borrowCount' },
+    ]
+    return { rows: r, cols: c }
+  }, [books, loans])
 
   const export_ = () => downloadCSV(
     toCSV(rows.map((r, i) => ({ ...r, rank: i + 1 })), cols),
@@ -184,35 +203,37 @@ function MostBorrowedTab() {
           Export CSV
         </Button>
       </div>
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th style={{ textAlign: 'center' }}>#</th>
-            <th>Accession</th>
-            <th>Title</th>
-            <th>Category</th>
-            <th style={{ textAlign: 'center' }}>Times Issued</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((b, i) => (
-            <tr key={b.accession}>
-              <td style={{ textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--color-charcoal-60)' }}>
-                {i < 3 ? ['🥇','🥈','🥉'][i] : i + 1}
-              </td>
-              <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{b.accession}</td>
-              <td style={{ fontWeight: 500, maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.title}</td>
-              <td style={{ color: 'var(--color-charcoal-60)' }}>{b.category}</td>
-              <td style={{
-                textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.85rem',
-                fontWeight: 600, color: b.borrowCount > 0 ? 'var(--color-ochre)' : 'var(--color-charcoal-60)'
-              }}>
-                {b.borrowCount}
-              </td>
+      <div style={{ overflowX: 'auto' }}>
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th style={{ textAlign: 'center' }}>#</th>
+              <th>Accession</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th style={{ textAlign: 'center' }}>Times Issued</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((b, i) => (
+              <tr key={b.accession}>
+                <td style={{ textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--color-charcoal-60)' }}>
+                  {i < 3 ? ['🥇','🥈','🥉'][i] : i + 1}
+                </td>
+                <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{b.accession}</td>
+                <td style={{ fontWeight: 500, maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.title}</td>
+                <td style={{ color: 'var(--color-charcoal-60)' }}>{b.category}</td>
+                <td style={{
+                  textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.85rem',
+                  fontWeight: 600, color: b.borrowCount > 0 ? 'var(--color-ochre)' : 'var(--color-charcoal-60)'
+                }}>
+                  {b.borrowCount}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

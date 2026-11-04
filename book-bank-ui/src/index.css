@@ -2806,3 +2806,79 @@ body {
   .dark-hero__wordmark { padding: 24px 24px 0; }
   .dark-hero__quote    { padding: 28px 24px 32px; }
 }
+
+/* ── 5-Status dots in admin ────────────────────────────────── */
+.admin-status-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.admin-status-dot--available { background-color: var(--color-ink); }
+.admin-status-dot--loan      { background-color: var(--color-ochre); }
+.admin-status-dot--reserved  { background-color: #6B4EAF; }
+.admin-status-dot--overdue   { background-color: var(--color-oxblood); }
+.admin-status-dot--retired   { background-color: rgba(43,38,32,0.3); }
+
+/* admin-badge--reserved */
+.admin-badge--reserved {
+  background-color: rgba(107, 78, 175, 0.12);
+  color: #6B4EAF;
+}
+
+/* ── Cover upload zone ─────────────────────────────────────── */
+.cover-upload-zone {
+  border: 2px dashed rgba(30,61,50,0.25);
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+  position: relative;
+}
+.cover-upload-zone:hover,
+.cover-upload-zone.drag-over {
+  border-color: var(--color-ochre);
+  background-color: rgba(198,138,46,0.04);
+}
+.cover-upload-zone input[type="file"] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.cover-preview {
+  display: block;
+  width: 80px;        /* 2:3 ratio at 80x120 */
+  height: 120px;
+  object-fit: cover;
+  border-radius: 2px;
+  margin: 0 auto 8px;
+  border: 1px solid rgba(30,61,50,0.15);
+}
+
+/* ── Student detail panel ──────────────────────────────────── */
+.member-detail-panel {
+  position: fixed; top: 0; right: 0; bottom: 0; width: 480px;
+  background-color: var(--color-paper);
+  border-left: 1px solid rgba(30,61,50,0.15);
+  z-index: 201; overflow-y: auto; padding: 32px 28px;
+  box-sizing: border-box; display: flex; flex-direction: column; gap: 20px;
+}
+
+/* ── Renew button (ochre text, no fill) ────────────────────── */
+.admin-action-btn--renew {
+  color: #8B5C00;
+  border-color: rgba(198,138,46,0.3);
+}
+.admin-action-btn--renew:hover:not(:disabled) {
+  background-color: rgba(198,138,46,0.08);
+}
+.admin-action-btn--renew:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Retired row ───────────────────────────────────────────── */
+.admin-table tr.row--retired td {
+  opacity: 0.45;
+}
+

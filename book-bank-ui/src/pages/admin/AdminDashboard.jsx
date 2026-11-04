@@ -1,26 +1,32 @@
 /**
  * AdminDashboard.jsx
  * Stat chips + quick-summary recent activity tables.
+ * Connected to shared AdminStore.
  */
 import React from 'react'
-import { ALL_BOOKS } from '../../data/books'
-import { MOCK_MEMBERS, MOCK_ORDERS, getOverdueLoans, getActiveLoans } from '../../data/mockAdminData'
+import { useAdminStore } from '../../data/adminStore'
+import { MOCK_ORDERS } from '../../data/mockAdminData'
 
 export default function AdminDashboard() {
-  const totalBooks  = ALL_BOOKS.reduce((s, b) => s + (b.totalCopies || 1), 0)
-  const booksOnLoan = ALL_BOOKS.reduce((s, b) => s + ((b.totalCopies || 1) - (b.availableCopies ?? (b.available ? 1 : 0))), 0)
-  const overdueLoans = getOverdueLoans()
-  const activeLoans  = getActiveLoans()
+  const { books, members, loans } = useAdminStore()
+
+  const nonRetiredBooks = books.filter(b => !b.retired)
+  const totalBooks = nonRetiredBooks.reduce((s, b) => s + (Number(b.totalCopies) || 1), 0)
+  const booksOnLoan = loans.filter(l => l.status === 'active' || l.status === 'overdue').length
+  const overdueLoans = loans.filter(l => l.status === 'overdue')
+  const reservedLoans = loans.filter(l => l.status === 'reserved')
+  const activeStudents = members.filter(m => m.status === 'active').length
   const pendingOrders = MOCK_ORDERS.filter(o => o.status === 'pending').length
-  const totalFines = MOCK_MEMBERS.reduce((s, m) => s + m.fines, 0)
+  const totalFines = members.reduce((s, m) => s + (Number(m.fines) || 0), 0)
 
   const stats = [
-    { label: 'Total Books',     value: totalBooks,          color: 'var(--color-ink)' },
-    { label: 'On Loan',         value: booksOnLoan,         color: 'var(--color-ochre)' },
-    { label: 'Overdue',         value: overdueLoans.length, color: 'var(--color-oxblood)' },
-    { label: 'Active Members',  value: MOCK_MEMBERS.filter(m => m.status === 'active').length, color: 'var(--color-ink)' },
-    { label: 'Pending Orders',  value: pendingOrders,       color: 'var(--color-ochre)' },
-    { label: 'Fines Owed (₹)', value: `₹${totalFines.toFixed(2)}`, color: 'var(--color-oxblood)' },
+    { label: 'Total Books',     value: totalBooks,            color: 'var(--color-ink)' },
+    { label: 'On Loan',         value: booksOnLoan,           color: 'var(--color-ochre)' },
+    { label: 'Overdue',         value: overdueLoans.length,   color: 'var(--color-oxblood)' },
+    { label: 'Reserved',        value: reservedLoans.length,  color: '#6B4EAF' },
+    { label: 'Active Students', value: activeStudents,        color: 'var(--color-ink)' },
+    { label: 'Pending Orders',  value: pendingOrders,         color: 'var(--color-ochre)' },
+    { label: 'Fines Owed (₹)',  value: `₹${totalFines.toFixed(2)}`, color: 'var(--color-oxblood)' },
   ]
 
   return (
@@ -47,15 +53,24 @@ export default function AdminDashboard() {
             </thead>
             <tbody>
               {overdueLoans.slice(0, 6).map(l => {
-                const book = ALL_BOOKS.find(b => b.accession === l.accession)
+                const book = books.find(b => b.accession === l.accession)
                 return (
                   <tr key={l.id}>
                     <td>{l.memberName}</td>
-                    <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{l.accession}</td>
-                    <td style={{ color: 'var(--color-oxblood)' }}>{l.dueDate}</td>
+                    <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>
+                      {l.accession} {book ? `· ${book.title.slice(0, 18)}…` : ''}
+                    </td>
+                    <td style={{ color: 'var(--color-oxblood)', fontWeight: 600 }}>{l.dueDate}</td>
                   </tr>
                 )
               })}
+              {overdueLoans.length === 0 && (
+                <tr>
+                  <td colSpan={3} style={{ textAlign: 'center', color: 'var(--color-charcoal-60)', padding: '20px 0' }}>
+                    No overdue loans.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </section>

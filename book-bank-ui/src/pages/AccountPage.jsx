@@ -172,6 +172,7 @@ const INITIAL_FINES = [
 /* ── Navigation Header ───────────────────────────────────── */
 
 function AccountNav({ activeTab = 'loans', userName = '', onLogout }) {
+  const { user } = useAuth()
   return (
     <nav className="nav" role="navigation" aria-label="Main navigation">
       <a
@@ -198,6 +199,7 @@ function AccountNav({ activeTab = 'loans', userName = '', onLogout }) {
           { label: 'My Loans',     href: '#loans',        active: activeTab === 'loans' },
           { label: 'Reservations', href: '#reservations', active: activeTab === 'reservations' },
           { label: 'About',        href: '#',             active: false },
+          ...(user?.role === 'librarian' ? [{ label: 'Admin', href: '#admin', active: false }] : []),
         ].map(l => (
           <li key={l.label}>
             <a

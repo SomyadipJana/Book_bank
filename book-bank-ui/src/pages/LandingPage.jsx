@@ -202,6 +202,7 @@ function Nav() {
           { label: 'My Loans',     href: '#loans' },
           { label: 'Reservations', href: '#reservations' },
           { label: 'About',        href: '#' },
+          ...(user?.role === 'librarian' ? [{ label: 'Admin', href: '#admin' }] : []),
         ].map((l) => (
           <li key={l.label}><a href={l.href} className="nav__link">{l.label}</a></li>
         ))}

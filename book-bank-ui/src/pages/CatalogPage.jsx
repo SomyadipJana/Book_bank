@@ -55,6 +55,7 @@ function CatalogNav() {
           { label: 'My Loans',     href: '#loans',        active: false },
           { label: 'Reservations', href: '#reservations', active: false },
           { label: 'About',        href: '#',             active: false },
+          ...(user?.role === 'librarian' ? [{ label: 'Admin', href: '#admin', active: false }] : []),
         ].map(l => (
           <li key={l.label}>
             <a

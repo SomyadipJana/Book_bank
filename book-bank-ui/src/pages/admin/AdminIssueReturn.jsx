@@ -1,11 +1,10 @@
 /**
  * AdminIssueReturn.jsx
  * Search a member + search a book, then one-click Issue or Return.
- * Shows due date on Issue.
+ * Connected to shared AdminStore.
  */
 import React, { useState, useMemo } from 'react'
-import { ALL_BOOKS } from '../../data/books'
-import { MOCK_MEMBERS, MOCK_LOANS } from '../../data/mockAdminData'
+import { useAdminStore } from '../../data/adminStore'
 import { Button } from '../../components'
 
 function addDays(date, days) {
@@ -15,11 +14,12 @@ function addDays(date, days) {
 }
 
 export default function AdminIssueReturn() {
+  const { books, members, loans, issueLoan, returnLoan } = useAdminStore()
+
   const [memberQ, setMemberQ] = useState('')
   const [bookQ,   setBookQ]   = useState('')
   const [selectedMember, setSelectedMember] = useState(null)
   const [selectedBook,   setSelectedBook]   = useState(null)
-  const [transactions, setTransactions] = useState([...MOCK_LOANS])
   const [toast, setToast] = useState(null)
 
   const showToast = (msg, type = 'success') => {
@@ -31,66 +31,89 @@ export default function AdminIssueReturn() {
   const memberResults = useMemo(() => {
     if (!memberQ.trim()) return []
     const q = memberQ.toLowerCase()
-    return MOCK_MEMBERS.filter(m =>
-      m.name.toLowerCase().includes(q) ||
-      m.id.toLowerCase().includes(q) ||
-      m.dept.toLowerCase().includes(q)
-    ).slice(0, 6)
-  }, [memberQ])
+    return members
+      .filter(m =>
+        m.name.toLowerCase().includes(q) ||
+        m.id.toLowerCase().includes(q) ||
+        m.dept.toLowerCase().includes(q)
+      )
+      .slice(0, 6)
+  }, [memberQ, members])
 
-  /* ── Book search ── */
+  /* ── Book search (filter out retired) ── */
   const bookResults = useMemo(() => {
     if (!bookQ.trim()) return []
     const q = bookQ.toLowerCase()
-    return ALL_BOOKS.filter(b =>
-      b.title.toLowerCase().includes(q) ||
-      b.author?.toLowerCase().includes(q) ||
-      b.accession?.toLowerCase().includes(q)
-    ).slice(0, 6)
-  }, [bookQ])
+    return books
+      .filter(b => !b.retired && b.bookStatus !== 'Retired')
+      .filter(b =>
+        b.title.toLowerCase().includes(q) ||
+        b.author?.toLowerCase().includes(q) ||
+        b.accession?.toLowerCase().includes(q)
+      )
+      .slice(0, 6)
+  }, [bookQ, books])
+
+  // Keep selectedBook synchronized with store
+  const liveBook = selectedBook
+    ? books.find(b => b.accession === selectedBook.accession) || selectedBook
+    : null
 
   /* ── Active loan for selected book ── */
-  const activeLoan = useMemo(() =>
-    selectedBook
-      ? transactions.find(t => t.accession === selectedBook.accession && (t.status === 'active' || t.status === 'overdue'))
-      : null,
-    [transactions, selectedBook]
-  )
+  const activeLoan = useMemo(() => {
+    if (!liveBook) return null
+    return (
+      loans.find(
+        t =>
+          t.accession === liveBook.accession &&
+          (t.status === 'active' || t.status === 'overdue')
+      ) || null
+    )
+  }, [loans, liveBook])
 
-  const canIssue   = selectedMember && selectedBook && !activeLoan && (selectedBook.availableCopies ?? (selectedBook.available ? 1 : 0)) > 0
-  const canReturn  = selectedMember && selectedBook && activeLoan
+  const canIssue =
+    selectedMember &&
+    liveBook &&
+    !activeLoan &&
+    (liveBook.availableCopies ?? 0) > 0
 
-  const today    = new Date().toISOString().split('T')[0]
-  const dueDate  = addDays(today, 14)
+  const canReturn = selectedMember && liveBook && activeLoan
+
+  const today = new Date().toISOString().split('T')[0]
+  const dueDate = addDays(today, 14)
 
   const handleIssue = () => {
     const newLoan = {
-      id: `LN-${String(transactions.length + 1).padStart(4, '0')}`,
-      accession: selectedBook.accession,
-      memberId:  selectedMember.id,
+      id: `LN-${String(loans.length + 1).padStart(4, '0')}`,
+      accession: liveBook.accession,
+      memberId: selectedMember.id,
       memberName: selectedMember.name,
       issuedDate: today,
       dueDate,
       returnedDate: null,
       status: 'active',
+      renewCount: 0,
     }
-    setTransactions(t => [newLoan, ...t])
-    showToast(`"${selectedBook.title}" issued to ${selectedMember.name}. Due: ${dueDate}`)
-    setSelectedMember(null); setSelectedBook(null)
-    setMemberQ(''); setBookQ('')
+    issueLoan(newLoan)
+    showToast(`"${liveBook.title}" issued to ${selectedMember.name}. Due: ${dueDate}`)
+    setSelectedMember(null)
+    setSelectedBook(null)
+    setMemberQ('')
+    setBookQ('')
   }
 
   const handleReturn = () => {
-    setTransactions(t =>
-      t.map(l => l.id === activeLoan.id ? { ...l, returnedDate: today, status: 'returned' } : l)
-    )
-    showToast(`"${selectedBook.title}" returned by ${selectedMember.name}.`)
-    setSelectedMember(null); setSelectedBook(null)
-    setMemberQ(''); setBookQ('')
+    returnLoan(activeLoan.id, today)
+    showToast(`"${liveBook.title}" returned by ${selectedMember.name}.`)
+    setSelectedMember(null)
+    setSelectedBook(null)
+    setMemberQ('')
+    setBookQ('')
   }
 
   const inputStyle = {
-    width: '100%', boxSizing: 'border-box',
+    width: '100%',
+    boxSizing: 'border-box',
     padding: '9px 12px',
     border: '1px solid rgba(30,61,50,0.18)',
     borderRadius: 4,
@@ -104,63 +127,134 @@ export default function AdminIssueReturn() {
     <button
       onClick={() => onSelect(item)}
       style={{
-        display: 'block', width: '100%', textAlign: 'left',
-        padding: '8px 12px', border: 'none', borderBottom: '1px solid rgba(30,61,50,0.06)',
-        background: 'none', cursor: 'pointer', fontFamily: 'var(--font-body)', fontSize: '0.8125rem',
+        display: 'block',
+        width: '100%',
+        textAlign: 'left',
+        padding: '8px 12px',
+        border: 'none',
+        borderBottom: '1px solid rgba(30,61,50,0.06)',
+        background: 'none',
+        cursor: 'pointer',
+        fontFamily: 'var(--font-body)',
+        fontSize: '0.8125rem',
       }}
-      onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(30,61,50,0.04)'}
-      onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+      onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(30,61,50,0.04)')}
+      onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
     >
       {isBook ? (
         <>
           <span style={{ fontWeight: 500 }}>{item.title}</span>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--color-charcoal-60)', marginLeft: 8 }}>{item.accession}</span>
-          <span style={{ marginLeft: 8, fontSize: '0.75rem', color: (item.availableCopies ?? (item.available ? 1 : 0)) > 0 ? 'var(--color-ink)' : 'var(--color-oxblood)' }}>
-            {(item.availableCopies ?? (item.available ? 1 : 0)) > 0 ? '● Available' : '● On Loan'}
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.65rem',
+              color: 'var(--color-charcoal-60)',
+              marginLeft: 8,
+            }}
+          >
+            {item.accession}
+          </span>
+          <span
+            style={{
+              marginLeft: 8,
+              fontSize: '0.75rem',
+              color: (item.availableCopies ?? 0) > 0 ? 'var(--color-ink)' : 'var(--color-oxblood)',
+            }}
+          >
+            {(item.availableCopies ?? 0) > 0 ? `● ${item.availableCopies} Available` : '● On Loan'}
           </span>
         </>
       ) : (
         <>
           <span style={{ fontWeight: 500 }}>{item.name}</span>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--color-charcoal-60)', marginLeft: 8 }}>{item.id}</span>
-          <span style={{ marginLeft: 8, fontSize: '0.75rem', color: 'var(--color-charcoal-60)' }}>{item.dept}</span>
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.65rem',
+              color: 'var(--color-charcoal-60)',
+              marginLeft: 8,
+            }}
+          >
+            {item.id}
+          </span>
+          <span style={{ marginLeft: 8, fontSize: '0.75rem', color: 'var(--color-charcoal-60)' }}>
+            {item.dept}
+          </span>
         </>
       )}
     </button>
   )
 
   return (
-    <div style={{ maxWidth: 800 }}>
+    <div style={{ maxWidth: 860 }}>
       {/* Toast */}
       {toast && (
-        <div style={{
-          position: 'fixed', top: 24, right: 24, zIndex: 300,
-          padding: '12px 20px', borderRadius: 6,
-          backgroundColor: toast.type === 'success' ? 'var(--color-ink)' : 'var(--color-oxblood)',
-          color: 'var(--color-paper)', fontFamily: 'var(--font-body)', fontSize: '0.875rem',
-          boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
-        }}>
+        <div
+          style={{
+            position: 'fixed',
+            top: 24,
+            right: 24,
+            zIndex: 300,
+            padding: '12px 20px',
+            borderRadius: 4,
+            backgroundColor: toast.type === 'success' ? 'var(--color-ink)' : 'var(--color-oxblood)',
+            color: 'var(--color-paper)',
+            fontFamily: 'var(--font-body)',
+            fontSize: '0.875rem',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+          }}
+        >
           {toast.msg}
         </div>
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28, marginBottom: 32 }}>
-
         {/* Member search */}
         <div>
-          <label className="admin-field-label">Member</label>
+          <label className="admin-field-label">Select Member</label>
           <div style={{ position: 'relative' }}>
             {selectedMember ? (
-              <div style={{
-                padding: '9px 12px', border: '1px solid var(--color-ochre)',
-                borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                backgroundColor: 'rgba(198,138,46,0.05)',
-              }}>
+              <div
+                style={{
+                  padding: '9px 12px',
+                  border: '1px solid var(--color-ochre)',
+                  borderRadius: 4,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  backgroundColor: 'rgba(198,138,46,0.05)',
+                }}
+              >
                 <div>
-                  <span style={{ fontWeight: 600, fontFamily: 'var(--font-body)', fontSize: '0.875rem' }}>{selectedMember.name}</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--color-charcoal-60)', marginLeft: 8 }}>{selectedMember.id}</span>
+                  <span style={{ fontWeight: 600, fontFamily: 'var(--font-body)', fontSize: '0.875rem' }}>
+                    {selectedMember.name}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.65rem',
+                      color: 'var(--color-charcoal-60)',
+                      marginLeft: 8,
+                    }}
+                  >
+                    {selectedMember.id}
+                  </span>
                 </div>
-                <button onClick={() => { setSelectedMember(null); setMemberQ('') }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-charcoal-60)', fontSize: 16 }}>✕</button>
+                <button
+                  onClick={() => {
+                    setSelectedMember(null)
+                    setMemberQ('')
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    color: 'var(--color-charcoal-60)',
+                    fontSize: 16,
+                  }}
+                >
+                  ✕
+                </button>
               </div>
             ) : (
               <>
@@ -173,13 +267,30 @@ export default function AdminIssueReturn() {
                   autoComplete="off"
                 />
                 {memberResults.length > 0 && (
-                  <div style={{
-                    position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 10,
-                    backgroundColor: '#fff', border: '1px solid rgba(30,61,50,0.15)',
-                    borderTop: 'none', borderRadius: '0 0 4px 4px', boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-                  }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '100%',
+                      left: 0,
+                      right: 0,
+                      zIndex: 10,
+                      backgroundColor: '#fff',
+                      border: '1px solid rgba(30,61,50,0.15)',
+                      borderTop: 'none',
+                      borderRadius: '0 0 4px 4px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                    }}
+                  >
                     {memberResults.map(m => (
-                      <DropRow key={m.id} item={m} isBook={false} onSelect={m => { setSelectedMember(m); setMemberQ('') }} />
+                      <DropRow
+                        key={m.id}
+                        item={m}
+                        isBook={false}
+                        onSelect={m => {
+                          setSelectedMember(m)
+                          setMemberQ('')
+                        }}
+                      />
                     ))}
                   </div>
                 )}
@@ -190,19 +301,50 @@ export default function AdminIssueReturn() {
 
         {/* Book search */}
         <div>
-          <label className="admin-field-label">Book</label>
+          <label className="admin-field-label">Select Book</label>
           <div style={{ position: 'relative' }}>
-            {selectedBook ? (
-              <div style={{
-                padding: '9px 12px', border: '1px solid var(--color-ochre)',
-                borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                backgroundColor: 'rgba(198,138,46,0.05)',
-              }}>
+            {liveBook ? (
+              <div
+                style={{
+                  padding: '9px 12px',
+                  border: '1px solid var(--color-ochre)',
+                  borderRadius: 4,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  backgroundColor: 'rgba(198,138,46,0.05)',
+                }}
+              >
                 <div>
-                  <span style={{ fontWeight: 600, fontFamily: 'var(--font-body)', fontSize: '0.8125rem' }}>{selectedBook.title}</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--color-charcoal-60)', marginLeft: 8 }}>{selectedBook.accession}</span>
+                  <span style={{ fontWeight: 600, fontFamily: 'var(--font-body)', fontSize: '0.8125rem' }}>
+                    {liveBook.title}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.65rem',
+                      color: 'var(--color-charcoal-60)',
+                      marginLeft: 8,
+                    }}
+                  >
+                    {liveBook.accession}
+                  </span>
                 </div>
-                <button onClick={() => { setSelectedBook(null); setBookQ('') }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-charcoal-60)', fontSize: 16 }}>✕</button>
+                <button
+                  onClick={() => {
+                    setSelectedBook(null)
+                    setBookQ('')
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    color: 'var(--color-charcoal-60)',
+                    fontSize: 16,
+                  }}
+                >
+                  ✕
+                </button>
               </div>
             ) : (
               <>
@@ -215,13 +357,30 @@ export default function AdminIssueReturn() {
                   autoComplete="off"
                 />
                 {bookResults.length > 0 && (
-                  <div style={{
-                    position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 10,
-                    backgroundColor: '#fff', border: '1px solid rgba(30,61,50,0.15)',
-                    borderTop: 'none', borderRadius: '0 0 4px 4px', boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-                  }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '100%',
+                      left: 0,
+                      right: 0,
+                      zIndex: 10,
+                      backgroundColor: '#fff',
+                      border: '1px solid rgba(30,61,50,0.15)',
+                      borderTop: 'none',
+                      borderRadius: '0 0 4px 4px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                    }}
+                  >
                     {bookResults.map(b => (
-                      <DropRow key={b.accession} item={b} isBook={true} onSelect={b => { setSelectedBook(b); setBookQ('') }} />
+                      <DropRow
+                        key={b.accession}
+                        item={b}
+                        isBook={true}
+                        onSelect={b => {
+                          setSelectedBook(b)
+                          setBookQ('')
+                        }}
+                      />
                     ))}
                   </div>
                 )}
@@ -232,32 +391,44 @@ export default function AdminIssueReturn() {
       </div>
 
       {/* Action panel */}
-      <div style={{
-        padding: '20px 24px', border: '1px solid rgba(30,61,50,0.12)', borderRadius: 6,
-        backgroundColor: '#fff', marginBottom: 36,
-      }}>
-        {!selectedMember && !selectedBook && (
+      <div
+        style={{
+          padding: '20px 24px',
+          border: '1px solid rgba(30,61,50,0.12)',
+          borderRadius: 6,
+          backgroundColor: '#fff',
+          marginBottom: 36,
+        }}
+      >
+        {!selectedMember && !liveBook && (
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.875rem', color: 'var(--color-charcoal-60)', margin: 0 }}>
             Search and select a member and a book above to issue or return.
           </p>
         )}
-        {selectedMember && selectedBook && (
+        {selectedMember && liveBook && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
             <div style={{ flex: 1 }}>
               <p style={{ margin: '0 0 4px', fontFamily: 'var(--font-body)', fontSize: '0.875rem' }}>
-                <strong>{selectedMember.name}</strong> {' ↔ '} <strong>{selectedBook.title}</strong>
+                <strong>{selectedMember.name}</strong> {' ↔ '} <strong>{liveBook.title}</strong>
               </p>
               {activeLoan && (
-                <p style={{ margin: 0, fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: activeLoan.status === 'overdue' ? 'var(--color-oxblood)' : 'var(--color-charcoal-60)' }}>
-                  {activeLoan.status === 'overdue' ? '⚠ ' : ''}Loan {activeLoan.id} — Issued {activeLoan.issuedDate} · Due {activeLoan.dueDate}
+                <p
+                  style={{
+                    margin: 0,
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.7rem',
+                    color: activeLoan.status === 'overdue' ? 'var(--color-oxblood)' : 'var(--color-charcoal-60)',
+                  }}
+                >
+                  {activeLoan.status === 'overdue' ? '⚠ ' : ''}Active Loan {activeLoan.id} — Issued {activeLoan.issuedDate} · Due {activeLoan.dueDate}
                 </p>
               )}
               {canIssue && (
                 <p style={{ margin: 0, fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--color-charcoal-60)' }}>
-                  Due date will be <strong>{dueDate}</strong> (14-day loan period)
+                  Due date will be <strong>{dueDate}</strong> (14-day loan period) · Available copies: {liveBook.availableCopies}
                 </p>
               )}
-              {!activeLoan && !canIssue && selectedBook && (
+              {!activeLoan && !canIssue && (
                 <p style={{ margin: 0, fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--color-oxblood)' }}>
                   No copies available — book is fully on loan.
                 </p>
@@ -277,34 +448,52 @@ export default function AdminIssueReturn() {
 
       {/* Recent transactions */}
       <h2 className="admin-section-title">Recent Transactions</h2>
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>Loan ID</th>
-            <th>Member</th>
-            <th>Accession</th>
-            <th>Issued</th>
-            <th>Due</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {transactions.slice(0, 20).map(l => (
-            <tr key={l.id}>
-              <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{l.id}</td>
-              <td>{l.memberName}</td>
-              <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>{l.accession}</td>
-              <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{l.issuedDate}</td>
-              <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: l.status === 'overdue' ? 'var(--color-oxblood)' : undefined }}>{l.dueDate}</td>
-              <td>
-                <span className={`admin-badge admin-badge--${l.status === 'active' ? 'avail' : l.status === 'overdue' ? 'overdue' : 'muted'}`}>
-                  {l.status}
-                </span>
-              </td>
+      <div style={{ overflowX: 'auto' }}>
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Loan ID</th>
+              <th>Member</th>
+              <th>Accession</th>
+              <th>Issued</th>
+              <th>Due</th>
+              <th>Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {loans.slice(0, 20).map(l => (
+              <tr key={l.id}>
+                <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>
+                  {l.id}
+                </td>
+                <td>{l.memberName}</td>
+                <td className="mono-label" style={{ color: 'var(--color-charcoal-60)' }}>
+                  {l.accession}
+                </td>
+                <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{l.issuedDate}</td>
+                <td
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.75rem',
+                    color: l.status === 'overdue' ? 'var(--color-oxblood)' : undefined,
+                  }}
+                >
+                  {l.dueDate}
+                </td>
+                <td>
+                  <span
+                    className={`admin-badge admin-badge--${
+                      l.status === 'active' ? 'avail' : l.status === 'overdue' ? 'overdue' : 'muted'
+                    }`}
+                  >
+                    {l.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

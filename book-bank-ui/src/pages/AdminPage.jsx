@@ -7,6 +7,7 @@
  *
  * Routes:  #admin  →  dashboard
  *          #admin/catalogue
+ *          #admin/loans
  *          #admin/issue-return
  *          #admin/members
  *          #admin/vendors
@@ -18,6 +19,7 @@ import { Button } from '../components'
 
 import AdminDashboard   from './admin/AdminDashboard'
 import AdminCatalogue   from './admin/AdminCatalogue'
+import AdminLoans       from './admin/AdminLoans'
 import AdminIssueReturn from './admin/AdminIssueReturn'
 import AdminMembers     from './admin/AdminMembers'
 import AdminVendors     from './admin/AdminVendors'
@@ -25,8 +27,9 @@ import AdminReports     from './admin/AdminReports'
 
 /* ── Nav configuration ─────────────────────────────────────── */
 const NAV = [
-  { id: 'dashboard',    label: 'Dashboard',       hash: '#admin/dashboard',    action: '+ Refresh Stats' },
+  { id: 'dashboard',    label: 'Dashboard',        hash: '#admin/dashboard',    action: null },
   { id: 'catalogue',    label: 'Catalogue',        hash: '#admin/catalogue',    action: '+ Add Book' },
+  { id: 'loans',        label: 'Loans & Renewals', hash: '#admin/loans',        action: null },
   { id: 'issue-return', label: 'Issue / Return',   hash: '#admin/issue-return', action: null },
   { id: 'members',      label: 'Members',          hash: '#admin/members',      action: '+ Add Member' },
   { id: 'vendors',      label: 'Vendors & Orders', hash: '#admin/vendors',      action: null },
@@ -52,17 +55,17 @@ export default function AdminPage({ currentTab = 'dashboard' }) {
     )
   }
 
-  // ── Header action callback (forwarded from child pages) ───────────────────
-  const [headerActionCb, setHeaderActionCb] = useState(null)
-  const [addBookTrigger, setAddBookTrigger] = useState(null)  // for Catalogue slide-over
+  // ── Header action callbacks (forwarded from child pages) ───────────────────
+  const [addBookTrigger, setAddBookTrigger]     = useState(null)
+  const [addMemberTrigger, setAddMemberTrigger] = useState(null)
 
   const activeNav = NAV.find(n => n.id === currentTab) ?? NAV[0]
 
   const handleHeaderAction = () => {
     if (currentTab === 'catalogue' && addBookTrigger) {
       addBookTrigger()
-    } else if (headerActionCb) {
-      headerActionCb()
+    } else if (currentTab === 'members' && addMemberTrigger) {
+      addMemberTrigger()
     }
   }
 
@@ -73,8 +76,9 @@ export default function AdminPage({ currentTab = 'dashboard' }) {
     switch (currentTab) {
       case 'dashboard':    return <AdminDashboard />
       case 'catalogue':    return <AdminCatalogueWrapper onRegisterAddBook={setAddBookTrigger} />
+      case 'loans':        return <AdminLoans />
       case 'issue-return': return <AdminIssueReturn />
-      case 'members':      return <AdminMembers />
+      case 'members':      return <AdminMembers onAdd={setAddMemberTrigger} />
       case 'vendors':      return <AdminVendors />
       case 'reports':      return <AdminReports />
       default:             return <AdminDashboard />
