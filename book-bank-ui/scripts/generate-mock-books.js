@@ -118,6 +118,56 @@ const TITLES = [
   ['Zero to One Peter Thiel',                      'Management'],
   ['The Lean Startup Eric Ries',                   'Management'],
   ['Drive Daniel Pink',                            'Psychology'],
+
+  /* ── Expanded Academic & Core Titles (Loaded from Google Books API) ── */
+  ['Designing Data-Intensive Applications',         'Computer Science'],
+  ['Computer Systems A Programmer Perspective',     'Computer Science'],
+  ['Database Management Systems Ramakrishnan',      'Computer Science'],
+  ['Speech and Language Processing Jurafsky',       'Computer Science'],
+  ['Reinforcement Learning Sutton Barto',           'Computer Science'],
+  ['Hands-On Machine Learning with Scikit-Learn',   'Computer Science'],
+  ['Grokking Algorithms Aditya Bhargava',           'Algorithms & DS'],
+  ['Algorithms Robert Sedgewick',                   'Algorithms & DS'],
+  ['Algorithms Illuminated Tim Roughgarden',        'Algorithms & DS'],
+  ['Competitive Programming Halim',                 'Algorithms & DS'],
+  ['Refactoring Martin Fowler',                     'Engineering'],
+  ['Clean Architecture Robert Martin',              'Engineering'],
+  ['Building Microservices Sam Newman',             'Engineering'],
+  ['Domain-Driven Design Eric Evans',               'Engineering'],
+  ['Software Architecture in Practice',             'Engineering'],
+  ['Accelerate Nicole Forsgren',                    'Engineering'],
+  ['Test Driven Development Kent Beck',             'Engineering'],
+  ['Designing Distributed Systems Brendan Burns',   'Engineering'],
+  ['Operating Systems Three Easy Pieces',           'Systems & OS'],
+  ['Linux Kernel Development Robert Love',          'Systems & OS'],
+  ['Understanding the Linux Kernel',                'Systems & OS'],
+  ['Distributed Systems Maarten van Steen',         'Systems & OS'],
+  ['Linux System Programming',                      'Systems & OS'],
+  ['Network Warrior Gary Donahue',                  'Networks'],
+  ['High Performance Browser Networking',           'Networks'],
+  ['Cryptography and Network Security',             'Networks'],
+  ['Bulletproof SSL and TLS',                       'Networks'],
+  ['Linear Algebra Done Right Sheldon Axler',       'Mathematics'],
+  ['Introduction to Graph Theory West',             'Mathematics'],
+  ['All of Statistics Larry Wasserman',             'Mathematics'],
+  ['A First Course in Probability Sheldon Ross',    'Mathematics'],
+  ['Differential Equations with Applications',      'Mathematics'],
+  ['1984 George Orwell',                            'Fiction'],
+  ['Brave New World Aldous Huxley',                 'Fiction'],
+  ['Fahrenheit 451 Ray Bradbury',                   'Fiction'],
+  ['To Kill a Mockingbird Harper Lee',              'Fiction'],
+  ['Dune Frank Herbert',                            'Fiction'],
+  ['The Hobbit Tolkien',                            'Fiction'],
+  ['Frankenstein Mary Shelley',                     'Fiction'],
+  ['Influence The Psychology of Persuasion',        'Psychology'],
+  ['Man Search for Meaning Viktor Frankl',          'Psychology'],
+  ['Predictably Irrational Dan Ariely',             'Psychology'],
+  ['The Power of Habit Charles Duhigg',             'Psychology'],
+  ['High Output Management Andrew Grove',           'Management'],
+  ['Measure What Matters John Doerr',               'Management'],
+  ['Good to Great Jim Collins',                     'Management'],
+  ['The Innovators Dilemma Clayton Christensen',    'Management'],
+  ['Rework Jason Fried',                            'Management'],
 ]
 
 /* ── Category → spine colour ─────────────────────────────── */
@@ -368,7 +418,15 @@ async function main() {
     const num = `[${String(i + 1).padStart(2, '0')}/${TITLES.length}]`
     console.log(`\n${num} "${title.slice(0, 60)}"`)
 
-    const prev = existingMap.get(title.toLowerCase())
+    if (i < existing.length && existing[i]) {
+      console.log(`    ↳ [EXISTING] keeping pre-generated entry: acc=${existing[i].accession} ("${existing[i].title}")`)
+      books.push(existing[i])
+      nKept++
+      continue
+    }
+
+    const prev = null
+
     const data = await fetchBook(title, cat)
 
     if (!data) {

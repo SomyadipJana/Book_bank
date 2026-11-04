@@ -198,3 +198,4 @@ To transition from the local synchronized store to a persistent backend:
 ### System & Audit Log
 - `GET /api/activity`: Returns recent audit events with pagination.
 - `GET /api/reports/{type}`: Returns tabular data for `overdue`, `inventory`, `most-borrowed`, or `fines` (with CSV streaming).
+

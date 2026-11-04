@@ -302,8 +302,13 @@ function loadInitialState() {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (raw) {
       const parsed = JSON.parse(raw)
+      // Merge any new seed books that aren't yet in saved books (by accession)
+      const existingAccessions = new Set((parsed.books || []).map(b => b.accession))
+      const newBooksToAdd = INITIAL_BOOKS.filter(b => !existingAccessions.has(b.accession))
+      const mergedBooks = [...(parsed.books || []), ...newBooksToAdd]
+
       return {
-        books: parsed.books || INITIAL_BOOKS,
+        books: mergedBooks,
         members: parsed.members || INITIAL_MEMBERS,
         loans: parsed.loans || INITIAL_LOANS,
         reservations: parsed.reservations || INITIAL_RESERVATIONS,

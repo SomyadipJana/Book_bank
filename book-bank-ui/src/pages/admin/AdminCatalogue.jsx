@@ -619,6 +619,243 @@ function BookSlideOver({ book, onClose }) {
   )
 }
 
+/* ── Google Books Direct Import Modal ── */
+function GoogleBooksImportModal({ isOpen, onClose }) {
+  const { addBook } = useAdminStore()
+  const [query, setQuery] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [results, setResults] = useState([])
+  const [importedSet, setImportedSet] = useState(new Set())
+  const [error, setError] = useState(null)
+
+  const handleSearch = async (e) => {
+    if (e) e.preventDefault()
+    if (!query.trim()) return
+    setLoading(true)
+    setError(null)
+    try {
+      let items = []
+      try {
+        const localRes = await fetch(`http://127.0.0.1:8000/api/books/external-search?q=${encodeURIComponent(query)}`)
+        if (localRes.ok) {
+          const data = await localRes.json()
+          items = data.map(v => ({
+            id: v.isbn_13 || v.title,
+            volumeInfo: {
+              title: v.title,
+              authors: v.authors,
+              description: v.description,
+              publisher: v.publisher,
+              publishedDate: v.publishedDate,
+              categories: v.categories,
+              industryIdentifiers: v.isbn_13 ? [{ type: 'ISBN_13', identifier: v.isbn_13 }] : [],
+              imageLinks: { thumbnail: v.thumbnail },
+              pageCount: v.pageCount,
+            }
+          }))
+        }
+      } catch (err) {
+        // Fallback to direct Google Books API
+      }
+
+      if (items.length === 0) {
+        const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=10`)
+        if (!res.ok) throw new Error('Failed to query Google Books API')
+        const data = await res.json()
+        items = data.items || []
+      }
+
+      setResults(items)
+      if (items.length === 0) {
+        setError('No books found matching your query on Google Books.')
+      }
+    } catch (err) {
+      setError('Could not connect to Google Books API. Please check your network.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleImport = (item) => {
+    const info = item.volumeInfo || {}
+    const isbns = info.industryIdentifiers || []
+    const isbn13 = isbns.find(id => id.type === 'ISBN_13')?.identifier
+    const isbnFallback = isbns[0]?.identifier || ''
+    const isbn = isbn13 || isbnFallback
+
+    const img = (info.imageLinks?.thumbnail || info.imageLinks?.smallThumbnail || '')
+      .replace('http://', 'https://')
+
+    let category = 'Computer Science'
+    const catRaw = (info.categories?.[0] || '').toLowerCase()
+    if (catRaw.includes('algorithm')) category = 'Algorithms & DS'
+    else if (catRaw.includes('engineer')) category = 'Engineering'
+    else if (catRaw.includes('math')) category = 'Mathematics'
+    else if (catRaw.includes('system') || catRaw.includes('operating')) category = 'Systems & OS'
+    else if (catRaw.includes('network')) category = 'Networks'
+    else if (catRaw.includes('fiction') || catRaw.includes('novel')) category = 'Fiction'
+    else if (catRaw.includes('psychol')) category = 'Psychology'
+    else if (catRaw.includes('management') || catRaw.includes('business')) category = 'Management'
+
+    const newBook = {
+      title: info.title || 'Untitled Book',
+      author: info.authors ? info.authors.join(', ') : 'Unknown Author',
+      publisher: info.publisher || 'Unknown Publisher',
+      edition: info.publishedDate ? `${info.publishedDate.slice(0, 4)} Edition` : '1st Edition',
+      category,
+      isbn,
+      totalCopies: 3,
+      availableCopies: 3,
+      description: info.description || '',
+      coverGrid: img || null,
+      coverLarge: img ? img.replace('zoom=1', 'zoom=0') : null,
+      uploadedCover: img || null,
+    }
+
+    addBook(newBook)
+    setImportedSet(prev => new Set([...prev, item.id || info.title]))
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div
+        onClick={onClose}
+        style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(30,61,50,0.5)', backdropFilter: 'blur(2px)' }}
+      />
+      <div style={{
+        position: 'relative',
+        backgroundColor: 'var(--color-paper)',
+        borderRadius: 8,
+        width: 820,
+        maxWidth: '92vw',
+        maxHeight: '88vh',
+        display: 'flex',
+        flexDirection: 'column',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.25)',
+        border: '1px solid rgba(30,61,50,0.2)',
+        overflow: 'hidden',
+      }}>
+        {/* Modal Header */}
+        <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(30,61,50,0.12)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', margin: 0, color: 'var(--color-ink)' }}>
+              Import from Google Books API
+            </h2>
+            <p style={{ margin: '4px 0 0', fontSize: '0.8125rem', color: 'var(--color-charcoal-60)' }}>
+              Search any published book or textbook and import directly into the Book Bank catalogue.
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            style={{ background: 'none', border: 'none', fontSize: 22, cursor: 'pointer', color: 'var(--color-charcoal-60)' }}
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Search bar */}
+        <form onSubmit={handleSearch} style={{ padding: '16px 24px', borderBottom: '1px solid rgba(30,61,50,0.08)', display: 'flex', gap: 10, backgroundColor: '#ffffff' }}>
+          <input
+            type="search"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Search title, author, subject (e.g. Distributed Systems, Kafka, Artificial Intelligence)..."
+            style={{
+              flex: 1,
+              padding: '10px 14px',
+              borderRadius: 4,
+              border: '1px solid rgba(30,61,50,0.2)',
+              fontFamily: 'var(--font-body)',
+              fontSize: '0.875rem',
+              outline: 'none',
+            }}
+            autoFocus
+          />
+          <Button type="submit" variant="ochre" disabled={loading} style={{ fontSize: '0.875rem', padding: '10px 20px' }}>
+            {loading ? 'Searching…' : 'Search API'}
+          </Button>
+        </form>
+
+        {/* Results area */}
+        <div style={{ padding: 24, overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {error && (
+            <div style={{ padding: 12, backgroundColor: 'rgba(122,46,39,0.08)', color: 'var(--color-oxblood)', borderRadius: 4, fontSize: '0.85rem' }}>
+              {error}
+            </div>
+          )}
+
+          {results.map(item => {
+            const info = item.volumeInfo || {}
+            const img = (info.imageLinks?.thumbnail || info.imageLinks?.smallThumbnail || '').replace('http://', 'https://')
+            const isImported = importedSet.has(item.id || info.title)
+
+            return (
+              <div
+                key={item.id || info.title}
+                style={{
+                  display: 'flex',
+                  gap: 16,
+                  alignItems: 'center',
+                  padding: 14,
+                  border: '1px solid rgba(30,61,50,0.1)',
+                  borderRadius: 6,
+                  backgroundColor: '#ffffff',
+                }}
+              >
+                {img ? (
+                  <img src={img} alt="" style={{ width: 44, height: 62, objectFit: 'cover', borderRadius: 3, flexShrink: 0, boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+                ) : (
+                  <div style={{ width: 44, height: 62, backgroundColor: 'var(--color-ink)', borderRadius: 3, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 9 }}>
+                    No Cover
+                  </div>
+                )}
+
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.95rem', color: 'var(--color-charcoal)' }}>
+                    {info.title}
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--color-charcoal-60)', marginTop: 2 }}>
+                    {info.authors?.join(', ') || 'Unknown Author'} · {info.publisher || 'Unknown Publisher'} ({info.publishedDate?.slice(0, 4) || '—'})
+                  </div>
+                  {info.description && (
+                    <div style={{ fontSize: '0.75rem', color: 'var(--color-charcoal)', marginTop: 4, maxHeight: 36, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {info.description.slice(0, 140)}…
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  {isImported ? (
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--color-ink)', fontWeight: 600 }}>
+                      ✓ Added to Library
+                    </span>
+                  ) : (
+                    <Button
+                      variant="secondary"
+                      style={{ fontSize: '0.8125rem', padding: '7px 14px', whiteSpace: 'nowrap' }}
+                      onClick={() => handleImport(item)}
+                    >
+                      + Import Book
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )
+          })}
+
+          {!loading && results.length === 0 && !error && (
+            <div style={{ textAlign: 'center', color: 'var(--color-charcoal-60)', padding: '40px 0', fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
+              Type a book title, author or subject above to search millions of books on Google Books.
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /* ── Main Catalogue view ── */
 export default function AdminCatalogue({ externalSlideOver, onCloseExternalSlideOver }) {
   const { books, retireBook } = useAdminStore()
@@ -629,6 +866,7 @@ export default function AdminCatalogue({ externalSlideOver, onCloseExternalSlide
   const [sortKey, setSortKey]           = useState('accession')
   const [sortDir, setSortDir]           = useState('asc')
   const [slideOver, setSlideOver]       = useState(null) // null | 'add' | book object
+  const [showGoogleImport, setShowGoogleImport] = useState(false)
 
   // Sync external trigger (header "+Add Book" button) with internal slide-over
   React.useEffect(() => {
@@ -733,6 +971,15 @@ export default function AdminCatalogue({ externalSlideOver, onCloseExternalSlide
           <option value="Overdue">Overdue</option>
           <option value="Retired">Retired</option>
         </select>
+
+        <Button
+          variant="secondary"
+          style={{ fontSize: '0.8125rem', padding: '8px 14px', whiteSpace: 'nowrap' }}
+          onClick={() => setShowGoogleImport(true)}
+          title="Search Google Books API and import titles directly into the catalogue"
+        >
+          🌐 Import from Google Books
+        </Button>
 
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--color-charcoal-60)', whiteSpace: 'nowrap' }}>
           {filtered.length} results
@@ -858,6 +1105,12 @@ export default function AdminCatalogue({ externalSlideOver, onCloseExternalSlide
           onClose={handleSlideOverClose}
         />
       )}
+
+      {/* Google Books API direct search & import modal */}
+      <GoogleBooksImportModal
+        isOpen={showGoogleImport}
+        onClose={() => setShowGoogleImport(false)}
+      />
     </div>
   )
 }
