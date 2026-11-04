@@ -69,16 +69,16 @@ export default function AdminPage({ currentTab = 'dashboard' }) {
   }
 
   // ── Header action callbacks (forwarded from child pages) ───────────────────
-  const [addBookTrigger, setAddBookTrigger]     = useState(null)
-  const [addMemberTrigger, setAddMemberTrigger] = useState(null)
+  const addBookTriggerRef = React.useRef(null)
+  const addMemberTriggerRef = React.useRef(null)
 
   const activeNav = NAV.find(n => n.id === currentTab) ?? NAV[0]
 
   const handleHeaderAction = () => {
-    if (currentTab === 'catalogue' && addBookTrigger) {
-      addBookTrigger()
-    } else if (currentTab === 'members' && addMemberTrigger) {
-      addMemberTrigger()
+    if (currentTab === 'catalogue' && addBookTriggerRef.current) {
+      addBookTriggerRef.current()
+    } else if (currentTab === 'members' && addMemberTriggerRef.current) {
+      addMemberTriggerRef.current()
     }
   }
 
@@ -88,10 +88,10 @@ export default function AdminPage({ currentTab = 'dashboard' }) {
   const renderContent = () => {
     switch (currentTab) {
       case 'dashboard':    return <AdminDashboard />
-      case 'catalogue':    return <AdminCatalogueWrapper onRegisterAddBook={setAddBookTrigger} />
+      case 'catalogue':    return <AdminCatalogueWrapper onRegisterAddBook={cb => { addBookTriggerRef.current = cb }} />
       case 'loans':        return <AdminLoans />
       case 'issue-return': return <AdminIssueReturn />
-      case 'members':      return <AdminMembers onAdd={setAddMemberTrigger} />
+      case 'members':      return <AdminMembers onAdd={cb => { addMemberTriggerRef.current = cb }} />
       case 'vendors':      return <AdminVendors />
       case 'reports':      return <AdminReports />
       default:             return <AdminDashboard />
