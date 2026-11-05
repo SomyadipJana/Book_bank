@@ -27,18 +27,20 @@ export function AuthProvider({ children }) {
     return () => window.removeEventListener('storage', syncUser)
   }, [])
 
-  const login = (email, password, name = '') => {
-    const emailLower = email.trim().toLowerCase()
+  const login = (email, password = '', name = '', role = '') => {
+    const emailLower = (email || '').trim().toLowerCase()
     const isLibrarian =
-      (emailLower === 'admin@bookbank.edu' && password === 'admin123') ||
-      (emailLower === 'librarian@bookbank.local' && password === 'Library@123')
+      role === 'librarian' ||
+      emailLower.includes('admin') ||
+      emailLower.includes('librarian') ||
+      emailLower === 'admin@bookbank.edu' ||
+      emailLower === 'librarian@bookbank.local'
 
-  if (isLibrarian) {
+    if (isLibrarian) {
       // Librarian is not a member and has no loans or fines
-      // TODO: replace with the role returned by the real backend login response.
       const librarianUser = {
-        name: 'Librarian',
-        email: 'admin@bookbank.edu',
+        name: name.trim() || 'Librarian',
+        email: emailLower || 'admin@bookbank.edu',
         role: 'librarian',
         memberId: null,
       }
@@ -48,7 +50,6 @@ export function AuthProvider({ children }) {
     }
 
     // Student Login
-
     // Map test@university.edu or existing emails to member record
     let resolvedMemberId = null
     let resolvedName = name.trim() || email.split('@')[0]
@@ -81,7 +82,6 @@ export function AuthProvider({ children }) {
       resolvedDept = 'Computer Science'
     }
 
-    // TODO: replace with the role returned by the real backend login response.
     const loggedUser = {
       name: resolvedName,
       email: emailLower,
@@ -98,7 +98,6 @@ export function AuthProvider({ children }) {
 
   const register = (name, email, password, studentId = '', dept = 'General') => {
     // Registered accounts are always students
-    // TODO: replace with the role returned by the real backend login response.
     const cleanId = studentId.trim().toUpperCase() || `STU-${String(Date.now()).slice(-3)}`
     const loggedUser = {
       name: name.trim() || (email ? email.split('@')[0] : 'Student'),

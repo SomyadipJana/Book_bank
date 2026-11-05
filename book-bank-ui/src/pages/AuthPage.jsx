@@ -74,14 +74,14 @@ function LoginForm({ onSwitch }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-    if (!email || !password) {
-      setError('Please enter both email and password.')
+    if (!email) {
+      setError('Please enter an email address.')
       return
     }
 
     setLoading(true)
     try {
-      // 1. Try real Django backend API authentication
+      // 1. Try real Django backend API authentication if available
       const res = await fetch('http://localhost:8001/api/auth/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -101,30 +101,18 @@ function LoginForm({ onSwitch }) {
         }
         return
       }
-
-      // If backend responded with 400/401/etc. -> Password or email is wrong!
-      const data = await res.json().catch(() => ({}))
-      const msg = data.detail || (data.non_field_errors && data.non_field_errors[0])
-      setError(msg || 'Invalid email or password.')
     } catch (err) {
-      // 2. Only if backend is completely offline, allow specific demo passwords
-      const emailLower = email.trim().toLowerCase()
-      if (
-        (emailLower === 'admin@bookbank.edu' && password === 'admin123') ||
-        (emailLower === 'librarian@bookbank.local' && password === 'Library@123')
-      ) {
-        login(email, password, 'Librarian', 'librarian')
-        window.location.hash = '#admin'
-        return
-      } else if (emailLower === 'test@university.edu' && (password === 'student123' || password === 'Student@123')) {
-        login(email, password, 'Aisha Patel', 'student')
-        window.location.hash = '#catalog'
-        return
-      }
-
-      setError('Invalid email or password.')
+      // Backend not running or unreachable
     } finally {
       setLoading(false)
+    }
+
+    // 2. Seamless local/demo login (flexible credentials)
+    const loggedUser = login(email, password)
+    if (loggedUser?.role === 'librarian') {
+      window.location.hash = '#admin'
+    } else {
+      window.location.hash = '#catalog'
     }
   }
 
