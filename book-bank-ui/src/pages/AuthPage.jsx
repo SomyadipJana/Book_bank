@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { Shelf } from '../components/Shelf'
 import { useLibraryStore } from '../data/libraryStore'
 
-/* ── Icons ───────────────────────────────────────────────── */
+/* ── Icons ─────────────────────────────────────────────────── */
 
 function IconEyeOpen() {
   return (
@@ -67,21 +67,88 @@ function Field({ id, label, type = 'text', value, onChange, placeholder, autoCom
 function LoginForm({ onSwitch }) {
   const [email,    setEmail]    = useState('')
   const [password, setPassword] = useState('')
+  const [error,    setError]    = useState('')
+  const [loading,  setLoading]  = useState(false)
   const { login } = useAuth()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!email) return
-    const loggedUser = login(email, password, '')
-    if (loggedUser.role === 'librarian') {
-      window.location.hash = '#admin'
-    } else {
-      window.location.hash = '#catalog'
+    setError('')
+    if (!email) {
+      setError('Please enter your email address.')
+      return
+    }
+
+    setLoading(true)
+    try {
+      // 1. Try backend API login
+      const res = await fetch('http://localhost:8001/api/auth/login/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), password }),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        localStorage.setItem('bb_access', data.access)
+        localStorage.setItem('bb_refresh', data.refresh)
+        localStorage.setItem('bb_user', JSON.stringify(data.user))
+        const loggedUser = login(data.user.email, password, data.user.full_name)
+        if (data.user.role === 'librarian' || loggedUser?.role === 'librarian') {
+          window.location.hash = '#admin'
+        } else {
+          window.location.hash = '#catalog'
+        }
+        return
+      }
+
+      // 2. If backend returns error, check local demo accounts fallback
+      const data = await res.json().catch(() => ({}))
+      const msg = data.detail || (data.non_field_errors && data.non_field_errors[0])
+
+      const fallbackUser = login(email, password, '')
+      if (fallbackUser) {
+        if (fallbackUser.role === 'librarian') {
+          window.location.hash = '#admin'
+        } else {
+          window.location.hash = '#catalog'
+        }
+        return
+      }
+      setError(msg || 'Invalid email or password.')
+    } catch (err) {
+      // 3. Backend offline: allow demo accounts
+      const fallbackUser = login(email, password, '')
+      if (fallbackUser) {
+        if (fallbackUser.role === 'librarian') {
+          window.location.hash = '#admin'
+        } else {
+          window.location.hash = '#catalog'
+        }
+        return
+      }
+      setError('Could not connect to backend server at http://localhost:8001')
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
     <form className="auth-form" onSubmit={handleSubmit} noValidate>
+      {error && (
+        <div style={{
+          padding: '10px 14px',
+          backgroundColor: 'rgba(122, 46, 39, 0.1)',
+          border: '1px solid var(--color-oxblood)',
+          color: 'var(--color-oxblood)',
+          borderRadius: 4,
+          fontSize: '0.8125rem',
+          lineHeight: 1.4,
+          marginBottom: 12,
+        }}>
+          {error}
+        </div>
+      )}
+
       <Field
         id="login-email" label="Email address" type="email"
         value={email} onChange={setEmail}
@@ -102,9 +169,10 @@ function LoginForm({ onSwitch }) {
       <Button
         variant="ochre"
         type="submit"
+        disabled={loading}
         style={{ width: '100%', padding: '13px 20px', fontSize: '0.9375rem', justifyContent: 'center' }}
       >
-        Sign in
+        {loading ? 'Signing in...' : 'Sign in'}
       </Button>
 
       <p className="auth-switch">
@@ -127,10 +195,11 @@ function RegisterForm({ onSwitch }) {
   const [password,  setPassword]  = useState('')
   const [confirm,   setConfirm]   = useState('')
   const [error,     setError]     = useState(null)
+  const [loading,   setLoading]   = useState(false)
   const { register } = useAuth()
   const { registerMember } = useLibraryStore()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
     if (!email || !name) {
@@ -143,8 +212,32 @@ function RegisterForm({ onSwitch }) {
     }
     const cleanSid = studentId.trim() || `STU-${String(Math.floor(100 + Math.random() * 900))}`
 
+    setLoading(true)
     try {
-      // 1. Register member in the shared library store (rejects duplicates)
+      // 1. Register with backend if available
+      const res = await fetch('http://localhost:8001/api/auth/register/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: name.trim(),
+          enrollment_number: cleanSid,
+          email: email.trim(),
+          password: password || 'Password@123',
+          confirm_password: confirm || password || 'Password@123',
+        }),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        localStorage.setItem('bb_access', data.access)
+        localStorage.setItem('bb_refresh', data.refresh)
+        localStorage.setItem('bb_user', JSON.stringify(data.user))
+      }
+    } catch (e) {
+      // Backend offline fallback
+    }
+
+    try {
+      // 2. Register member in the shared library store
       registerMember({
         name,
         email,
@@ -152,11 +245,13 @@ function RegisterForm({ onSwitch }) {
         dept,
       })
 
-      // 2. Set active user in auth session
+      // 3. Set active user in auth session
       register(name, email, password, cleanSid, dept)
       window.location.hash = '#catalog'
     } catch (err) {
       setError(err.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -222,9 +317,10 @@ function RegisterForm({ onSwitch }) {
       <Button
         variant="ochre"
         type="submit"
+        disabled={loading}
         style={{ width: '100%', padding: '13px 20px', fontSize: '0.9375rem', justifyContent: 'center', marginTop: '4px' }}
       >
-        Create account
+        {loading ? 'Creating account...' : 'Create account'}
       </Button>
 
       <p className="auth-switch">

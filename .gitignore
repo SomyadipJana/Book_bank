@@ -4,18 +4,34 @@
 .env.*.local
 *.env
 
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite3
+db.sqlite3
+staticfiles/
+media/
+.pytest_cache/
+.coverage
+htmlcov/
+
 # dependencies — reinstalled via package.json/requirements.txt
 node_modules/
 venv/
 .venv/
-__pycache__/
-*.py[cod]
+env/
+ENV/
 
 # build output — regenerated, not source
 dist/
 build/
 .next/
 dist-ssr/
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
 
 # OS/editor noise
 .DS_Store

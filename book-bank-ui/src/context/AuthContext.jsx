@@ -114,8 +114,20 @@ export function AuthProvider({ children }) {
   }
 
   const logout = () => {
+    const refreshToken = localStorage.getItem('bb_refresh')
+    if (refreshToken) {
+      try {
+        fetch('http://localhost:8001/api/auth/logout/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refresh: refreshToken }),
+        }).catch(() => {})
+      } catch (e) {}
+    }
     setUser(null)
     localStorage.removeItem('bb_user')
+    localStorage.removeItem('bb_access')
+    localStorage.removeItem('bb_refresh')
   }
 
   return (

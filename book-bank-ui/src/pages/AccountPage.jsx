@@ -4,7 +4,7 @@ import { SPINE } from '../data/books'
 import { useAuth } from '../context/AuthContext'
 import { useLibraryStore, formatDisplayDate, daysBetween } from '../data/libraryStore'
 
-/* ── Small Book Cover Thumbnail ──────────────────────────── */
+/* ΓöÇΓöÇ Small Book Cover Thumbnail ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 function BookThumb({ title, category, accession }) {
   const bg = SPINE[category] || '#1E3D32'
   return (
@@ -15,7 +15,7 @@ function BookThumb({ title, category, accession }) {
   )
 }
 
-/* ── Navigation Header ───────────────────────────────────── */
+/* ΓöÇΓöÇ Navigation Header ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 function AccountNav({ activeTab = 'loans', userName = '', onLogout }) {
   const { user } = useAuth()
   const isLibrarian = user?.role === 'librarian'
@@ -81,7 +81,7 @@ function AccountNav({ activeTab = 'loans', userName = '', onLogout }) {
   )
 }
 
-/* ── Main Component ──────────────────────────────────────── */
+/* ΓöÇΓöÇ Main Component ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 export default function AccountPage({ initialTab = 'loans' }) {
   const { user, logout } = useAuth()
   const {
@@ -154,7 +154,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
     window.history.replaceState(null, '', `#${tab}`)
   }
 
-  /* ── Renew action ── */
+  /* ΓöÇΓöÇ Renew action ΓöÇΓöÇ */
   const handleRenew = (loanId) => {
     try {
       const newDue = renewBook({ loanId, actor: member.name })
@@ -164,7 +164,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
     }
   }
 
-  /* ── Cancel reservation action ── */
+  /* ΓöÇΓöÇ Cancel reservation action ΓöÇΓöÇ */
   const handleCancelHold = (resId) => {
     try {
       cancelReservation({ reservationId: resId, actor: member.name })
@@ -174,7 +174,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
     }
   }
 
-  /* ── Student Notifications (Step 7) ── */
+  /* ΓöÇΓöÇ Student Notifications (Step 7) ΓöÇΓöÇ */
   const notifications = useMemo(() => {
     const list = []
 
@@ -195,7 +195,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
         list.push({
           id: `notif-overdue-${l.id}`,
           type: 'overdue',
-          msg: `"${l.bookTitle}" is ${l.daysLate} day(s) overdue! Fine accrued: ₹${l.accruedFine}. Please return it immediately.`,
+          msg: `"${l.bookTitle}" is ${l.daysLate} day(s) overdue! Fine accrued: Γé╣${l.accruedFine}. Please return it immediately.`,
         })
       } else if (l.daysLeft <= 2) {
         list.push({
@@ -211,7 +211,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
       list.push({
         id: 'notif-fine',
         type: 'fine',
-        msg: `You have total unpaid fines of ₹${member.totalFinesDue.toFixed(2)}. Borrowing and renewals are paused until cleared by the librarian.`,
+        msg: `You have total unpaid fines of Γé╣${member.totalFinesDue.toFixed(2)}. Borrowing and renewals are paused until cleared by the librarian.`,
       })
     }
 
@@ -252,7 +252,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
       )}
 
       <main className="account-main">
-        {/* ── Top Identity & Stat Chips Strip ── */}
+        {/* ΓöÇΓöÇ Top Identity & Stat Chips Strip ΓöÇΓöÇ */}
         <header className="account-header">
           <div className="account-id-block">
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -282,13 +282,13 @@ export default function AccountPage({ initialTab = 'loans' }) {
             <div className={`account-stat-chip${member.totalFinesDue > 0 ? ' account-stat-chip--alert' : ''}`}>
               <span className="account-stat-chip__label">FINES DUE</span>
               <span className="account-stat-chip__value">
-                ₹{member.totalFinesDue.toFixed(2)}
+                Γé╣{member.totalFinesDue.toFixed(2)}
               </span>
             </div>
           </div>
         </header>
 
-        {/* ── Student Notifications Strip (Step 7) ── */}
+        {/* ΓöÇΓöÇ Student Notifications Strip (Step 7) ΓöÇΓöÇ */}
         {notifications.length > 0 && (
           <div style={{ marginBottom: 24, display: 'flex', flexDirection: 'column', gap: 8 }}>
             {notifications.map(n => (
@@ -308,14 +308,14 @@ export default function AccountPage({ initialTab = 'loans' }) {
                   color: n.type === 'overdue' || n.type === 'fine' ? 'var(--color-oxblood)' : n.type === 'ready' ? 'var(--color-ink)' : '#8B5C00',
                 }}
               >
-                <span>{n.type === 'ready' ? '🔔' : n.type === 'overdue' ? '⚠️' : 'ℹ️'}</span>
+                <span>{n.type === 'ready' ? '≡ƒöö' : n.type === 'overdue' ? 'ΓÜá∩╕Å' : 'Γä╣∩╕Å'}</span>
                 <span>{n.msg}</span>
               </div>
             ))}
           </div>
         )}
 
-        {/* ── Underline Tabs ── */}
+        {/* ΓöÇΓöÇ Underline Tabs ΓöÇΓöÇ */}
         <div className="account-tabs-wrap">
           <div className="account-tabs" role="tablist" aria-label="Account sections">
             <button
@@ -359,12 +359,12 @@ export default function AccountPage({ initialTab = 'loans' }) {
               className={`account-tab${activeTab === 'fines' ? ' active' : ''}`}
               onClick={() => handleTabChange('fines')}
             >
-              Fines {member.totalFinesDue > 0 && <span className="account-tab-count account-tab-count--alert">₹{member.totalFinesDue.toFixed(0)}</span>}
+              Fines {member.totalFinesDue > 0 && <span className="account-tab-count account-tab-count--alert">Γé╣{member.totalFinesDue.toFixed(0)}</span>}
             </button>
           </div>
         </div>
 
-        {/* ── Tab Panels ── */}
+        {/* ΓöÇΓöÇ Tab Panels ΓöÇΓöÇ */}
         <section className="account-tab-content">
 
           {/* 1. CURRENT LOANS */}
@@ -435,7 +435,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
                             <div className="account-progress-meta">
                               <span className={`account-progress-status${loan.isOverdue ? ' text-oxblood' : ''}`}>
                                 {loan.isOverdue
-                                  ? `${loan.daysLate} days overdue (Fine: ₹${loan.accruedFine})`
+                                  ? `${loan.daysLate} days overdue (Fine: Γé╣${loan.accruedFine})`
                                   : daysLeft === 0
                                   ? 'Due today'
                                   : `${daysLeft} days remaining`}
@@ -630,7 +630,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
             <div id="panel-fines" role="tabpanel" aria-labelledby="tab-fines" className="account-panel">
               <div className="account-panel-header">
                 <span className="account-section-eyebrow">ASSESSED FINES &amp; CHARGES</span>
-                <span className="account-loan-policy">Daily late fee: ₹{fineDailyRate}/day on overdue items</span>
+                <span className="account-loan-policy">Daily late fee: Γé╣{fineDailyRate}/day on overdue items</span>
               </div>
 
               <div className="account-table-wrapper">
@@ -656,7 +656,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
                           </div>
                         </td>
                         <td className="account-fine-reason">
-                          Active overdue loan ({l.daysLate} days late @ ₹{fineDailyRate}/day)
+                          Active overdue loan ({l.daysLate} days late @ Γé╣{fineDailyRate}/day)
                         </td>
                         <td>
                           <span className="account-fine-badge account-fine-badge--unpaid">
@@ -664,7 +664,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
                           </span>
                         </td>
                         <td className="account-fine-amount" style={{ textAlign: 'right', color: 'var(--color-oxblood)' }}>
-                          ₹{l.accruedFine.toFixed(2)}
+                          Γé╣{l.accruedFine.toFixed(2)}
                         </td>
                       </tr>
                     ))}
@@ -686,7 +686,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
                           </span>
                         </td>
                         <td className="account-fine-amount" style={{ textAlign: 'right' }}>
-                          ₹{Number(fine.amount).toFixed(2)}
+                          Γé╣{Number(fine.amount).toFixed(2)}
                         </td>
                       </tr>
                     ))}
@@ -705,7 +705,7 @@ export default function AccountPage({ initialTab = 'loans' }) {
                         TOTAL OUTSTANDING FINES:
                       </td>
                       <td className="account-fine-total" style={{ textAlign: 'right', color: member.totalFinesDue > 0 ? 'var(--color-oxblood)' : 'inherit' }}>
-                        ₹{member.totalFinesDue.toFixed(2)}
+                        Γé╣{member.totalFinesDue.toFixed(2)}
                       </td>
                     </tr>
                   </tfoot>
