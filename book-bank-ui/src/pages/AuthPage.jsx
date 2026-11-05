@@ -1,38 +1,10 @@
 import React, { useState } from 'react'
 import { Button } from '../components/Button'
 import { useAuth } from '../context/AuthContext'
+import { Shelf } from '../components/Shelf'
+import { useLibraryStore } from '../data/libraryStore'
 
-/* ── Left-panel fanned book silhouettes ──────────────────── */
-
-const FAN_BOOKS = [
-  { rotate: -24, left: '8%',  w: 70,  h: 178, opacity: 0.07 },
-  { rotate: -12, left: '22%', w: 82,  h: 205, opacity: 0.10 },
-  { rotate:   0, left: '36%', w: 90,  h: 222, opacity: 0.12 },
-  { rotate:  12, left: '50%', w: 82,  h: 205, opacity: 0.10 },
-  { rotate:  24, left: '62%', w: 70,  h: 178, opacity: 0.07 },
-]
-
-function BookFan() {
-  return (
-    <div className="auth-fan" aria-hidden="true">
-      {FAN_BOOKS.map((b, i) => (
-        <div
-          key={i}
-          className="auth-fan__book"
-          style={{
-            left:      b.left,
-            width:     b.w,
-            height:    b.h,
-            transform: `rotate(${b.rotate}deg)`,
-            opacity:   b.opacity,
-          }}
-        />
-      ))}
-    </div>
-  )
-}
-
-/* ── Icons ───────────────────────────────────────────────── */
+/* ── Icons ─────────────────────────────────────────────────── */
 
 function IconEyeOpen() {
   return (
@@ -95,21 +67,84 @@ function Field({ id, label, type = 'text', value, onChange, placeholder, autoCom
 function LoginForm({ onSwitch }) {
   const [email,    setEmail]    = useState('')
   const [password, setPassword] = useState('')
+  const [error,    setError]    = useState('')
+  const [loading,  setLoading]  = useState(false)
   const { login } = useAuth()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!email) return
-    const loggedUser = login(email, password, '') // name comes from stored session or email prefix
-    if (loggedUser.role === 'librarian') {
-      window.location.hash = '#admin/dashboard'
-    } else {
-      window.location.hash = '#catalog'
+    setError('')
+    if (!email || !password) {
+      setError('Please enter both email and password.')
+      return
+    }
+
+    setLoading(true)
+    try {
+      // 1. Try real Django backend API authentication
+      const res = await fetch('http://localhost:8001/api/auth/login/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), password }),
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        localStorage.setItem('bb_access', data.access)
+        localStorage.setItem('bb_refresh', data.refresh)
+        localStorage.setItem('bb_user', JSON.stringify(data.user))
+        const loggedUser = login(data.user.email, password, data.user.full_name, data.user.role)
+        if (data.user.role === 'librarian' || loggedUser?.role === 'librarian') {
+          window.location.hash = '#admin'
+        } else {
+          window.location.hash = '#catalog'
+        }
+        return
+      }
+
+      // If backend responded with 400/401/etc. -> Password or email is wrong!
+      const data = await res.json().catch(() => ({}))
+      const msg = data.detail || (data.non_field_errors && data.non_field_errors[0])
+      setError(msg || 'Invalid email or password.')
+    } catch (err) {
+      // 2. Only if backend is completely offline, allow specific demo passwords
+      const emailLower = email.trim().toLowerCase()
+      if (
+        (emailLower === 'admin@bookbank.edu' && password === 'admin123') ||
+        (emailLower === 'librarian@bookbank.local' && password === 'Library@123')
+      ) {
+        login(email, password, 'Librarian', 'librarian')
+        window.location.hash = '#admin'
+        return
+      } else if (emailLower === 'test@university.edu' && (password === 'student123' || password === 'Student@123')) {
+        login(email, password, 'Aisha Patel', 'student')
+        window.location.hash = '#catalog'
+        return
+      }
+
+      setError('Invalid email or password.')
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
     <form className="auth-form" onSubmit={handleSubmit} noValidate>
+      {error && (
+        <div style={{
+          padding: '10px 14px',
+          backgroundColor: 'rgba(122, 46, 39, 0.1)',
+          border: '1px solid var(--color-oxblood)',
+          color: 'var(--color-oxblood)',
+          borderRadius: 4,
+          fontSize: '0.8125rem',
+          lineHeight: 1.4,
+          marginBottom: 12,
+        }}>
+          {error}
+        </div>
+      )}
+
       <Field
         id="login-email" label="Email address" type="email"
         value={email} onChange={setEmail}
@@ -130,9 +165,10 @@ function LoginForm({ onSwitch }) {
       <Button
         variant="ochre"
         type="submit"
+        disabled={loading}
         style={{ width: '100%', padding: '13px 20px', fontSize: '0.9375rem', justifyContent: 'center' }}
       >
-        Sign in
+        {loading ? 'Signing in...' : 'Sign in'}
       </Button>
 
       <p className="auth-switch">
@@ -150,37 +186,116 @@ function LoginForm({ onSwitch }) {
 function RegisterForm({ onSwitch }) {
   const [name,      setName]      = useState('')
   const [studentId, setStudentId] = useState('')
+  const [dept,      setDept]      = useState('Computer Science')
   const [email,     setEmail]     = useState('')
   const [password,  setPassword]  = useState('')
   const [confirm,   setConfirm]   = useState('')
-  const { login } = useAuth()
+  const [error,     setError]     = useState(null)
+  const [loading,   setLoading]   = useState(false)
+  const { register } = useAuth()
+  const { registerMember } = useLibraryStore()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!email || !name) return
-    // Pass the user's typed name so it's stored in the session
-    const loggedUser = login(email, password, name)
-    if (loggedUser.role === 'librarian') {
-      window.location.hash = '#admin/dashboard'
-    } else {
+    setError(null)
+    if (!email || !name) {
+      setError('Please provide your name and email address.')
+      return
+    }
+    if (password && confirm && password !== confirm) {
+      setError('Passwords do not match.')
+      return
+    }
+    const cleanSid = studentId.trim() || `STU-${String(Math.floor(100 + Math.random() * 900))}`
+
+    setLoading(true)
+    try {
+      // 1. Register with backend if available
+      const res = await fetch('http://localhost:8001/api/auth/register/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: name.trim(),
+          enrollment_number: cleanSid,
+          email: email.trim(),
+          password: password || 'Password@123',
+          confirm_password: confirm || password || 'Password@123',
+        }),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        localStorage.setItem('bb_access', data.access)
+        localStorage.setItem('bb_refresh', data.refresh)
+        localStorage.setItem('bb_user', JSON.stringify(data.user))
+      }
+    } catch {
+      // Backend offline fallback
+    }
+
+    try {
+      // 2. Register member in the shared library store
+      registerMember({
+        name,
+        email,
+        studentId: cleanSid,
+        dept,
+      })
+
+      // 3. Set active user in auth session
+      register(name, email, password, cleanSid, dept)
       window.location.hash = '#catalog'
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
     <form className="auth-form" onSubmit={handleSubmit} noValidate>
+      {error && (
+        <div style={{
+          padding: '10px 14px',
+          backgroundColor: 'rgba(122, 46, 39, 0.1)',
+          border: '1px solid var(--color-oxblood)',
+          color: 'var(--color-oxblood)',
+          borderRadius: 4,
+          fontSize: '0.8125rem',
+          lineHeight: 1.4,
+          marginBottom: 12,
+        }}>
+          {error}
+        </div>
+      )}
+
       <Field
-        id="reg-name" label="Full name"
+        id="reg-name" label="Full name *"
         value={name} onChange={setName}
         placeholder="Jane Smith" autoComplete="name"
       />
       <Field
-        id="reg-sid" label="Student / Staff ID"
+        id="reg-sid" label="Student ID *"
         value={studentId} onChange={setStudentId}
-        placeholder="S-20240001" autoComplete="off"
+        placeholder="STU-007" autoComplete="off"
       />
+      <div className="auth-field">
+        <label className="auth-label" htmlFor="reg-dept">Department</label>
+        <div className="auth-input-wrap">
+          <select
+            id="reg-dept"
+            className="auth-input"
+            value={dept}
+            onChange={e => setDept(e.target.value)}
+            style={{ width: '100%', padding: '10px 14px', backgroundColor: '#fff', cursor: 'pointer' }}
+          >
+            {['Computer Science', 'Mathematics', 'Engineering', 'Networks', 'Psychology', 'Management', 'Systems & OS', 'General'].map(d => (
+              <option key={d} value={d}>{d}</option>
+            ))}
+          </select>
+        </div>
+      </div>
       <Field
-        id="reg-email" label="University email" type="email"
+        id="reg-email" label="University email *" type="email"
         value={email} onChange={setEmail}
         placeholder="jsmith@university.edu" autoComplete="email"
       />
@@ -198,9 +313,10 @@ function RegisterForm({ onSwitch }) {
       <Button
         variant="ochre"
         type="submit"
+        disabled={loading}
         style={{ width: '100%', padding: '13px 20px', fontSize: '0.9375rem', justifyContent: 'center', marginTop: '4px' }}
       >
-        Create account
+        {loading ? 'Creating account...' : 'Create account'}
       </Button>
 
       <p className="auth-switch">
@@ -235,6 +351,11 @@ export default function AuthPage({ mode = 'login' }) {
           <span className="auth-left__logo-sub">Management System</span>
         </div>
 
+        {/* Interactive bookshelf fills the gap */}
+        <div className="auth-left__shelf">
+          <Shelf idleLabel="Hover a book" />
+        </div>
+
         {/* Quote */}
         <div className="auth-left__body">
           <blockquote className="auth-left__quote">
@@ -242,9 +363,6 @@ export default function AuthPage({ mode = 'login' }) {
           </blockquote>
           <cite className="auth-left__cite">— The Book Bank</cite>
         </div>
-
-        {/* Fanned silhouettes at bottom */}
-        <BookFan />
       </aside>
 
       {/* ── Right — form panel ── */}

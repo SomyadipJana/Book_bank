@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Button } from '../components/Button'
 import { DueDatePocket } from '../components/DueDatePocket'
 import { CatalogCard } from '../components/CatalogCard'
-import { ALL_BOOKS, SPINE, coverLargeUrl, coverGridUrl } from '../data/books'
+import { SPINE, coverLargeUrl, coverGridUrl } from '../data/books'
 import { useAuth } from '../context/AuthContext'
+import { useLibraryStore } from '../data/libraryStore'
 
 /* ── Helpers ─────────────────────────────────────────────── */
 
@@ -38,6 +39,21 @@ function IconCheck() {
 
 function DetailNav() {
   const { user, logout } = useAuth()
+  const isLibrarian = user?.role === 'librarian'
+
+  const navItems = isLibrarian
+    ? [
+        { label: 'Catalogue', href: '#catalog' },
+        { label: 'Admin',     href: '#admin' },
+        { label: 'About',     href: '#' },
+      ]
+    : [
+        { label: 'Catalogue',    href: '#catalog' },
+        { label: 'My Loans',     href: '#loans' },
+        { label: 'Reservations', href: '#reservations' },
+        { label: 'About',        href: '#' },
+      ]
+
   return (
     <nav className="nav" role="navigation" aria-label="Main navigation">
       <a
@@ -59,12 +75,7 @@ function DetailNav() {
       </a>
 
       <ul className="nav__links" aria-label="Site sections">
-        {[
-          { label: 'Catalogue',    href: '#catalog' },
-          { label: 'My Loans',     href: '#loans' },
-          { label: 'Reservations', href: '#reservations' },
-          { label: 'About',        href: '#' },
-        ].map(l => (
+        {navItems.map(l => (
           <li key={l.label}>
             <a href={l.href} className="nav__link">{l.label}</a>
           </li>
@@ -73,9 +84,33 @@ function DetailNav() {
 
       {user ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <span className="account-nav-user" title={user.name}>
-            <span className="account-nav-avatar">{user.name[0].toUpperCase()}</span>
+          <span
+            className="account-nav-user"
+            title={user.name}
+            style={{ cursor: 'pointer' }}
+            onClick={() => { window.location.hash = isLibrarian ? '#admin' : '#loans' }}
+          >
+            <span className="account-nav-avatar">{user.name ? user.name[0].toUpperCase() : 'U'}</span>
             <span className="account-nav-name">{user.name}</span>
+            {isLibrarian && (
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.625rem',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  padding: '2px 6px',
+                  borderRadius: '3px',
+                  backgroundColor: 'rgba(198, 138, 46, 0.15)',
+                  color: 'var(--color-ochre)',
+                  border: '1px solid rgba(198, 138, 46, 0.35)',
+                  fontWeight: 600,
+                  marginLeft: 4,
+                }}
+              >
+                Librarian
+              </span>
+            )}
           </span>
           <button
             type="button"
@@ -100,63 +135,151 @@ function DetailNav() {
 
 /* ── Action area ─────────────────────────────────────────── */
 
-function ActionArea({ available }) {
-  const [reserved, setReserved] = useState(false)
-  const pickupDate = getPickupDate()
+function ActionArea({ book }) {
+  const { user } = useAuth()
+  const { reservations, reserveBook, cancelReservation } = useLibraryStore()
+  const [errorMsg, setErrorMsg] = useState(null)
+  const isLibrarian = user?.role === 'librarian'
 
-  if (available) {
-    if (reserved) {
-      return (
-        <div className="detail-action">
-          <div className="reserved-confirm" role="status" aria-live="polite">
-            <span className="reserved-confirm__check"><IconCheck /></span>
-            <span>Reserved — pick up by {pickupDate}</span>
-          </div>
-        </div>
-      )
-    }
-    return (
-      <div className="detail-action">
-        <Button
-          id="reserve-btn"
-          variant="ochre"
-          style={{ fontSize: '0.9375rem', padding: '13px 28px', alignSelf: 'flex-start' }}
-          onClick={() => setReserved(true)}
-        >
-          Reserve this title
-        </Button>
-      </div>
+  const userReservation = useMemo(() => {
+    if (!user?.memberId) return null
+    return reservations.find(
+      r => r.accession === book.accession &&
+           r.memberId === user.memberId &&
+           (r.status === 'ready' || r.status === 'waiting')
     )
+  }, [reservations, book.accession, user?.memberId])
+
+  const handleReserve = () => {
+    setErrorMsg(null)
+    if (!user) {
+      window.location.hash = '#login'
+      return
+    }
+    if (isLibrarian) {
+      setErrorMsg('Librarians cannot place personal reservations. Issue books via Admin Issue Desk.')
+      return
+    }
+    try {
+      reserveBook({
+        accession: book.accession,
+        memberId: user.memberId,
+        actor: user.name,
+      })
+    } catch (err) {
+      setErrorMsg(err.message)
+    }
   }
 
-  /* Unavailable */
+  const handleCancel = () => {
+    if (!userReservation) return
+    setErrorMsg(null)
+    try {
+      cancelReservation({
+        reservationId: userReservation.id,
+        actor: user?.name || 'Student',
+      })
+    } catch (err) {
+      setErrorMsg(err.message)
+    }
+  }
+
+  const available = (book.availableCopies ?? (book.available ? 1 : 0)) > 0
+
   return (
-    <div className="detail-action">
-      <Button
-        id="waitlist-btn"
-        variant="secondary"
-        style={{ fontSize: '0.9375rem', padding: '13px 28px', alignSelf: 'flex-start' }}
-      >
-        Join waitlist
-      </Button>
-      <p className="waitlist-note">
-        All copies are currently on loan. You will be notified when
-        a copy is returned and your reservation can be collected.
-      </p>
+    <div className="detail-action" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {errorMsg && (
+        <div style={{
+          backgroundColor: 'rgba(122, 46, 39, 0.1)',
+          color: 'var(--color-oxblood)',
+          padding: '10px 14px',
+          borderRadius: 4,
+          fontSize: '0.85rem',
+          border: '1px solid rgba(122, 46, 39, 0.25)',
+          maxWidth: 480,
+        }}>
+          ⚠ {errorMsg}
+        </div>
+      )}
+
+      {userReservation ? (
+        <div style={{
+          padding: '16px 20px',
+          backgroundColor: userReservation.status === 'ready' ? 'rgba(30,61,50,0.06)' : 'rgba(198,138,46,0.1)',
+          border: `1px solid ${userReservation.status === 'ready' ? 'var(--color-ink)' : 'var(--color-ochre)'}`,
+          borderRadius: 4,
+          maxWidth: 480,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+            <span style={{ color: userReservation.status === 'ready' ? 'var(--color-ink)' : 'var(--color-ochre)' }}>
+              <IconCheck />
+            </span>
+            <span style={{
+              fontWeight: 700,
+              fontFamily: 'var(--font-display)',
+              fontSize: '1rem',
+              color: userReservation.status === 'ready' ? 'var(--color-ink)' : 'var(--color-ochre)',
+            }}>
+              {userReservation.status === 'ready' ? 'Ready for Pickup' : `Waitlisted (Queue #${userReservation.queuePosition})`}
+            </span>
+          </div>
+
+          <p style={{ fontSize: '0.85rem', color: 'var(--color-charcoal)', margin: '0 0 12px' }}>
+            {userReservation.status === 'ready'
+              ? `A copy is being held for you until ${formatDate(userReservation.holdExpiresAt)}. Collect at: ${userReservation.pickupLocation || 'Main Circulation Desk'}.`
+              : 'All copies are currently checked out. We will reserve the next returned copy for you automatically.'}
+          </p>
+
+          <Button
+            variant="secondary"
+            style={{ fontSize: '0.8125rem', padding: '6px 14px', color: 'var(--color-oxblood)' }}
+            onClick={handleCancel}
+          >
+            Cancel Reservation
+          </Button>
+        </div>
+      ) : available ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-start' }}>
+          <Button
+            id="reserve-btn"
+            variant="ochre"
+            style={{ fontSize: '0.9375rem', padding: '13px 28px' }}
+            onClick={handleReserve}
+          >
+            Reserve this title
+          </Button>
+          <span style={{ fontSize: '0.75rem', color: 'var(--color-charcoal-60)' }}>
+            Places a 5-day hold at the library circulation desk.
+          </span>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-start' }}>
+          <Button
+            id="waitlist-btn"
+            variant="secondary"
+            style={{ fontSize: '0.9375rem', padding: '13px 28px' }}
+            onClick={handleReserve}
+          >
+            Join waitlist
+          </Button>
+          <p className="waitlist-note" style={{ maxWidth: 440 }}>
+            All copies are currently on loan. Join the waitlist to receive the next available copy.
+          </p>
+        </div>
+      )}
     </div>
   )
 }
 
 /* ── "More like this" ─────────────────────────────────────── */
 
-function RelatedBooks({ book }) {
-  const related = ALL_BOOKS
-    .filter(b => b.id !== book.id && b.category === book.category)
+function RelatedBooks({ currentBook, allBooks }) {
+  const related = allBooks
+    .filter(b => b.accession !== currentBook.accession && !b.retired && b.category === currentBook.category)
     .slice(0, 4)
 
-  /* Fallback: fill from any category if not enough in same category */
   const extra = related.length < 4
-    ? ALL_BOOKS.filter(b => b.id !== book.id && !related.find(r => r.id === b.id)).slice(0, 4 - related.length)
+    ? allBooks.filter(b => b.accession !== currentBook.accession && !b.retired && !related.find(r => r.accession === b.accession)).slice(0, 4 - related.length)
     : []
 
   const cards = [...related, ...extra]
@@ -173,13 +296,13 @@ function RelatedBooks({ book }) {
             className="section-title"
             style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.625rem)', marginBottom: 0 }}
           >
-            {book.category} titles you may enjoy
+            {currentBook.category} titles you may enjoy
           </h2>
         </div>
         <div className="detail-related-grid">
           {cards.map(b => (
             <CatalogCard
-              key={b.id}
+              key={b.accession || b.id}
               book={b}
               onClick={() => { window.location.hash = `#book/${b.accession}` }}
             />
@@ -193,7 +316,8 @@ function RelatedBooks({ book }) {
 /* ── Page ────────────────────────────────────────────────── */
 
 export default function BookDetailPage({ accession }) {
-  const book = ALL_BOOKS.find(b => b.accession === accession)
+  const { books } = useLibraryStore()
+  const book = books.find(b => b.accession === accession)
 
   /* 404 state */
   if (!book) {
@@ -379,12 +503,12 @@ export default function BookDetailPage({ accession }) {
           </div>
 
           {/* Action */}
-          <ActionArea available={book.available} />
+          <ActionArea book={book} />
         </div>
       </div>
 
       {/* ── More like this ── */}
-      <RelatedBooks book={book} />
+      <RelatedBooks currentBook={book} allBooks={books} />
     </div>
   )
 }

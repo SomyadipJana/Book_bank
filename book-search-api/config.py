@@ -7,9 +7,11 @@ so developers know exactly what to fix.
 """
 
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()
+# Resolve .env relative to this file so it loads correctly regardless of CWD
+load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 
 GOOGLE_BOOKS_API_KEY: str = os.getenv("GOOGLE_BOOKS_API_KEY", "")
 

@@ -1611,5 +1611,1405 @@
     "totalCopies": 5,
     "addedDate": "2026-08-29",
     "edition": "2010 Edition"
+  },
+  {
+    "rawTitle": "Designing Data-Intensive Applications",
+    "authors": [
+      "Martin Kleppmann"
+    ],
+    "publisher": "\"O'Reilly Media, Inc.\"",
+    "publishedDate": "2017-03-16",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9781491903117",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781491903117-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781491903117-L.jpg?default=false",
+    "description": "Data is at the center of many challenges in system design today. Difficult issues need to be figured out, such as scalability, consistency, reliability, efficiency, and maintainability. In addition, we have an overwhelming variety of tools, including relational databases, NoSQL datastores, stream or batch processors, and message brokers. What are the right choices for your application? How do you make sense of all these buzzwords? In this practical and comprehensive guide, author Martin Kleppmann helps you navigate this diverse landscape by examining the pros and cons of various technologies for processing and storing data. Software keeps changing, but the fundamental principles remain the same. With this book, software engineers and architects will learn how to apply those ideas in practice, and how to make full use of data in modern applications. Peer under the hood of the systems you already use, and learn how to use and operate them more effectively Make informed decisions by identifying the strengths and weaknesses of different tools Navigate the trade-offs around consistency, scalability, fault tolerance, and complexity Understand the distributed systems research upon which modern databases are built Peek behind the scenes of major online services, and learn from their architectures",
+    "pageCount": 614,
+    "overrideCat": "Computer Science",
+    "id": 56,
+    "accession": "BB-0056",
+    "title": "Designing Data-Intensive Applications",
+    "author": "Martin Kleppmann",
+    "category": "Computer Science",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781491903117-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2017 Edition"
+  },
+  {
+    "rawTitle": "Computer Systems",
+    "authors": [
+      "Randal Bryant",
+      "David Richard O'Hallaron"
+    ],
+    "publisher": "",
+    "publishedDate": "2003",
+    "googleCats": [
+      "Computer systems"
+    ],
+    "isbn13": "9780131784567",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780131784567-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780131784567-L.jpg?default=false",
+    "description": "For Computer Organization and Architecture and Computer Architecture courses. A concentrated and consistent introduction to the fundamental concepts that underlie all computer systems.",
+    "pageCount": 978,
+    "overrideCat": "Computer Science",
+    "id": 57,
+    "accession": "BB-0057",
+    "title": "Computer Systems",
+    "author": "Randal Bryant, David Richard O'Hallaron",
+    "category": "Computer Science",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780131784567-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2003 Edition"
+  },
+  {
+    "rawTitle": "Fundamentals of Database Systems",
+    "authors": [
+      "Ramez Elmasri"
+    ],
+    "publisher": "Pearson Education India",
+    "publishedDate": "2008-09",
+    "googleCats": [
+      "Database management"
+    ],
+    "isbn13": "9788131716250",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9788131716250-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9788131716250-L.jpg?default=false",
+    "description": "",
+    "pageCount": 1180,
+    "overrideCat": "Computer Science",
+    "id": 58,
+    "accession": "BB-0058",
+    "title": "Fundamentals of Database Systems",
+    "author": "Ramez Elmasri",
+    "category": "Computer Science",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9788131716250-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 4,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "2008 Edition"
+  },
+  {
+    "rawTitle": "Speech and Language Processing",
+    "authors": [
+      "Dan Jurafsky",
+      "James H. Martin"
+    ],
+    "publisher": "Prentice Hall",
+    "publishedDate": "2009",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780131873216",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780131873216-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780131873216-L.jpg?default=false",
+    "description": "This book takes an empirical approach to language processing, based on applying statistical and other machine-learning algorithms to large corpora. Methodology boxes are included in each chapter. Each chapter is built around one or more worked examples to demonstrate the main idea of the chapter. Covers the fundamental algorithms of various fields, whether originally proposed for spoken or written language to demonstrate how the same algorithm can be used for speech recognition and word-sense disambiguation. Emphasis on web and other practical applications. Emphasis on scientific evaluation. Useful as a reference for professionals in any of the areas of speech and language processing.",
+    "pageCount": 1027,
+    "overrideCat": "Computer Science",
+    "id": 59,
+    "accession": "BB-0059",
+    "title": "Speech and Language Processing",
+    "author": "Dan Jurafsky, James H. Martin",
+    "category": "Computer Science",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780131873216-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "2009 Edition"
+  },
+  {
+    "rawTitle": "Reinforcement Learning",
+    "authors": [
+      "Richard S. Sutton",
+      "Andrew G. Barto"
+    ],
+    "publisher": "MIT Press",
+    "publishedDate": "1998",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780262193986",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780262193986-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780262193986-L.jpg?default=false",
+    "description": "An account of key ideas and algorithms in reinforcement learning. The discussion ranges from the history of the field's intellectual foundations to recent developments and applications. Areas studied include reinforcement learning problems in terms of Markov decision problems and solution methods.",
+    "pageCount": 356,
+    "overrideCat": "Computer Science",
+    "id": 60,
+    "accession": "BB-0060",
+    "title": "Reinforcement Learning",
+    "author": "Richard S. Sutton, Andrew G. Barto",
+    "category": "Computer Science",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780262193986-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 4,
+    "addedDate": "2026-11-04",
+    "edition": "1998 Edition"
+  },
+  {
+    "rawTitle": "Hands-on Machine Learning with Scikit-Learn and PyTorch",
+    "authors": [
+      "Aurélien Géron"
+    ],
+    "publisher": "",
+    "publishedDate": "2025",
+    "googleCats": [
+      "Artificial intelligence"
+    ],
+    "isbn13": "9798341607972",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9798341607972-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9798341607972-L.jpg?default=false",
+    "description": "The potential of machine learning today is extraordinary, yet many aspiring developers and tech professionals find themselves daunted by its complexity. Whether you're looking to enhance your skill set and apply machine learning to real-world projects or are simply curious about how AI systems function, this book is your jumping-off place. With an approachable yet deeply informative style, author Aurélien Géron delivers the ultimate introductory guide to machine learning and deep learning. Drawing on the Hugging Face ecosystem, with a focus on clear explanations and real-world examples, the book takes you through cutting-edge tools like Scikit-Learn and PyTorch--from basic regression techniques to advanced neural networks. Whether you're a student, professional, or hobbyist, you'll gain the skills to build intelligent systems. Understand ML basics, including concepts like overfitting and hyperparameter tuning Complete an end-to-end ML project using scikit-Learn, covering everything from data exploration to model evaluation Learn techniques for unsupervised learning, such as clustering and anomaly detection Build advanced architectures like transformers and diffusion models with PyTorch Harness the power of pretrained models--including LLMs--and learn to fine-tune them Train autonomous agents using reinforcement learning.",
+    "pageCount": null,
+    "overrideCat": "Computer Science",
+    "id": 61,
+    "accession": "BB-0061",
+    "title": "Hands-on Machine Learning with Scikit-Learn and PyTorch",
+    "author": "Aurélien Géron",
+    "category": "Computer Science",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9798341607972-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "2025 Edition"
+  },
+  {
+    "rawTitle": "Grokking Algorithms, Second Edition",
+    "authors": [
+      "Aditya Y Bhargava"
+    ],
+    "publisher": "Simon and Schuster",
+    "publishedDate": "2024-03-26",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9781633438538",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781633438538-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781633438538-L.jpg?default=false",
+    "description": "A friendly, fully-illustrated introduction to the most important computer programming algorithms. Suitable for self-taught programmers, engineers, job seekers, or anyone who wants to brush up on algorithms.",
+    "pageCount": 318,
+    "overrideCat": "Algorithms & DS",
+    "id": 62,
+    "accession": "BB-0062",
+    "title": "Grokking Algorithms, Second Edition",
+    "author": "Aditya Y Bhargava",
+    "category": "Algorithms & DS",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781633438538-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2024 Edition"
+  },
+  {
+    "rawTitle": "Algorithms in Java",
+    "authors": [
+      "Robert Sedgewick"
+    ],
+    "publisher": "Addison-Wesley Professional",
+    "publishedDate": "2003",
+    "googleCats": [
+      "Algorithms"
+    ],
+    "isbn13": "9780201775785",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780201775785-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780201775785-L.jpg?default=false",
+    "description": "In these volumes, Robert Sedgewick focuses on practical applications, giving readers all the information, diagrams and real code they need to confidently implement, debug and use the algorithms he presents.",
+    "pageCount": null,
+    "overrideCat": "Algorithms & DS",
+    "id": 63,
+    "accession": "BB-0063",
+    "title": "Algorithms in Java",
+    "author": "Robert Sedgewick",
+    "category": "Algorithms & DS",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780201775785-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "2003 Edition"
+  },
+  {
+    "rawTitle": "Algorithms Illuminated",
+    "authors": [
+      "Tim Roughgarden"
+    ],
+    "publisher": "SOUNDLIKEYOURSELF PUBLISHING",
+    "publishedDate": "2022-09-15",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780999282984",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780999282984-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780999282984-L.jpg?default=false",
+    "description": "In Algorithms Illuminated, Tim Roughgarden teaches the basics of algorithms in the most accessible way imaginable. This Omnibus Edition contains the complete text of Parts 1-4, with thorough coverage of asymptotic analysis, graph search and shortest paths, data structures, divide-and-conquer algorithms, greedy algorithms, dynamic programming, and NP-hard problems. Hundreds of worked examples, quizzes, and exercises, plus comprehensive online videos, help readers become better programmers; sharpen their analytical skills; learn to think algorithmically; acquire literacy with computer science's greatest hits; and ace their technical interviews.",
+    "pageCount": null,
+    "overrideCat": "Algorithms & DS",
+    "id": 64,
+    "accession": "BB-0064",
+    "title": "Algorithms Illuminated",
+    "author": "Tim Roughgarden",
+    "category": "Algorithms & DS",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780999282984-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "2022 Edition"
+  },
+  {
+    "rawTitle": "Competitive Programming 4 - Book 1",
+    "authors": [
+      "Steven Halim",
+      "Felix Halim",
+      "Suhendry Effendy"
+    ],
+    "publisher": "",
+    "publishedDate": "2018-12-03",
+    "googleCats": [],
+    "isbn13": "9781716745522",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781716745522-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781716745522-L.jpg?default=false",
+    "description": "This Competitive Programming book, 4th edition (CP4) is a must have for every competitive programmer. Mastering the contents of this book is a necessary (but admittedly not sufficient) condition if one wishes to take a leap forward from being just another ordinary coder to being among one of the world's finest competitive programmers. Typical readers of Book 1 (only) of CP4 would include: (1). Secondary or High School Students who are competing in the annual International Olympiad in Informatics (IOI) (including the National or Provincial Olympiads) as Book 1 covers most of the current IOI Syllabus, (2). Casual University students who are using this book as supplementary material for typical Data Structures and Algorithms courses, (3). Anyone who wants to prepare for typical fundamental data structure/algorithm part of a job interview at top IT companies. Typical readers of both Book 1 + Book 2 of CP4 would include: (1). University students who are competing in the annual International Collegiate Programming Contest (ICPC) Regional Contests (including the World Finals) as Book 2 covers much more Computer Science topics that have appeared in the ICPCs, (2). Teachers or Coaches who are looking for comprehensive training materials, (3). Anyone who loves solving problems through computer programs. There are numerous programming contests for those who are no longer eligible for ICPC, including Google CodeJam, Facebook Hacker Cup, TopCoder Open, CodeForces contest, Internet Problem Solving Contest (IPSC), etc.",
+    "pageCount": 330,
+    "overrideCat": "Algorithms & DS",
+    "id": 65,
+    "accession": "BB-0065",
+    "title": "Competitive Programming 4 - Book 1",
+    "author": "Steven Halim, Felix Halim, Suhendry Effendy",
+    "category": "Algorithms & DS",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781716745522-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "2018 Edition"
+  },
+  {
+    "rawTitle": "Refactoring",
+    "authors": [
+      "Martin Fowler",
+      "Kent Beck"
+    ],
+    "publisher": "Addison-Wesley Professional",
+    "publishedDate": "1999",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780201485677",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780201485677-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780201485677-L.jpg?default=false",
+    "description": "Refactoring is gaining momentum amongst the object oriented programming community. It can transform the internal dynamics of applications and has the capacity to transform bad code into good code. This book offers an introduction to refactoring.",
+    "pageCount": 461,
+    "overrideCat": "Engineering",
+    "id": 66,
+    "accession": "BB-0066",
+    "title": "Refactoring",
+    "author": "Martin Fowler, Kent Beck",
+    "category": "Engineering",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780201485677-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "1999 Edition"
+  },
+  {
+    "rawTitle": "Clean Architecture",
+    "authors": [
+      "Robert C. Martin"
+    ],
+    "publisher": "Prentice Hall",
+    "publishedDate": "2017-09-12",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780134494326",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780134494326-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780134494326-L.jpg?default=false",
+    "description": "Practical Software Architecture Solutions from the Legendary Robert C. Martin (“Uncle Bob”) By applying universal rules of software architecture, you can dramatically improve developer productivity throughout the life of any software system. Now, building upon the success of his best-selling books Clean Code and The Clean Coder, legendary software craftsman Robert C. Martin (“Uncle Bob”) reveals those rules and helps you apply them. Martin’s Clean Architecture doesn’t merely present options. Drawing on over a half-century of experience in software environments of every imaginable type, Martin tells you what choices to make and why they are critical to your success. As you’ve come to expect from Uncle Bob, this book is packed with direct, no-nonsense solutions for the real challenges you’ll face–the ones that will make or break your projects. Learn what software architects need to achieve–and core disciplines and practices for achieving it Master essential software design principles for addressing function, component separation, and data management See how programming paradigms impose discipline by restricting what developers can do Understand what’s critically important and what’s merely a “detail” Implement optimal, high-level structures for web, database, thick-client, console, and embedded applications Define appropriate boundaries and layers, and organize components and services See why designs and architectures go wrong, and how to prevent (or fix) these failures Clean Architecture is essential reading for every current or aspiring software architect, systems analyst, system designer, and software manager–and for every programmer who must execute someone else’s designs. Register your product for convenient access to downloads, updates, and/or corrections as they become available.",
+    "pageCount": 652,
+    "overrideCat": "Engineering",
+    "id": 67,
+    "accession": "BB-0067",
+    "title": "Clean Architecture",
+    "author": "Robert C. Martin",
+    "category": "Engineering",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780134494326-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "2017 Edition"
+  },
+  {
+    "rawTitle": "Building Microservices",
+    "authors": [
+      "Sam Newman"
+    ],
+    "publisher": "\"O'Reilly Media, Inc.\"",
+    "publishedDate": "2015-02-02",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9781491950319",
+    "coverGrid": "https://covers.openlibrary.org/b/id/8513315-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/id/8513315-L.jpg?default=false",
+    "description": "Distributed systems have become more fine-grained in the past 10 years, shifting from code-heavy monolithic applications to smaller, self-contained microservices. But developing these systems brings its own set of headaches. With lots of examples and practical advice, this book takes a holistic view of the topics that system architects and administrators must consider when building, managing, and evolving microservice architectures. Microservice technologies are moving quickly. Author Sam Newman provides you with a firm grounding in the concepts while diving into current solutions for modeling, integrating, testing, deploying, and monitoring your own autonomous services. You’ll follow a fictional company throughout the book to learn how building a microservice architecture affects a single domain. Discover how microservices allow you to align your system design with your organization’s goals Learn options for integrating a service with the rest of your system Take an incremental approach when splitting monolithic codebases Deploy individual microservices through continuous integration Examine the complexities of testing and monitoring distributed services Manage security with user-to-service and service-to-service models Understand the challenges of scaling microservice architectures",
+    "pageCount": 284,
+    "overrideCat": "Engineering",
+    "id": 68,
+    "accession": "BB-0068",
+    "title": "Building Microservices",
+    "author": "Sam Newman",
+    "category": "Engineering",
+    "thumbnail": "https://covers.openlibrary.org/b/id/8513315-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "2015 Edition"
+  },
+  {
+    "rawTitle": "Domain-driven Design",
+    "authors": [
+      "Eric Evans"
+    ],
+    "publisher": "Addison-Wesley Professional",
+    "publishedDate": "2004",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780321125217",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780321125217-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780321125217-L.jpg?default=false",
+    "description": "\"Domain-Driven Design\" incorporates numerous examples in Java-case studies taken from actual projects that illustrate the application of domain-driven design to real-world software development.",
+    "pageCount": 563,
+    "overrideCat": "Engineering",
+    "id": 69,
+    "accession": "BB-0069",
+    "title": "Domain-driven Design",
+    "author": "Eric Evans",
+    "category": "Engineering",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780321125217-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 4,
+    "addedDate": "2026-11-04",
+    "edition": "2004 Edition"
+  },
+  {
+    "rawTitle": "Applied Software Architecture",
+    "authors": [
+      "Christine Hofmeister",
+      "Robert Nord",
+      "Dilip Soni"
+    ],
+    "publisher": "Addison-Wesley Professional",
+    "publishedDate": "2000",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780201325713",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780201325713-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780201325713-L.jpg?default=false",
+    "description": "\"Designing a large software system is an extremely complicated undertaking that requires juggling differing perspectives and differing goals, and evaluating differing options. Applied Software Architecture is the best book yet that gives guidance as to how to sort out and organize the conflicting pressures and produce a successful design.\" -- Len Bass, author of Software Architecture in Practice. Quality software architecture design has always been important, but in today's fast-paced, rapidly changing, and complex development environment, it is essential. A solid, well-thought-out design helps to manage complexity, to resolve trade-offs among conflicting requirements, and, in general, to bring quality software to market in a more timely fashion. Applied Software Architecture provides practical guidelines and techniques for producing quality software designs. It gives an overview of software architecture basics and a detailed guide to architecture design tasks, focusing on four fundamental views of architecture--conceptual, module, execution, and code. Through four real-life case studies, this book reveals the insights and best practices of the most skilled software architects in designing software architecture. These case studies, written with the masters who created them, demonstrate how the book's concepts and techniques are embodied in state-of-the-art architecture design. You will learn how to: create designs flexible enough to incorporate tomorrow's technology; use architecture as the basis for meeting performance, modifiability, reliability, and safety requirements; determine priorities among conflicting requirements and arrive at a successful solution; and use software architecture to help integrate system components. Anyone involved in software architecture will find this book a valuable compendium of best practices and an insightful look at the critical role of architecture in software development. 0201325713B07092001",
+    "pageCount": 438,
+    "overrideCat": "Engineering",
+    "id": 70,
+    "accession": "BB-0070",
+    "title": "Applied Software Architecture",
+    "author": "Christine Hofmeister, Robert Nord, Dilip Soni",
+    "category": "Engineering",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780201325713-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2000 Edition"
+  },
+  {
+    "rawTitle": "Accelerate",
+    "authors": [
+      "Nicole Forsgren, PhD",
+      "Jez Humble",
+      "Gene Kim"
+    ],
+    "publisher": "IT Revolution",
+    "publishedDate": "2018-03-27",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9781942788355",
+    "coverGrid": "https://covers.openlibrary.org/b/id/8509069-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/id/8509069-L.jpg?default=false",
+    "description": "Winner of the Shingo Publication Award Accelerate your organization to win in the marketplace. How can we apply technology to drive business value? For years, we've been told that the performance of software delivery teams doesn't matter―that it can't provide a competitive advantage to our companies. Through four years of groundbreaking research to include data collected from the State of DevOps reports conducted with Puppet, Dr. Nicole Forsgren, Jez Humble, and Gene Kim set out to find a way to measure software delivery performance―and what drives it―using rigorous statistical methods. This book presents both the findings and the science behind that research, making the information accessible for readers to apply in their own organizations. Readers will discover how to measure the performance of their teams, and what capabilities they should invest in to drive higher performance. This book is ideal for management at every level.",
+    "pageCount": 250,
+    "overrideCat": "Engineering",
+    "id": 71,
+    "accession": "BB-0071",
+    "title": "Accelerate",
+    "author": "Nicole Forsgren, PhD, Jez Humble, Gene Kim",
+    "category": "Engineering",
+    "thumbnail": "https://covers.openlibrary.org/b/id/8509069-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 4,
+    "totalCopies": 4,
+    "addedDate": "2026-11-04",
+    "edition": "2018 Edition"
+  },
+  {
+    "rawTitle": "Test Driven Development: By Example",
+    "authors": [
+      "Beck"
+    ],
+    "publisher": "Pearson Education India",
+    "publishedDate": "2003-09",
+    "googleCats": [],
+    "isbn13": "9788131715956",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9788131715956-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9788131715956-L.jpg?default=false",
+    "description": "",
+    "pageCount": 244,
+    "overrideCat": "Engineering",
+    "id": 72,
+    "accession": "BB-0072",
+    "title": "Test Driven Development: By Example",
+    "author": "Beck",
+    "category": "Engineering",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9788131715956-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 4,
+    "totalCopies": 4,
+    "addedDate": "2026-11-04",
+    "edition": "2003 Edition"
+  },
+  {
+    "rawTitle": "Designing Distributed Systems",
+    "authors": [
+      "Brendan Burns"
+    ],
+    "publisher": "\"O'Reilly Media, Inc.\"",
+    "publishedDate": "2018-02-20",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9781491983614",
+    "coverGrid": "https://covers.openlibrary.org/b/id/8509962-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/id/8509962-L.jpg?default=false",
+    "description": "Without established design patterns to guide them, developers have had to build distributed systems from scratch, and most of these systems are very unique indeed. Today, the increasing use of containers has paved the way for core distributed system patterns and reusable containerized components. This practical guide presents a collection of repeatable, generic patterns to help make the development of reliable distributed systems far more approachable and efficient. Author Brendan Burns—Director of Engineering at Microsoft Azure—demonstrates how you can adapt existing software design patterns for designing and building reliable distributed applications. Systems engineers and application developers will learn how these long-established patterns provide a common language and framework for dramatically increasing the quality of your system. Understand how patterns and reusable components enable the rapid development of reliable distributed systems Use the side-car, adapter, and ambassador patterns to split your application into a group of containers on a single machine Explore loosely coupled multi-node distributed patterns for replication, scaling, and communication between the components Learn distributed system patterns for large-scale batch data processing covering work-queues, event-based processing, and coordinated workflows",
+    "pageCount": 164,
+    "overrideCat": "Engineering",
+    "id": 73,
+    "accession": "BB-0073",
+    "title": "Designing Distributed Systems",
+    "author": "Brendan Burns",
+    "category": "Engineering",
+    "thumbnail": "https://covers.openlibrary.org/b/id/8509962-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "2018 Edition"
+  },
+  {
+    "rawTitle": "Operating Systems",
+    "authors": [
+      "Remzi H. Arpaci-Dusseau",
+      "Andrea C. Arpaci-Dusseau"
+    ],
+    "publisher": "",
+    "publishedDate": "2014",
+    "googleCats": [
+      "Operating systems (Computers)"
+    ],
+    "isbn13": "9781105979125",
+    "coverGrid": "https://covers.openlibrary.org/b/id/10401368-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/id/10401368-L.jpg?default=false",
+    "description": "",
+    "pageCount": null,
+    "overrideCat": "Systems & OS",
+    "id": 74,
+    "accession": "BB-0074",
+    "title": "Operating Systems",
+    "author": "Remzi H. Arpaci-Dusseau, Andrea C. Arpaci-Dusseau",
+    "category": "Systems & OS",
+    "thumbnail": "https://covers.openlibrary.org/b/id/10401368-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2014 Edition"
+  },
+  {
+    "rawTitle": "Linux Kernel Development",
+    "authors": [
+      "Robert Love"
+    ],
+    "publisher": "Sams Publishing",
+    "publishedDate": "2004",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780672325120",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780672325120-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780672325120-L.jpg?default=false",
+    "description": "This volume details the design and implementation of the Linux Kernel, presenting the content in a manner that is beneficial to those writing and developing Kernel code.",
+    "pageCount": 366,
+    "overrideCat": "Systems & OS",
+    "id": 75,
+    "accession": "BB-0075",
+    "title": "Linux Kernel Development",
+    "author": "Robert Love",
+    "category": "Systems & OS",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780672325120-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 4,
+    "addedDate": "2026-11-04",
+    "edition": "2004 Edition"
+  },
+  {
+    "rawTitle": "Understanding the Linux Kernel",
+    "authors": [
+      "Daniel Pierre Bovet",
+      "Marco Cesati"
+    ],
+    "publisher": "\"O'Reilly Media, Inc.\"",
+    "publishedDate": "2002",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780596002138",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780596002138-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780596002138-L.jpg?default=false",
+    "description": "To thoroughly understand what makes Linux tick and why it's so efficient, you need to delve deep into the heart of the operating system--into the Linux kernel itself. The kernel is Linux--in the case of the Linux operating system, it's the only bit of software to which the term \"Linux\" applies. The kernel handles all the requests or completed I/O operations and determines which programs will share its processing time, and in what order. Responsible for the sophisticated memory management of the whole system, the Linux kernel is the force behind the legendary Linux efficiency. The new edition of Understanding the Linux Kernel takes you on a guided tour through the most significant data structures, many algorithms, and programming tricks used in the kernel. Probing beyond the superficial features, the authors offer valuable insights to people who want to know how things really work inside their machine. Relevant segments of code are dissected and discussed line by line. The book covers more than just the functioning of the code, it explains the theoretical underpinnings for why Linux does things the way it does. The new edition of the book has been updated to cover version 2.4 of the kernel, which is quite different from version 2.2: the virtual memory system is entirely new, support for multiprocessor systems is improved, and whole new classes of hardware devices have been added. The authors explore each new feature in detail. Other topics in the book include: Memory management including file buffering, process swapping, and Direct memory Access (DMA) The Virtual Filesystem and the Second Extended Filesystem Process creation and scheduling Signals, interrupts, and the essential interfaces to device drivers Timing Synchronization in the kernel Interprocess Communication (IPC) Program execution Understanding the Linux Kernel, Second Edition will acquaint you with all the inner workings of Linux, but is more than just an academic exercise. You'll learn what conditions bring out Linux's best performance, and you'll see how it meets the challenge of providing good system response during process scheduling, file access, and memory management in a wide variety of environments. If knowledge is power, then this book will help you make the most of your Linux system.",
+    "pageCount": 786,
+    "overrideCat": "Systems & OS",
+    "id": 76,
+    "accession": "BB-0076",
+    "title": "Understanding the Linux Kernel",
+    "author": "Daniel Pierre Bovet, Marco Cesati",
+    "category": "Systems & OS",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780596002138-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "2002 Edition"
+  },
+  {
+    "rawTitle": "Distributed Systems Principles And Paradigms 2Nd Ed.",
+    "authors": [
+      "Andrew S. Tanenbaum",
+      "Maarten Van Steen"
+    ],
+    "publisher": "",
+    "publishedDate": "2010",
+    "googleCats": [],
+    "isbn13": "9788120334984",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9788120334984-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9788120334984-L.jpg?default=false",
+    "description": "",
+    "pageCount": 686,
+    "overrideCat": "Systems & OS",
+    "id": 77,
+    "accession": "BB-0077",
+    "title": "Distributed Systems Principles And Paradigms 2Nd Ed.",
+    "author": "Andrew S. Tanenbaum, Maarten Van Steen",
+    "category": "Systems & OS",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9788120334984-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "2010 Edition"
+  },
+  {
+    "rawTitle": "Linux System Programming",
+    "authors": [
+      "Robert Love"
+    ],
+    "publisher": "",
+    "publishedDate": "2014-07",
+    "googleCats": [
+      "Technology & Engineering"
+    ],
+    "isbn13": "9789351107729",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9789351107729-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9789351107729-L.jpg?default=false",
+    "description": "All Indian Reprints of O'Reilly are printed in Grayscale. Write software that draws directly on services offered by the Linux kernel and core system libraries. With this comprehensive book, Linux kernel contributor Robert Love provides you with a tutorial on Linux system programming, a reference manual on Linux system callsand an insider's guide to writing smarter, faster code. Love clearly distinguishes between POSIX standard functions and special services offered only by Linux. With a new chapter on multithreading, this updated and expanded edition provides an in-depth look at Linux from both a theoretical and applied perspective over a wide range of programming topics, including: A Linux kernel, C libraryand C compiler overviewBasic I/O operations, such as reading from and writing to filesAdvanced I/O interfaces, memory mappingsand optimization techniquesThe family of system calls for basic process managementAdvanced process management, including real-time processesThread concepts, multithreaded programmingand PthreadsFile and directory managementInterfaces for allocating memory and optimizing memory accessBasic and advanced signal interfacesand their role on the systemClock management, including POSIX clocks and high-resolution timers",
+    "pageCount": null,
+    "overrideCat": "Systems & OS",
+    "id": 78,
+    "accession": "BB-0078",
+    "title": "Linux System Programming",
+    "author": "Robert Love",
+    "category": "Systems & OS",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9789351107729-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "2014 Edition"
+  },
+  {
+    "rawTitle": "Arista Warrior",
+    "authors": [
+      "Gary Donahue"
+    ],
+    "publisher": "\"O'Reilly Media, Inc.\"",
+    "publishedDate": "2012-10-17",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9781449314538",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781449314538-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781449314538-L.jpg?default=false",
+    "description": "\"A real-world guide to understanding Arista switches and EOS\"--P. [1] of cover.",
+    "pageCount": 422,
+    "overrideCat": "Networks",
+    "id": 79,
+    "accession": "BB-0079",
+    "title": "Arista Warrior",
+    "author": "Gary Donahue",
+    "category": "Networks",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781449314538-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2012 Edition"
+  },
+  {
+    "rawTitle": "High Performance Browser Networking",
+    "authors": [
+      "Ilya Grigorik"
+    ],
+    "publisher": "\"O'Reilly Media, Inc.\"",
+    "publishedDate": "2013-09-11",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9781449344726",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781449344726-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781449344726-L.jpg?default=false",
+    "description": "How prepared are you to build fast and efficient web applications? This eloquent book provides what every web developer should know about the network, from fundamental limitations that affect performance to major innovations for building even more powerful browser applicationsâ??including HTTP 2.0 and XHR improvements, Server-Sent Events (SSE), WebSocket, and WebRTC. Author Ilya Grigorik, a web performance engineer at Google, demonstrates performance optimization best practices for TCP, UDP, and TLS protocols, and explains unique wireless and mobile network optimization requirements. Youâ??ll then dive into performance characteristics of technologies such as HTTP 2.0, client-side network scripting with XHR, real-time streaming with SSE and WebSocket, and P2P communication with WebRTC. Deliver superlative TCP, UDP, and TLS performance Speed up network performance over 3G/4G mobile networks Develop fast and energy-efficient mobile applications Address bottlenecks in HTTP 1.x and other browser protocols Plan for and deliver the best HTTP 2.0 performance Enable efficient real-time streaming in the browser Create efficient peer-to-peer videoconferencing and low-latency applications with real-time WebRTC transports",
+    "pageCount": 419,
+    "overrideCat": "Networks",
+    "id": 80,
+    "accession": "BB-0080",
+    "title": "High Performance Browser Networking",
+    "author": "Ilya Grigorik",
+    "category": "Networks",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781449344726-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "2013 Edition"
+  },
+  {
+    "rawTitle": "Cryptography And Network Security, 4/E",
+    "authors": [
+      "William Stallings"
+    ],
+    "publisher": "Pearson Education India",
+    "publishedDate": "2006-09",
+    "googleCats": [
+      "Coding theory"
+    ],
+    "isbn13": "9788177587746",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9788177587746-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9788177587746-L.jpg?default=false",
+    "description": "In this age of viruses and hackers, of electronic eavesdropping and electronic fraud, security is paramount. This solid, up-to-date tutorial is a comprehensive treatment of cryptography and network security is ideal for self-study. Explores the basic issues to be addressed by a network security capability through a tutorial and survey of cryptography and network security technology. Examines the practice of network security via practical applications that have been implemented and are in use today. Provides a simplified AES (Advanced Encryption Standard) that enables readers to grasp the essentials of AES more easily. Features block cipher modes of operation, including the CMAC mode for authentication and the CCM mode for authenticated encryption. Includes an expanded, updated treatment of intruders and malicious software. A useful reference for system engineers, programmers, system managers, network managers, product marketing personnel, and system support specialists.",
+    "pageCount": 700,
+    "overrideCat": "Networks",
+    "id": 81,
+    "accession": "BB-0081",
+    "title": "Cryptography And Network Security, 4/E",
+    "author": "William Stallings",
+    "category": "Networks",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9788177587746-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2006 Edition"
+  },
+  {
+    "rawTitle": "Bulletproof SSL and TLS",
+    "authors": [
+      "Ivan Ristic"
+    ],
+    "publisher": "Feisty Duck",
+    "publishedDate": "2014",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9781907117046",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781907117046-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781907117046-L.jpg?default=false",
+    "description": "Bulletproof SSL and TLS is a complete guide to using SSL and TLS encryption to deploy secure servers and web applications. Written by Ivan Ristic, the author of the popular SSL Labs web site, this book will teach you everything you need to know to protect your systems from eavesdropping and impersonation attacks. In this book, you’ll find just the right mix of theory, protocol detail, vulnerability and weakness information, and deployment advice to get your job done: - Comprehensive coverage of the ever-changing field of SSL/TLS and Internet PKI, with updates to the digital version - For IT security professionals, help to understand the risks - For system administrators, help to deploy systems securely - For developers, help to design and implement secure web applications - Practical and concise, with added depth when details are relevant - Introduction to cryptography and the latest TLS protocol version - Discussion of weaknesses at every level, covering implementation issues, HTTP and browser problems, and protocol vulnerabilities - Coverage of the latest attacks, such as BEAST, CRIME, BREACH, Lucky 13, RC4 biases, Triple Handshake Attack, and Heartbleed - Thorough deployment advice, including advanced technologies, such as Strict Transport Security, Content Security Policy, and pinning - Guide to using OpenSSL to generate keys and certificates and to create and run a private certification authority - Guide to using OpenSSL to test servers for vulnerabilities - Practical advice for secure server configuration using Apache httpd, IIS, Java, Nginx, Microsoft Windows, and Tomcat This book is available in paperback and a variety of digital formats without DRM.",
+    "pageCount": 528,
+    "overrideCat": "Networks",
+    "id": 82,
+    "accession": "BB-0082",
+    "title": "Bulletproof SSL and TLS",
+    "author": "Ivan Ristic",
+    "category": "Networks",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781907117046-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2014 Edition"
+  },
+  {
+    "rawTitle": "Linear Algebra Done Right",
+    "authors": [
+      "Sheldon Axler"
+    ],
+    "publisher": "Springer",
+    "publishedDate": "1997-01-01",
+    "googleCats": [
+      "Mathematics"
+    ],
+    "isbn13": "9780387225951",
+    "coverGrid": "https://covers.openlibrary.org/b/id/246056-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/id/246056-L.jpg?default=false",
+    "description": "This text for a second course in linear algebra, aimed at math majors and graduates, adopts a novel approach by banishing determinants to the end of the book and focusing on understanding the structure of linear operators on vector spaces. The author has taken unusual care to motivate concepts and to simplify proofs. For example, the book presents - without having defined determinants - a clean proof that every linear operator on a finite-dimensional complex vector space has an eigenvalue. The book starts by discussing vector spaces, linear independence, span, basics, and dimension. Students are introduced to inner-product spaces in the first half of the book and shortly thereafter to the finite- dimensional spectral theorem. A variety of interesting exercises in each chapter helps students understand and manipulate the objects of linear algebra. This second edition features new chapters on diagonal matrices, on linear functionals and adjoints, and on the spectral theorem; some sections, such as those on self-adjoint and normal operators, have been entirely rewritten; and hundreds of minor improvements have been made throughout the text.",
+    "pageCount": 276,
+    "overrideCat": "Mathematics",
+    "id": 83,
+    "accession": "BB-0083",
+    "title": "Linear Algebra Done Right",
+    "author": "Sheldon Axler",
+    "category": "Mathematics",
+    "thumbnail": "https://covers.openlibrary.org/b/id/246056-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "1997 Edition"
+  },
+  {
+    "rawTitle": "Combinatorial Mathematics",
+    "authors": [
+      "Douglas B. West"
+    ],
+    "publisher": "Cambridge University Press",
+    "publishedDate": "2021",
+    "googleCats": [
+      "Mathematics"
+    ],
+    "isbn13": "9781107058583",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781107058583-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781107058583-L.jpg?default=false",
+    "description": "This is the most readable and thorough graduate textbook and reference for combinatorics, covering enumeration, graphs, sets, and methods.",
+    "pageCount": 990,
+    "overrideCat": "Mathematics",
+    "id": 84,
+    "accession": "BB-0084",
+    "title": "Combinatorial Mathematics",
+    "author": "Douglas B. West",
+    "category": "Mathematics",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781107058583-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "2021 Edition"
+  },
+  {
+    "rawTitle": "All of Statistics",
+    "authors": [
+      "Larry Wasserman"
+    ],
+    "publisher": "Springer Science & Business Media",
+    "publishedDate": "2004-09-17",
+    "googleCats": [
+      "Computers"
+    ],
+    "isbn13": "9780387402727",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780387402727-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780387402727-L.jpg?default=false",
+    "description": "This book is for people who want to learn probability and statistics quickly. It brings together many of the main ideas in modern statistics in one place. The book is suitable for students and researchers in statistics, computer science, data mining and machine learning. This book covers a much wider range of topics than a typical introductory text on mathematical statistics. It includes modern topics like nonparametric curve estimation, bootstrapping and classification, topics that are usually relegated to follow-up courses. The reader is assumed to know calculus and a little linear algebra. No previous knowledge of probability and statistics is required. The text can be used at the advanced undergraduate and graduate level. Larry Wasserman is Professor of Statistics at Carnegie Mellon University. He is also a member of the Center for Automated Learning and Discovery in the School of Computer Science. His research areas include nonparametric inference, asymptotic theory, causality, and applications to astrophysics, bioinformatics, and genetics. He is the 1999 winner of the Committee of Presidents of Statistical Societies Presidents' Award and the 2002 winner of the Centre de recherches mathematiques de Montreal–Statistical Society of Canada Prize in Statistics. He is Associate Editor of The Journal of the American Statistical Association and The Annals of Statistics. He is a fellow of the American Statistical Association and of the Institute of Mathematical Statistics.",
+    "pageCount": 468,
+    "overrideCat": "Mathematics",
+    "id": 85,
+    "accession": "BB-0085",
+    "title": "All of Statistics",
+    "author": "Larry Wasserman",
+    "category": "Mathematics",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780387402727-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "2004 Edition"
+  },
+  {
+    "rawTitle": "A First Course in Probability",
+    "authors": [
+      "Sheldon M. Ross"
+    ],
+    "publisher": "",
+    "publishedDate": "1998",
+    "googleCats": [
+      "Mathematics"
+    ],
+    "isbn13": "9780137463145",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780137463145-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780137463145-L.jpg?default=false",
+    "description": "This market leading introduction to probability features exceptionally clear explanations of the mathematics of probability theory and explores its many diverse applications through numerous interesting and motivational examples. The outstanding problem sets are a hallmark feature of this text. *NEW - Discussions of important topics including: - The odds-ratio. - Independence is a symmetric relation. - Exchangeable random variables. *NEW - Chapter Exercises are reorganized and expanded to benefit students: - The more mechanical Problems now come before the Theoretical Exercises. - Many new problems (over 150) have been added to the text-many with multiple parts. *NEW - Self-Test Problems and Exercises now conclude the Chapter Exercises - Complete, worked-out solutions to these new problems appear in Appendix B. *NEW - Many new and updated examples including: - The two girls problem (3j in Chapter 3). - An analysis of the quicksort algorithm (2o in Chapter 7) and (5b, 5d and 5e in Chapter 2), (3c and 7e in Chapter 6), and (6k and 6m in Chapter7). *NEW - Probability Models Disk.Each copy of the book includes a PC Diskette that contains six probability models that are referenced in th",
+    "pageCount": 514,
+    "overrideCat": "Mathematics",
+    "id": 86,
+    "accession": "BB-0086",
+    "title": "A First Course in Probability",
+    "author": "Sheldon M. Ross",
+    "category": "Mathematics",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780137463145-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "1998 Edition"
+  },
+  {
+    "rawTitle": "Introduction to Partial Differential Equations with Applications",
+    "authors": [
+      "E. C. Zachmanoglou",
+      "Dale W. Thoe"
+    ],
+    "publisher": "Courier Corporation",
+    "publishedDate": "1986-01-01",
+    "googleCats": [
+      "Mathematics"
+    ],
+    "isbn13": "9780486652511",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780486652511-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780486652511-L.jpg?default=false",
+    "description": "This text explores the essentials of partial differential equations as applied to engineering and the physical sciences. Discusses ordinary differential equations, integral curves and surfaces of vector fields, the Cauchy-Kovalevsky theory, more. Problems and answers.",
+    "pageCount": 436,
+    "overrideCat": "Mathematics",
+    "id": 87,
+    "accession": "BB-0087",
+    "title": "Introduction to Partial Differential Equations with Applications",
+    "author": "E. C. Zachmanoglou, Dale W. Thoe",
+    "category": "Mathematics",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780486652511-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 4,
+    "addedDate": "2026-11-04",
+    "edition": "1986 Edition"
+  },
+  {
+    "rawTitle": "1984",
+    "authors": [
+      "George Orwell"
+    ],
+    "publisher": "HarperCollins",
+    "publishedDate": "2013-09-03",
+    "googleCats": [
+      "Fiction"
+    ],
+    "isbn13": "9780547249643",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780547249643-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780547249643-L.jpg?default=false",
+    "description": "75th ANNIVERSARY EDITION “Orwell saw, to his credit, that the act of falsifying reality is only secondarily a way of changing perceptions. It is, above all, a way of asserting power.”—The New Yorker In 1984, London is a grim city in the totalitarian state of Oceania where Big Brother is always watching you and the Thought Police can practically read your mind. Winston Smith is a man in grave danger for the simple reason that his memory still functions. Drawn into a forbidden love affair, Winston finds the courage to join a secret revolutionary organization called The Brotherhood, dedicated to the destruction of the Party. Together with his beloved Julia, he hazards his life in a deadly match against the powers that be. Lionel Trilling said of Orwell’s masterpiece “1984 is a profound, terrifying, and wholly fascinating book. It is a fantasy of the political future, and like any such fantasy, serves its author as a magnifying device for an examination of the present.” Though the year 1984 now exists in the past, Orwell’s dystopian classic remains an urgent call for the individual willing to speak truth to power.",
+    "pageCount": 309,
+    "overrideCat": "Fiction",
+    "id": 88,
+    "accession": "BB-0088",
+    "title": "1984",
+    "author": "George Orwell",
+    "category": "Fiction",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780547249643-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2013 Edition"
+  },
+  {
+    "rawTitle": "Brave New World Brave New World Revisited",
+    "authors": [
+      "Aldous Huxley"
+    ],
+    "publisher": "Random House of Canada",
+    "publishedDate": "2007-08-28",
+    "googleCats": [],
+    "isbn13": "9780307356550",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780307356550-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780307356550-L.jpg?default=false",
+    "description": "Huxley’s classic is bookended by the original introduction by Margaret Atwood and his fascinating non-fiction work, written in 1958, in which he compares the modern-day world with the dystopian fantasy he envisioned in Brave New World. Nearly thirty years after the publication of Brave New World, Huxley checked the progress of his prophecies against reality in Brave New World Revisited and argued that many of his fictional fantasies had grown uncomfortably close to the truth. Sharing his views on issues such as overpopulation, propaganda, the art of selling and brainwashing, Huxley gives a vigorous, astute analysis of the nature of power and authority in modern society. Brave New World Revisited is an urgent and powerful appeal for the defence of individualism still alarmingly relevant today.",
+    "pageCount": 432,
+    "overrideCat": "Fiction",
+    "id": 89,
+    "accession": "BB-0089",
+    "title": "Brave New World Brave New World Revisited",
+    "author": "Aldous Huxley",
+    "category": "Fiction",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780307356550-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 4,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "2007 Edition"
+  },
+  {
+    "rawTitle": "Fahrenheit 451",
+    "authors": [
+      "Ray Bradbury"
+    ],
+    "publisher": "Simon and Schuster",
+    "publishedDate": "2012",
+    "googleCats": [
+      "Fiction"
+    ],
+    "isbn13": "9781451673319",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781451673319-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781451673319-L.jpg?default=false",
+    "description": "Guy Montag is a fireman, his job is to burn books, which are forbidden.",
+    "pageCount": 272,
+    "overrideCat": "Fiction",
+    "id": 90,
+    "accession": "BB-0090",
+    "title": "Fahrenheit 451",
+    "author": "Ray Bradbury",
+    "category": "Fiction",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781451673319-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2012 Edition"
+  },
+  {
+    "rawTitle": "The Play of To Kill a Mockingbird",
+    "authors": [
+      "Harper Lee",
+      "Christopher Sergel"
+    ],
+    "publisher": "Heinemann",
+    "publishedDate": "1995",
+    "googleCats": [
+      "Drama"
+    ],
+    "isbn13": "9780435233112",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780435233112-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780435233112-L.jpg?default=false",
+    "description": "\"In his play, Christopher Sergel has shifted the focus slightly. The result of this shift, I believe, hightlights the novel's universal qualities. [He] reminds us...that the issues explored are not those of a 'regional' work of art (as the novel is often categorised) but are of importance in Nottingham, Manchester, Birmingham or wherever the play is seen by an audience.\" - from Ray Speakman's introduction.",
+    "pageCount": 136,
+    "overrideCat": "Fiction",
+    "id": 91,
+    "accession": "BB-0091",
+    "title": "The Play of To Kill a Mockingbird",
+    "author": "Harper Lee, Christopher Sergel",
+    "category": "Fiction",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780435233112-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "1995 Edition"
+  },
+  {
+    "rawTitle": "Dune (Movie Tie-In)",
+    "authors": [
+      "Frank Herbert"
+    ],
+    "publisher": "Penguin",
+    "publishedDate": "2021-09-28",
+    "googleCats": [
+      "Fiction"
+    ],
+    "isbn13": "9780593438367",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780593438367-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780593438367-L.jpg?default=false",
+    "description": "NOW A MAJOR MOTION PICTURE directed by Denis Villeneuve, starring Timothée Chalamet, Zendaya, Jason Momoa, Rebecca Ferguson, Oscar Isaac, Josh Brolin, Stellan Skarsgård, Dave Bautista, David Dastmalchian, Stephen McKinley Henderson, Chang Chen, Sharon Duncan-Brewster, Charlotte Rampling, and Javier Bardem. Frank Herbert’s classic masterpiece—a triumph of the imagination and one of the bestselling science fiction novels of all time. A mythic and emotionally charged hero’s journey, Dune tells the story of Paul Atreides, a brilliant and gifted young man born into a great destiny beyond his understanding, who must travel to the most dangerous planet in the universe to ensure the future of his family and his people. As malevolent forces explode into conflict over the planet’s exclusive supply of the most precious resource in existence—a commodity capable of unlocking humanity’s greatest potential—only those who can conquer their fear will survive.",
+    "pageCount": 897,
+    "overrideCat": "Fiction",
+    "id": 92,
+    "accession": "BB-0092",
+    "title": "Dune (Movie Tie-In)",
+    "author": "Frank Herbert",
+    "category": "Fiction",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780593438367-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2021 Edition"
+  },
+  {
+    "rawTitle": "The Hobbit",
+    "authors": [
+      "John Ronald Reuel Tolkien"
+    ],
+    "publisher": "",
+    "publishedDate": "1981",
+    "googleCats": [
+      "Fiction"
+    ],
+    "isbn13": "9780345296047",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780345296047-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780345296047-L.jpg?default=false",
+    "description": "Bilbo Baggins, the hobbit, is a peaceful sort who lives in a cozy hole in the Shire, a place where adventures are uncommon - and rather unwanted. So when the wizard Gandalf whisks him away on a treasure-hunting expedition with a troop of rowdy dwarves, he's not entirely thrilled. Encountering ruthless trolls, beastly orcs, gigantic spiders, and hungry wolves, Bilbo discovers within himself astonishing strength and courage. And at the ultimate confrontation with the fearsome dragon Smaug, the hobbit will brave the dangers of the dark and dragon fire alone and unaided.",
+    "pageCount": 292,
+    "overrideCat": "Fiction",
+    "id": 93,
+    "accession": "BB-0093",
+    "title": "The Hobbit",
+    "author": "John Ronald Reuel Tolkien",
+    "category": "Fiction",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780345296047-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "1981 Edition"
+  },
+  {
+    "rawTitle": "Frankenstein",
+    "authors": [
+      "Mary Shelley"
+    ],
+    "publisher": "Courier Corporation",
+    "publishedDate": "2013-12-03",
+    "googleCats": [
+      "Fiction"
+    ],
+    "isbn13": "9780486784755",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780486784755-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780486784755-L.jpg?default=false",
+    "description": "The story of Victor Frankenstein's monstrous creation and the havoc it caused has enthralled generations of readers and inspired countless writers of horror and suspense. With the author's own 1831 introduction.",
+    "pageCount": 180,
+    "overrideCat": "Fiction",
+    "id": 94,
+    "accession": "BB-0094",
+    "title": "Frankenstein",
+    "author": "Mary Shelley",
+    "category": "Fiction",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780486784755-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 4,
+    "addedDate": "2026-11-04",
+    "edition": "2013 Edition"
+  },
+  {
+    "rawTitle": "Influence",
+    "authors": [
+      "Robert B. Cialdini, PhD"
+    ],
+    "publisher": "Harper Collins",
+    "publishedDate": "2009-06-02",
+    "googleCats": [
+      "Self-Help"
+    ],
+    "isbn13": "9780061899874",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780061899874-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780061899874-L.jpg?default=false",
+    "description": "The foundational and wildly popular go-to resource for influence and persuasion—a renowned international bestseller, with over 5 million copies sold—now revised adding: new research, new insights, new examples, and online applications. In the new edition of this highly acclaimed bestseller, Robert Cialdini—New York Times bestselling author of Pre-Suasion and the seminal expert in the fields of influence and persuasion—explains the psychology of why people say yes and how to apply these insights ethically in business and everyday settings. Using memorable stories and relatable examples, Cialdini makes this crucially important subject surprisingly easy. With Cialdini as a guide, you don’t have to be a scientist to learn how to use this science. You’ll learn Cialdini’s Universal Principles of Influence, including new research and new uses so you can become an even more skilled persuader—and just as importantly, you’ll learn how to defend yourself against unethical influence attempts. You may think you know these principles, but without understanding their intricacies, you may be ceding their power to someone else. Cialdini’s Principles of Persuasion: Reciprocation Commitment and Consistency Social Proof Liking Authority Scarcity Unity, the newest principle for this edition Understanding and applying the principles ethically is cost-free and deceptively easy. Backed by Dr. Cialdini’s 35 years of evidence-based, peer-reviewed scientific research—including a three-year field study on what leads people to change—Influence is a comprehensive guide to using these principles to move others in your direction.",
+    "pageCount": 338,
+    "overrideCat": "Psychology",
+    "id": 95,
+    "accession": "BB-0095",
+    "title": "Influence",
+    "author": "Robert B. Cialdini, PhD",
+    "category": "Psychology",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780061899874-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "2009 Edition"
+  },
+  {
+    "rawTitle": "Man's Search For Meaning",
+    "authors": [
+      "Viktor E. Frankl"
+    ],
+    "publisher": "Simon and Schuster",
+    "publishedDate": "1985",
+    "googleCats": [
+      "Biography & Autobiography"
+    ],
+    "isbn13": "9780671023379",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780671023379-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780671023379-L.jpg?default=false",
+    "description": "Frankl's elaboration of his theory that man's primary motvational force is the search for meaning.",
+    "pageCount": 228,
+    "overrideCat": "Psychology",
+    "id": 96,
+    "accession": "BB-0096",
+    "title": "Man's Search For Meaning",
+    "author": "Viktor E. Frankl",
+    "category": "Psychology",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780671023379-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 3,
+    "addedDate": "2026-11-04",
+    "edition": "1985 Edition"
+  },
+  {
+    "rawTitle": "Predictably Irrational, Revised and Expanded Edition",
+    "authors": [
+      "Dan Ariely"
+    ],
+    "publisher": "Harper Collins",
+    "publishedDate": "2009-05-19",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9780061854545",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780061854545-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780061854545-L.jpg?default=false",
+    "description": "How do we think about money? What caused bankers to lose sight of the economy? What caused individuals to take on mortgages that were not within their means? What irrational forces guided our decisions? And how can we recover from an economic crisis? In this revised and expanded edition of the New York Times and Wall Street Journal bestseller Predictably Irrational, Duke University's behavioral economist Dan Ariely explores the hidden forces that shape our decisions, including some of the causes responsible for the current economic crisis. Bringing a much-needed dose of sophisticated psychological study to the realm of public policy, Ariely offers his own insights into the irrationalities of everyday life, the decisions that led us to the financial meltdown of 2008, and the general ways we get ourselves into trouble. Blending common experiences and clever experiments with groundbreaking analysis, Ariely demonstrates how expectations, emotions, social norms, and other invisible, seemingly illogical forces skew our reasoning abilities. As he explains, our reliance on standard economic theory to design personal, national, and global policies may, in fact, be dangerous. The mistakes that we make as individuals and institutions are not random, and they can aggregate in the market—with devastating results. In light of our current economic crisis, the consequences of these systematic and predictable mistakes have never been clearer. Packed with new studies and thought-provoking responses to readers' questions and comments, this revised and expanded edition of Predictably Irrational will change the way we interact with the world—from the small decisions we make in our own lives to the individual and collective choices that shape our economy.",
+    "pageCount": 406,
+    "overrideCat": "Psychology",
+    "id": 97,
+    "accession": "BB-0097",
+    "title": "Predictably Irrational, Revised and Expanded Edition",
+    "author": "Dan Ariely",
+    "category": "Psychology",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780061854545-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2009 Edition"
+  },
+  {
+    "rawTitle": "The Power of Habit: Why We Do What We Do in Life & Business",
+    "authors": [
+      "Charles Duhigg"
+    ],
+    "publisher": "Penguin Group",
+    "publishedDate": "2014-01-07",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9780606352147",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780606352147-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780606352147-L.jpg?default=false",
+    "description": "For use in schools and libraries only. Identifies the neurological processes behind behaviors, explaining how self-control and success are largely driven by habits and providing guidelines for achieving personal goals and overall well-being by adjusting specific habits.",
+    "pageCount": null,
+    "overrideCat": "Psychology",
+    "id": 98,
+    "accession": "BB-0098",
+    "title": "The Power of Habit: Why We Do What We Do in Life & Business",
+    "author": "Charles Duhigg",
+    "category": "Psychology",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780606352147-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 2,
+    "totalCopies": 2,
+    "addedDate": "2026-11-04",
+    "edition": "2014 Edition"
+  },
+  {
+    "rawTitle": "High Output Management",
+    "authors": [
+      "Andrew S. Grove"
+    ],
+    "publisher": "Vintage",
+    "publishedDate": "1995-08-29",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9780679762881",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780679762881-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780679762881-L.jpg?default=false",
+    "description": "In this legendary business book and Silicon Valley staple, the former chairman and CEO of Intel shares his perspective on how to build and run a company. A practical handbook for navigating real-life business scenarios and a powerful management manifesto with the ability to revolutionize the way we work. \"An organizational Baedeker for managers at all levels. . . . A highly credible handbook for organizing work and directing and developing employees.\" —The New York Times The essential skill of creating and maintaining new businesses—the art of the entrepreneur—can be summed up in a single word: managing. Born of Grove’s experiences at one of America’s leading technology companies (as CEO and employee number three at Intel), High Output Management is equally appropriate for sales managers, accountants, consultants, and teachers, as well as CEOs and startup founders. Grove covers techniques for creating highly productive teams, demonstrating methods of motivation that lead to peak performance. \"Generous enough with advice and observations to be required reading.\" —The Wall Street Journal",
+    "pageCount": 270,
+    "overrideCat": "Management",
+    "id": 99,
+    "accession": "BB-0099",
+    "title": "High Output Management",
+    "author": "Andrew S. Grove",
+    "category": "Management",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780679762881-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 1,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "1995 Edition"
+  },
+  {
+    "rawTitle": "Measure What Matters",
+    "authors": [
+      "John Doerr"
+    ],
+    "publisher": "Penguin",
+    "publishedDate": "2018-04-24",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9780525536239",
+    "coverGrid": "https://covers.openlibrary.org/b/id/10706481-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/id/10706481-L.jpg?default=false",
+    "description": "#1 New York Times Bestseller Legendary venture capitalist John Doerr reveals how the goal-setting system of Objectives and Key Results (OKRs) has helped tech giants from Intel to Google achieve explosive growth—and how it can help any organization thrive. In the fall of 1999, John Doerr met with the founders of a start-up whom he'd just given $12.5 million, the biggest investment of his career. Larry Page and Sergey Brin had amazing technology, entrepreneurial energy, and sky-high ambitions, but no real business plan. For Google to change the world (or even to survive), Page and Brin had to learn how to make tough choices on priorities while keeping their team on track. They'd have to know when to pull the plug on losing propositions, to fail fast. And they needed timely, relevant data to track their progress—to measure what mattered. Doerr taught them about a proven approach to operating excellence: Objectives and Key Results. He had first discovered OKRs in the 1970s as an engineer at Intel, where the legendary Andy Grove (\"the greatest manager of his or any era\") drove the best-run company Doerr had ever seen. Later, as a venture capitalist, Doerr shared Grove's brainchild with more than fifty companies. Wherever the process was faithfully practiced, it worked. In this goal-setting system, objectives define what we seek to achieve; key results are how those top-priority goals will be attained with specific, measurable actions within a set time frame. Everyone's goals, from entry level to CEO, are transparent to the entire organization. The benefits are profound. OKRs surface an organization's most important work. They focus effort and foster coordination. They keep employees on track. They link objectives across silos to unify and strengthen the entire company. Along the way, OKRs enhance workplace satisfaction and boost retention. In Measure What Matters, Doerr shares a broad range of first-person, behind-the-scenes case studies, with narrators including Bono and Bill Gates, to demonstrate the focus, agility, and explosive growth that OKRs have spurred at so many great organizations. This book will help a new generation of leaders capture the same magic.",
+    "pageCount": 322,
+    "overrideCat": "Management",
+    "id": 100,
+    "accession": "BB-0100",
+    "title": "Measure What Matters",
+    "author": "John Doerr",
+    "category": "Management",
+    "thumbnail": "https://covers.openlibrary.org/b/id/10706481-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 5,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "2018 Edition"
+  },
+  {
+    "rawTitle": "Good to Great",
+    "authors": [
+      "Jim Collins"
+    ],
+    "publisher": "Harper Collins",
+    "publishedDate": "2011-07-19",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9780062119209",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780062119209-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780062119209-L.jpg?default=false",
+    "description": "The Challenge Built to Last, the defining management study of the nineties, showed how great companies triumph over time and how long-term sustained performance can be engineered into the DNA of an enterprise from the verybeginning. But what about the company that is not born with great DNA? How can good companies, mediocre companies, even bad companies achieve enduring greatness? The Study For years, this question preyed on the mind of Jim Collins. Are there companies that defy gravity and convert long-term mediocrity or worse into long-term superiority? And if so, what are the universal distinguishing characteristics that cause a company to go from good to great? The Standards Using tough benchmarks, Collins and his research team identified a set of elite companies that made the leap to great results and sustained those results for at least fifteen years. How great? After the leap, the good-to-great companies generated cumulative stock returns that beat the general stock market by an average of seven times in fifteen years, better than twice the results delivered by a composite index of the world's greatest companies, including Coca-Cola, Intel, General Electric, and Merck. The Comparisons The research team contrasted the good-to-great companies with a carefully selected set of comparison companies that failed to make the leap from good to great. What was different? Why did one set of companies become truly great performers while the other set remained only good? Over five years, the team analyzed the histories of all twenty-eight companies in the study. After sifting through mountains of data and thousands of pages of interviews, Collins and his crew discovered the key determinants of greatness -- why some companies make the leap and others don't. The Findings The findings of the Good to Great study will surprise many readers and shed light on virtually every area of management strategy and practice. The findings include: Level 5 Leaders: The research team was shocked to discover the type of leadership required to achieve greatness. The Hedgehog Concept (Simplicity within the Three Circles): To go from good to great requires transcending the curse of competence. A Culture of Discipline: When you combine a culture of discipline with an ethic of entrepreneurship, you get the magical alchemy of great results. Technology Accelerators: Good-to-great companies think differently about the role of technology. The Flywheel and the Doom Loop: Those who launch radical change programs and wrenching restructurings will almost certainly fail to make the leap. “Some of the key concepts discerned in the study,” comments Jim Collins, \"fly in the face of our modern business culture and will, quite frankly, upset some people.” Perhaps, but who can afford to ignore these findings?",
+    "pageCount": 320,
+    "overrideCat": "Management",
+    "id": 101,
+    "accession": "BB-0101",
+    "title": "Good to Great",
+    "author": "Jim Collins",
+    "category": "Management",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780062119209-M.jpg?default=false",
+    "format": "Book",
+    "available": false,
+    "availableCopies": 0,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "2011 Edition"
+  },
+  {
+    "rawTitle": "The Innovator's Dilemma",
+    "authors": [
+      "Clayton Christensen"
+    ],
+    "publisher": "Harvard Business Review Press",
+    "publishedDate": "2013-11-19",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9781422196021",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9781422196021-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9781422196021-L.jpg?default=false",
+    "description": "An innovation classic. From Steve Jobs to Jeff Bezos, Clay Christensen’s work continues to underpin today’s most innovative leaders and organizations. The bestselling classic on disruptive innovation, by renowned author Clayton M. Christensen. His work is cited by the world’s best-known thought leaders, from Steve Jobs to Malcolm Gladwell. In this classic bestseller—one of the most influential business books of all time—innovation expert Clayton Christensen shows how even the most outstanding companies can do everything right—yet still lose market leadership. Christensen explains why most companies miss out on new waves of innovation. No matter the industry, he says, a successful company with established products will get pushed aside unless managers know how and when to abandon traditional business practices. Offering both successes and failures from leading companies as a guide, The Innovator’s Dilemma gives you a set of rules for capitalizing on the phenomenon of disruptive innovation. Sharp, cogent, and provocative—and consistently noted as one of the most valuable business ideas of all time—The Innovator’s Dilemma is the book no manager, leader, or entrepreneur should be without.",
+    "pageCount": 283,
+    "overrideCat": "Management",
+    "id": 102,
+    "accession": "BB-0102",
+    "title": "The Innovator's Dilemma",
+    "author": "Clayton Christensen",
+    "category": "Management",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9781422196021-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 5,
+    "addedDate": "2026-11-04",
+    "edition": "2013 Edition"
+  },
+  {
+    "rawTitle": "Rework",
+    "authors": [
+      "Jason Fried",
+      "David Heinemeier Hansson"
+    ],
+    "publisher": "Random House of Canada",
+    "publishedDate": "2010",
+    "googleCats": [
+      "Business & Economics"
+    ],
+    "isbn13": "9780307463746",
+    "coverGrid": "https://covers.openlibrary.org/b/isbn/9780307463746-M.jpg?default=false",
+    "coverLarge": "https://covers.openlibrary.org/b/isbn/9780307463746-L.jpg?default=false",
+    "description": "\"Rework\" shows you a better, faster, easier way to succeed in business. You'll learn how to be more productive, how to get exposure without breaking the bank, and tons more counterintuitive ideas that will inspire and provoke you.",
+    "pageCount": 279,
+    "overrideCat": "Management",
+    "id": 103,
+    "accession": "BB-0103",
+    "title": "Rework",
+    "author": "Jason Fried, David Heinemeier Hansson",
+    "category": "Management",
+    "thumbnail": "https://covers.openlibrary.org/b/isbn/9780307463746-M.jpg?default=false",
+    "format": "Book",
+    "available": true,
+    "availableCopies": 3,
+    "totalCopies": 4,
+    "addedDate": "2026-11-04",
+    "edition": "2010 Edition"
   }
 ]

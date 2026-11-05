@@ -4,7 +4,7 @@ A modern full-stack web application designed to automate and streamline academic
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 
 The **Book Bank Management System** modernizes traditional academic library operations into a responsive, modular web platform. It caters to distinct user roles with dedicated interfaces:
 
@@ -131,7 +131,7 @@ Interactive API documentation will be available at: `http://localhost:8000/docs`
 
 ---
 
-## 🌿 Git & Branching Strategy
+##  Git & Branching Strategy
 
 The repository follows a role-based feature-branching model (see [`GIT_WORKFLOW.md`](./GIT_WORKFLOW.md) for full details):
 

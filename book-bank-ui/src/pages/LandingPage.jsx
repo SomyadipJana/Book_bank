@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button } from '../components/Button'
 import { DueDatePocket } from '../components/DueDatePocket'
 import { useAuth } from '../context/AuthContext'
+import { Shelf } from '../components/Shelf'
 
 /* ── Data ────────────────────────────────────────────────── */
 
@@ -181,6 +182,21 @@ const STEPS = [
 
 function Nav() {
   const { user, logout } = useAuth()
+  const isLibrarian = user?.role === 'librarian'
+
+  const navItems = isLibrarian
+    ? [
+        { label: 'Catalogue', href: '#catalog' },
+        { label: 'Admin',     href: '#admin' },
+        { label: 'About',     href: '#' },
+      ]
+    : [
+        { label: 'Catalogue',    href: '#catalog' },
+        { label: 'My Loans',     href: '#loans' },
+        { label: 'Reservations', href: '#reservations' },
+        { label: 'About',        href: '#' },
+      ]
+
   return (
     <nav className="nav">
       <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -196,21 +212,40 @@ function Nav() {
       </div>
 
       <ul className="nav__links">
-        {[
-          { label: 'Catalogue',    href: '#catalog' },
-          { label: 'My Loans',     href: '#loans' },
-          { label: 'Reservations', href: '#reservations' },
-          { label: 'About',        href: '#' },
-        ].map((l) => (
+        {navItems.map((l) => (
           <li key={l.label}><a href={l.href} className="nav__link">{l.label}</a></li>
         ))}
       </ul>
 
       {user ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <span className="account-nav-user" title={user.name}>
-            <span className="account-nav-avatar">{user.name[0].toUpperCase()}</span>
+          <span
+            className="account-nav-user"
+            title={user.name}
+            style={{ cursor: 'pointer' }}
+            onClick={() => { window.location.hash = isLibrarian ? '#admin' : '#loans' }}
+          >
+            <span className="account-nav-avatar">{user.name ? user.name[0].toUpperCase() : 'U'}</span>
             <span className="account-nav-name">{user.name}</span>
+            {isLibrarian && (
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.625rem',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  padding: '2px 6px',
+                  borderRadius: '3px',
+                  backgroundColor: 'rgba(198, 138, 46, 0.15)',
+                  color: 'var(--color-ochre)',
+                  border: '1px solid rgba(198, 138, 46, 0.35)',
+                  fontWeight: 600,
+                  marginLeft: 4,
+                }}
+              >
+                Librarian
+              </span>
+            )}
           </span>
           <button
             type="button"
@@ -473,6 +508,32 @@ function HowItWorks() {
   )
 }
 
+/* ── Dark Hero Shelf Banner ─────────────────────────────── */
+function DarkHeroShelf() {
+  return (
+    <section className="dark-hero">
+      {/* Wordmark — mirrors the nav branding */}
+      <div className="dark-hero__wordmark">
+        <span className="dark-hero__wordmark-name">Book Bank</span>
+        <span className="dark-hero__wordmark-sub">Management System</span>
+      </div>
+
+      {/* Interactive bookshelf */}
+      <div className="dark-hero__shelf-wrap">
+        <Shelf idleLabel="Hover a book to explore" />
+      </div>
+
+      {/* Quote */}
+      <div className="dark-hero__quote">
+        <p className="dark-hero__quote-text">
+          Every borrowed page is a world returned.
+        </p>
+        <p className="dark-hero__quote-attr">— The Book Bank</p>
+      </div>
+    </section>
+  )
+}
+
 function Footer() {
   const year = new Date().getFullYear()
   return (
@@ -538,6 +599,7 @@ export default function LandingPage() {
     <div style={{ backgroundColor: 'var(--color-paper)' }}>
       <Nav />
       <Hero />
+      <DarkHeroShelf />
       <StatsStrip />
       <NewArrivals />
       <HowItWorks />

@@ -1,0 +1,13 @@
+{
+  "name": "book-bank",
+  "version": "1.0.0",
+  "description": "Book Bank Management System",
+  "scripts": {
+    "start": "start-all.bat",
+    "dev": "powershell -ExecutionPolicy Bypass -File ./start-all.ps1",
+    "frontend": "npm run dev --prefix book-bank-ui",
+    "backend": "cd backend && python manage.py runserver 8001",
+    "search": "cd book-search-api && uvicorn main:app --reload --port 8000"
+  }
+}
+

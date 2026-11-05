@@ -1,177 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Button } from '../components/Button'
 import { SPINE } from '../data/books'
 import { useAuth } from '../context/AuthContext'
+import { useLibraryStore, formatDisplayDate, daysBetween } from '../data/libraryStore'
 
-/* ── Mock Account Data ───────────────────────────────────── */
-
-// Fallback profile used only when no auth user is found (should not happen in normal flow)
-const FALLBACK_PROFILE = {
-  name: 'Student',
-  enrollmentNo: 'LIB-0000-0000',
-  role: 'Undergraduate',
-  joined: 'JAN 2024',
-  expires: 'JUN 2027',
+/* ΓöÇΓöÇ Small Book Cover Thumbnail ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
+function BookThumb({ title, category, accession }) {
+  const bg = SPINE[category] || '#1E3D32'
+  return (
+    <div className="account-thumb" style={{ backgroundColor: bg }} aria-hidden="true">
+      <span className="account-thumb-text">{title}</span>
+      <span className="account-thumb-tag">{accession}</span>
+    </div>
+  )
 }
 
-const INITIAL_LOANS = [
-  {
-    id: 'loan-1',
-    accession: 'BB-0006',
-    title: 'The Pragmatic Programmer',
-    author: 'Hunt and Thomas',
-    category: 'Engineering',
-    format: 'Book',
-    borrowedDate: '2026-08-16',
-    dueDate: '2026-08-30', // 1 day remaining (on time)
-    totalDays: 14,
-    daysElapsed: 13,
-    isOverdue: false,
-    renewalsLeft: 2,
-  },
-  {
-    id: 'loan-2',
-    accession: 'BB-0001',
-    title: 'One Hundred Years of Solitude',
-    author: 'Gabriel García Márquez',
-    category: 'Fiction',
-    format: 'Book',
-    borrowedDate: '2026-08-20',
-    dueDate: '2026-09-03', // 5 days remaining (on time)
-    totalDays: 14,
-    daysElapsed: 9,
-    isOverdue: false,
-    renewalsLeft: 1,
-  },
-  {
-    id: 'loan-3',
-    accession: 'BB-0018',
-    title: 'The Design of Everyday Things',
-    author: 'Don Norman',
-    category: 'Design',
-    format: 'Book',
-    borrowedDate: '2026-08-10',
-    dueDate: '2026-08-24', // 5 days overdue!
-    totalDays: 14,
-    daysElapsed: 19,
-    isOverdue: true,
-    renewalsLeft: 0,
-  },
-]
-
-const INITIAL_RESERVATIONS = [
-  {
-    id: 'res-1',
-    accession: 'BB-0007',
-    title: 'Clean Code',
-    author: 'Robert C. Martin',
-    category: 'Engineering',
-    reservedDate: '2026-08-27',
-    status: 'Ready for pickup',
-    pickupLocation: 'Desk Bay 2 — Shelf R-04',
-    pickupDeadline: '2026-09-02',
-    isReady: true,
-  },
-  {
-    id: 'res-2',
-    accession: 'BB-0015',
-    title: 'Sapiens',
-    author: 'Yuval Noah Harari',
-    category: 'History',
-    reservedDate: '2026-08-28',
-    status: 'Position #1 in queue',
-    pickupLocation: 'In active circulation',
-    pickupDeadline: 'Est. 05 Sept 2026',
-    isReady: false,
-  },
-]
-
-const HISTORY_RECORDS = [
-  {
-    id: 'hist-1',
-    accession: 'BB-0011',
-    title: 'A Brief History of Time',
-    author: 'Stephen Hawking',
-    category: 'Science',
-    borrowed: '12 Jul 2026',
-    returned: '25 Jul 2026',
-    status: 'Returned on time',
-  },
-  {
-    id: 'hist-2',
-    accession: 'BB-0020',
-    title: 'The Elements of Typographic Style',
-    author: 'Robert Bringhurst',
-    category: 'Design',
-    borrowed: '01 Jun 2026',
-    returned: '17 Jun 2026',
-    status: 'Returned (2d late)',
-  },
-  {
-    id: 'hist-3',
-    accession: 'BB-0021',
-    title: 'Thinking, Fast and Slow',
-    author: 'Daniel Kahneman',
-    category: 'Psychology',
-    borrowed: '10 May 2026',
-    returned: '24 May 2026',
-    status: 'Returned on time',
-  },
-  {
-    id: 'hist-4',
-    accession: 'BB-0027',
-    title: 'Meditations',
-    author: 'Marcus Aurelius',
-    category: 'Philosophy',
-    borrowed: '15 Apr 2026',
-    returned: '28 Apr 2026',
-    status: 'Returned on time',
-  },
-  {
-    id: 'hist-5',
-    accession: 'BB-0030',
-    title: 'IEEE Spectrum — Spring 2025',
-    author: 'IEEE Publications',
-    category: 'Engineering',
-    borrowed: '02 Mar 2026',
-    returned: '09 Mar 2026',
-    status: 'Returned on time',
-  },
-]
-
-const INITIAL_FINES = [
-  {
-    id: 'fine-1',
-    date: '2026-08-25',
-    accession: 'BB-0018',
-    item: 'The Design of Everyday Things',
-    reason: 'Overdue loan (5 days @ $0.50/day)',
-    amount: 2.50,
-    status: 'Unpaid',
-  },
-  {
-    id: 'fine-2',
-    date: '2026-06-18',
-    accession: 'BB-0020',
-    item: 'The Elements of Typographic Style',
-    reason: 'Overdue loan (2 days @ $1.00/day)',
-    amount: 2.00,
-    status: 'Unpaid',
-  },
-  {
-    id: 'fine-3',
-    date: '2026-02-14',
-    accession: 'BB-0003',
-    item: 'The Brothers Karamazov',
-    reason: 'Replacement barcode label fee',
-    amount: 1.50,
-    status: 'Settled',
-  },
-]
-
-/* ── Navigation Header ───────────────────────────────────── */
-
+/* ΓöÇΓöÇ Navigation Header ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 function AccountNav({ activeTab = 'loans', userName = '', onLogout }) {
+  const { user } = useAuth()
+  const isLibrarian = user?.role === 'librarian'
+
   return (
     <nav className="nav" role="navigation" aria-label="Main navigation">
       <a
@@ -218,7 +66,7 @@ function AccountNav({ activeTab = 'loans', userName = '', onLogout }) {
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         <span className="account-nav-user" title={userName}>
-          <span className="account-nav-avatar">{userName ? userName[0].toUpperCase() : '?'}</span>
+          <span className="account-nav-avatar">{userName ? userName[0].toUpperCase() : 'S'}</span>
           <span className="account-nav-name">{userName}</span>
         </span>
         <button
@@ -233,65 +81,68 @@ function AccountNav({ activeTab = 'loans', userName = '', onLogout }) {
   )
 }
 
-/* ── Small Book Cover Thumbnail ──────────────────────────── */
-
-function BookThumb({ title, category, accession }) {
-  const bg = SPINE[category] || '#1E3D32'
-  return (
-    <div className="account-thumb" style={{ backgroundColor: bg }} aria-hidden="true">
-      <span className="account-thumb-text">{title}</span>
-      <span className="account-thumb-tag">{accession}</span>
-    </div>
-  )
-}
-
-/* ── Main Component ──────────────────────────────────────── */
-
+/* ΓöÇΓöÇ Main Component ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 export default function AccountPage({ initialTab = 'loans' }) {
   const { user, logout } = useAuth()
+  const {
+    today,
+    members,
+    fines: allFines,
+    renewBook,
+    cancelReservation,
+    fineDailyRate,
+    activityLog,
+  } = useLibraryStore()
 
-  // Build profile from auth context; fall back to defaults for mock fields that aren't in auth
-  const USER_PROFILE = {
-    name: user?.name || FALLBACK_PROFILE.name,
-    enrollmentNo: user?.enrollmentNo || FALLBACK_PROFILE.enrollmentNo,
-    role: user?.role === 'librarian' ? 'Librarian' : (user?.studentRole || FALLBACK_PROFILE.role),
-    joined: user?.joined || FALLBACK_PROFILE.joined,
-    expires: user?.expires || FALLBACK_PROFILE.expires,
+  // Guard: librarian is not a member and has no loans/fines
+  useEffect(() => {
+    if (user?.role === 'librarian') {
+      window.location.hash = '#admin'
+    }
+  }, [user])
+
+  if (user?.role === 'librarian') {
+    return null
   }
+
+  // Find this specific student member in the shared store
+  const member = useMemo(() => {
+    const userEmail = user?.email?.toLowerCase() || ''
+    const found = members.find(m =>
+      m.email.toLowerCase() === userEmail ||
+      m.id === user?.memberId ||
+      m.studentId === user?.studentId ||
+      (userEmail === 'test@university.edu' && m.id === 'STU-001')
+    )
+    if (found) return found
+
+    // Fallback if no matching member found: create a dynamic view
+    return {
+      id: user?.studentId || 'STU-NEW',
+      name: user?.name || 'Student',
+      email: user?.email || '',
+      studentId: user?.studentId || 'STU-NEW',
+      dept: user?.dept || 'Undergraduate',
+      status: 'active',
+      joined: 'JAN 2025',
+      expires: 'JUN 2028',
+      booksOut: 0,
+      overdueCount: 0,
+      totalFinesDue: 0,
+      hasUnpaidFines: false,
+      activeLoans: [],
+      overdueLoans: [],
+      historyLoans: [],
+      reservations: [],
+    }
+  }, [members, user])
 
   const [activeTab, setActiveTab] = useState(initialTab)
-  const [loans, setLoans] = useState(INITIAL_LOANS)
-  const [reservations, setReservations] = useState(INITIAL_RESERVATIONS)
-  const [fines, setFines] = useState(INITIAL_FINES)
-  const [renewedIds, setRenewedIds] = useState({})
+  const [toast, setToast] = useState(null)
 
-  const totalUnpaidFines = fines
-    .filter(f => f.status === 'Unpaid')
-    .reduce((sum, f) => sum + f.amount, 0)
-
-  const handleRenew = (loanId) => {
-    setLoans(prev => prev.map(l => {
-      if (l.id === loanId && l.renewalsLeft > 0) {
-        return {
-          ...l,
-          dueDate: '2026-09-14',
-          daysElapsed: 1,
-          totalDays: 14,
-          isOverdue: false,
-          renewalsLeft: l.renewalsLeft - 1,
-        }
-      }
-      return l
-    }))
-    setRenewedIds(prev => ({ ...prev, [loanId]: true }))
-  }
-
-  const handleCancelHold = (resId) => {
-    setReservations(prev => prev.filter(r => r.id !== resId))
-  }
-
-  const handlePayFine = (fineId) => {
-    setFines(prev => prev.map(f => f.id === fineId ? { ...f, status: 'Settled' } : f))
+  const showToast = (msg, type = 'info') => {
+    setToast({ msg, type })
+    setTimeout(() => setToast(null), 4000)
   }
 
   useEffect(() => {
@@ -303,48 +154,168 @@ export default function AccountPage({ initialTab = 'loans' }) {
     window.history.replaceState(null, '', `#${tab}`)
   }
 
+  /* ΓöÇΓöÇ Renew action ΓöÇΓöÇ */
+  const handleRenew = (loanId) => {
+    try {
+      const newDue = renewBook({ loanId, actor: member.name })
+      showToast(`Loan renewed successfully! New due date: ${formatDisplayDate(newDue)}`, 'success')
+    } catch (err) {
+      showToast(err.message, 'error')
+    }
+  }
+
+  /* ΓöÇΓöÇ Cancel reservation action ΓöÇΓöÇ */
+  const handleCancelHold = (resId) => {
+    try {
+      cancelReservation({ reservationId: resId, actor: member.name })
+      showToast('Reservation cancelled.', 'info')
+    } catch (err) {
+      showToast(err.message, 'error')
+    }
+  }
+
+  /* ΓöÇΓöÇ Student Notifications (Step 7) ΓöÇΓöÇ */
+  const notifications = useMemo(() => {
+    const list = []
+
+    // 1. Ready holds
+    member.reservations.forEach(r => {
+      if (r.status === 'ready') {
+        list.push({
+          id: `notif-ready-${r.id}`,
+          type: 'ready',
+          msg: `"${r.bookTitle}" is ready for pickup at ${r.pickupLocation || 'Circulation Desk'}! Hold expires ${formatDisplayDate(r.holdExpiresAt)}.`,
+        })
+      }
+    })
+
+    // 2. Overdue books
+    member.activeLoans.forEach(l => {
+      if (l.isOverdue) {
+        list.push({
+          id: `notif-overdue-${l.id}`,
+          type: 'overdue',
+          msg: `"${l.bookTitle}" is ${l.daysLate} day(s) overdue! Fine accrued: Γé╣${l.accruedFine}. Please return it immediately.`,
+        })
+      } else if (l.daysLeft <= 2) {
+        list.push({
+          id: `notif-due-${l.id}`,
+          type: 'warning',
+          msg: `"${l.bookTitle}" is due in ${l.daysLeft === 0 ? 'today' : `${l.daysLeft} day(s)`} (${formatDisplayDate(l.dueDate)}).`,
+        })
+      }
+    })
+
+    // 3. Unpaid fines
+    if (member.hasUnpaidFines) {
+      list.push({
+        id: 'notif-fine',
+        type: 'fine',
+        msg: `You have total unpaid fines of Γé╣${member.totalFinesDue.toFixed(2)}. Borrowing and renewals are paused until cleared by the librarian.`,
+      })
+    }
+
+    return list
+  }, [member])
+
+  // Member's fixed fines
+  const memberFixedFines = useMemo(() => {
+    return allFines.filter(f => f.memberId === member.id)
+  }, [allFines, member.id])
+
   return (
     <div className="account-page">
       <AccountNav
         activeTab={activeTab}
-        userName={USER_PROFILE.name}
+        userName={member.name}
         onLogout={() => { logout(); window.location.hash = '#login' }}
       />
 
+      {/* Toast Feedback */}
+      {toast && (
+        <div style={{
+          position: 'fixed',
+          top: 20,
+          right: 20,
+          zIndex: 500,
+          padding: '12px 20px',
+          borderRadius: 4,
+          backgroundColor: toast.type === 'error' ? 'var(--color-oxblood)' : toast.type === 'success' ? 'var(--color-ink)' : 'var(--color-charcoal)',
+          color: 'var(--color-paper)',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.8125rem',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
+          maxWidth: 420,
+        }}>
+          {toast.msg}
+        </div>
+      )}
+
       <main className="account-main">
-        {/* ── Top Identity & Stat Chips Strip ── */}
+        {/* ΓöÇΓöÇ Top Identity & Stat Chips Strip ΓöÇΓöÇ */}
         <header className="account-header">
           <div className="account-id-block">
-            <h1 className="account-user-name">{USER_PROFILE.name}</h1>
-            <div className="account-id-meta">
-              <span className="account-mono-pill">ID: {USER_PROFILE.enrollmentNo}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <h1 className="account-user-name" style={{ margin: 0 }}>{member.name}</h1>
+              <span className={`admin-badge admin-badge--${member.status === 'active' ? 'avail' : 'overdue'}`}>
+                {member.status.toUpperCase()}
+              </span>
+            </div>
+            <div className="account-id-meta" style={{ marginTop: 6 }}>
+              <span className="account-mono-pill">ID: {member.studentId || member.id}</span>
               <span className="account-meta-dot" aria-hidden="true">&middot;</span>
-              <span className="account-role-text">{USER_PROFILE.role}</span>
+              <span className="account-role-text">{member.dept}</span>
               <span className="account-meta-dot" aria-hidden="true">&middot;</span>
-              <span className="account-role-text">VALID THRU {USER_PROFILE.expires}</span>
+              <span className="account-role-text">VALID THRU {member.expires || 'JUN 2028'}</span>
             </div>
           </div>
 
-          {/* 3 Plex Mono Stat Chips */}
-          <div className="account-stat-strip" aria-label="Account summary statistics">
+          <div className="account-stats-row">
             <div className="account-stat-chip">
               <span className="account-stat-chip__label">BOOKS OUT</span>
-              <span className="account-stat-chip__value">{loans.length}</span>
+              <span className="account-stat-chip__value">{member.booksOut}</span>
             </div>
             <div className="account-stat-chip">
               <span className="account-stat-chip__label">RESERVED</span>
-              <span className="account-stat-chip__value">{reservations.length}</span>
+              <span className="account-stat-chip__value">{member.reservations.length}</span>
             </div>
-            <div className={`account-stat-chip${totalUnpaidFines > 0 ? ' account-stat-chip--alert' : ''}`}>
+            <div className={`account-stat-chip${member.totalFinesDue > 0 ? ' account-stat-chip--alert' : ''}`}>
               <span className="account-stat-chip__label">FINES DUE</span>
               <span className="account-stat-chip__value">
-                ${totalUnpaidFines.toFixed(2)}
+                Γé╣{member.totalFinesDue.toFixed(2)}
               </span>
             </div>
           </div>
         </header>
 
-        {/* ── Underline Tabs ── */}
+        {/* ΓöÇΓöÇ Student Notifications Strip (Step 7) ΓöÇΓöÇ */}
+        {notifications.length > 0 && (
+          <div style={{ marginBottom: 24, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {notifications.map(n => (
+              <div
+                key={n.id}
+                style={{
+                  padding: '10px 16px',
+                  borderRadius: 4,
+                  fontSize: '0.8125rem',
+                  fontFamily: 'var(--font-mono)',
+                  letterSpacing: '0.02em',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 12,
+                  backgroundColor: n.type === 'overdue' || n.type === 'fine' ? 'rgba(122,46,39,0.1)' : n.type === 'ready' ? 'rgba(30,61,50,0.1)' : 'rgba(198,138,46,0.12)',
+                  border: `1px solid ${n.type === 'overdue' || n.type === 'fine' ? 'var(--color-oxblood)' : n.type === 'ready' ? 'var(--color-ink)' : 'var(--color-ochre)'}`,
+                  color: n.type === 'overdue' || n.type === 'fine' ? 'var(--color-oxblood)' : n.type === 'ready' ? 'var(--color-ink)' : '#8B5C00',
+                }}
+              >
+                <span>{n.type === 'ready' ? '≡ƒöö' : n.type === 'overdue' ? 'ΓÜá∩╕Å' : 'Γä╣∩╕Å'}</span>
+                <span>{n.msg}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* ΓöÇΓöÇ Underline Tabs ΓöÇΓöÇ */}
         <div className="account-tabs-wrap">
           <div className="account-tabs" role="tablist" aria-label="Account sections">
             <button
@@ -355,8 +326,9 @@ export default function AccountPage({ initialTab = 'loans' }) {
               className={`account-tab${activeTab === 'loans' ? ' active' : ''}`}
               onClick={() => handleTabChange('loans')}
             >
-              Current loans <span className="account-tab-count">{loans.length}</span>
+              Current loans <span className="account-tab-count">{member.activeLoans.length}</span>
             </button>
+
             <button
               id="tab-reservations"
               role="tab"
@@ -365,8 +337,9 @@ export default function AccountPage({ initialTab = 'loans' }) {
               className={`account-tab${activeTab === 'reservations' ? ' active' : ''}`}
               onClick={() => handleTabChange('reservations')}
             >
-              Reservations <span className="account-tab-count">{reservations.length}</span>
+              Reservations <span className="account-tab-count">{member.reservations.length}</span>
             </button>
+
             <button
               id="tab-history"
               role="tab"
@@ -375,8 +348,9 @@ export default function AccountPage({ initialTab = 'loans' }) {
               className={`account-tab${activeTab === 'history' ? ' active' : ''}`}
               onClick={() => handleTabChange('history')}
             >
-              History <span className="account-tab-count">{HISTORY_RECORDS.length}</span>
+              History <span className="account-tab-count">{member.historyLoans.length}</span>
             </button>
+
             <button
               id="tab-fines"
               role="tab"
@@ -385,122 +359,127 @@ export default function AccountPage({ initialTab = 'loans' }) {
               className={`account-tab${activeTab === 'fines' ? ' active' : ''}`}
               onClick={() => handleTabChange('fines')}
             >
-              Fines {totalUnpaidFines > 0 && <span className="account-tab-count account-tab-count--alert">${totalUnpaidFines.toFixed(2)}</span>}
+              Fines {member.totalFinesDue > 0 && <span className="account-tab-count account-tab-count--alert">Γé╣{member.totalFinesDue.toFixed(0)}</span>}
             </button>
           </div>
         </div>
 
-        {/* ── Tab Panels ── */}
-        <section className="account-panel-container">
+        {/* ΓöÇΓöÇ Tab Panels ΓöÇΓöÇ */}
+        <section className="account-tab-content">
 
-          {/* 1. CURRENT LOANS (List rows — not cards) */}
+          {/* 1. CURRENT LOANS */}
           {activeTab === 'loans' && (
             <div id="panel-loans" role="tabpanel" aria-labelledby="tab-loans" className="account-panel">
               <div className="account-panel-header">
-                <span className="account-section-eyebrow">ACTIVE CIRCULATION &middot; {loans.length} ITEMS</span>
-                <span className="account-loan-policy">Standard loan duration: 14 days &middot; Max 2 renewals</span>
+                <span className="account-section-eyebrow">ACTIVE BORROWED TITLES</span>
+                <span className="account-loan-policy">14-day standard loan &middot; Max 2 renewals &middot; Borrow limit: 5 titles</span>
               </div>
 
-              {loans.length === 0 ? (
+              {member.activeLoans.length === 0 ? (
                 <div className="account-empty-state">
-                  <p className="account-empty-title">NO BOOKS CURRENTLY ON LOAN</p>
-                  <p className="account-empty-desc">You have returned all borrowed items.</p>
-                  <Button variant="secondary" onClick={() => { window.location.hash = '#catalog' }}>
-                    Browse catalog
+                  <p className="account-empty-text">You have no active loans right now.</p>
+                  <Button variant="ochre" onClick={() => window.location.hash = '#catalog'}>
+                    Browse Catalogue
                   </Button>
                 </div>
               ) : (
-                <div className="account-loan-list" role="list">
-                  {loans.map(loan => {
-                    const pct = Math.min(100, Math.round((loan.daysElapsed / loan.totalDays) * 100))
-                    const daysLeft = loan.totalDays - loan.daysElapsed
+                <div className="account-loans-list">
+                  {member.activeLoans.map(loan => {
+                    const daysTotal = 14
+                    const daysLeft = loan.daysLeft
+                    const pct = loan.isOverdue
+                      ? 100
+                      : Math.min(100, Math.max(0, Math.round(((daysTotal - daysLeft) / daysTotal) * 100)))
+
+                    const renewalsLeft = Math.max(0, 2 - (loan.renewCount || 0))
+                    const canRenew = renewalsLeft > 0 && !loan.isOverdue && !member.hasUnpaidFines && member.status === 'active'
 
                     return (
                       <article
                         key={loan.id}
                         className={`account-loan-row${loan.isOverdue ? ' account-loan-row--overdue' : ''}`}
-                        role="listitem"
+                        aria-label={`Loan for ${loan.bookTitle}`}
                       >
-                        {/* Cover thumbnail */}
-                        <div className="account-loan-row__thumb">
-                          <BookThumb
-                            title={loan.title}
-                            category={loan.category}
-                            accession={loan.accession}
-                          />
-                        </div>
+                        <BookThumb
+                          title={loan.bookTitle}
+                          category={loan.bookCategory}
+                          accession={loan.accession}
+                        />
 
-                        {/* Title & info */}
-                        <div className="account-loan-row__details">
-                          <div className="account-loan-row__tagline">
-                            <span className="account-loan-cat">{loan.category}</span>
-                            <span className="account-meta-dot">&middot;</span>
-                            <span className="account-loan-acc">{loan.accession}</span>
-                          </div>
-                          <h2 className="account-loan-row__title">
+                        <div className="account-loan-meta">
+                          <div className="account-loan-title-row">
                             <a
                               href={`#book/${loan.accession}`}
                               onClick={e => { e.preventDefault(); window.location.hash = `#book/${loan.accession}` }}
+                              className="account-loan-title"
                             >
-                              {loan.title}
+                              {loan.bookTitle}
                             </a>
-                          </h2>
-                          <p className="account-loan-row__author">{loan.author}</p>
-                        </div>
-
-                        {/* Date metadata */}
-                        <div className="account-loan-row__dates">
-                          <div className="account-date-group">
-                            <span className="account-date-key">BORROWED</span>
-                            <span className="account-date-val">{loan.borrowedDate}</span>
+                            <span className="account-loan-author">by {loan.bookAuthor}</span>
                           </div>
-                          <div className="account-date-group">
+
+                          <div className="account-loan-dates">
+                            <span className="account-date-key">ISSUED</span>
+                            <span className="account-date-val">{formatDisplayDate(loan.issuedDate)}</span>
+                            <span className="account-date-sep" aria-hidden="true">&middot;</span>
                             <span className={`account-date-key${loan.isOverdue ? ' text-oxblood' : ''}`}>
-                              {loan.isOverdue ? 'OVERDUE SINCE' : 'DUE DATE'}
+                              DUE
                             </span>
                             <span className={`account-date-val${loan.isOverdue ? ' text-oxblood font-bold' : ''}`}>
-                              {loan.dueDate}
+                              {formatDisplayDate(loan.dueDate)}
                             </span>
                           </div>
-                        </div>
 
-                        {/* Slim Progress Bar */}
-                        <div className="account-loan-row__progress">
-                          <div className="account-progress-label-row">
-                            <span className={`account-progress-status${loan.isOverdue ? ' text-oxblood' : ''}`}>
-                              {loan.isOverdue ? `${Math.abs(daysLeft)} days overdue` : `${daysLeft} days remaining`}
-                            </span>
-                            <span className="account-progress-pct">{pct}%</span>
-                          </div>
-                          <div
-                            className="account-progress-track"
-                            role="progressbar"
-                            aria-valuenow={pct}
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                            aria-label={`Loan duration progress for ${loan.title}`}
-                          >
+                          {/* Progress bar */}
+                          <div className="account-progress-wrap">
+                            <div className="account-progress-meta">
+                              <span className={`account-progress-status${loan.isOverdue ? ' text-oxblood' : ''}`}>
+                                {loan.isOverdue
+                                  ? `${loan.daysLate} days overdue (Fine: Γé╣${loan.accruedFine})`
+                                  : daysLeft === 0
+                                  ? 'Due today'
+                                  : `${daysLeft} days remaining`}
+                              </span>
+                              <span className="account-progress-pct">{loan.isOverdue ? 'OVERDUE' : `${pct}% elapsed`}</span>
+                            </div>
+
                             <div
-                              className={`account-progress-bar${loan.isOverdue ? ' account-progress-bar--oxblood' : ' account-progress-bar--ochre'}`}
-                              style={{ width: `${pct}%` }}
-                            />
+                              className="account-progress-track"
+                              role="progressbar"
+                              aria-valuenow={pct}
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              aria-label={`Loan duration progress for ${loan.bookTitle}`}
+                            >
+                              <div
+                                className={`account-progress-bar${loan.isOverdue ? ' account-progress-bar--oxblood' : ' account-progress-bar--ochre'}`}
+                                style={{ width: `${pct}%` }}
+                              />
+                            </div>
                           </div>
                         </div>
 
-                        {/* Action buttons */}
-                        <div className="account-loan-row__actions">
-                          {renewedIds[loan.id] ? (
-                            <span className="account-badge-renewed">RENEWED +14D</span>
-                          ) : (
-                            <Button
-                              variant={loan.isOverdue ? 'danger' : 'secondary'}
-                              disabled={loan.renewalsLeft <= 0}
-                              style={{ fontSize: '0.75rem', padding: '7px 14px' }}
-                              onClick={() => handleRenew(loan.id)}
-                            >
-                              {loan.renewalsLeft > 0 ? `Renew (${loan.renewalsLeft} left)` : 'No renewals'}
-                            </Button>
-                          )}
+                        {/* Actions */}
+                        <div className="account-loan-actions">
+                          <Button
+                            variant={canRenew ? 'ochre' : 'secondary'}
+                            disabled={!canRenew}
+                            onClick={() => handleRenew(loan.id)}
+                            style={{ width: '100%', fontSize: '0.8125rem' }}
+                            title={
+                              loan.isOverdue
+                                ? 'Cannot renew overdue loan'
+                                : member.hasUnpaidFines
+                                ? 'Cannot renew while fines are unpaid'
+                                : renewalsLeft === 0
+                                ? 'Maximum 2 renewals reached'
+                                : member.status === 'suspended'
+                                ? 'Account is suspended'
+                                : 'Extend loan by 14 days'
+                            }
+                          >
+                            {renewalsLeft > 0 ? `Renew (${renewalsLeft} left)` : 'No renewals left'}
+                          </Button>
                         </div>
                       </article>
                     )
@@ -514,68 +493,74 @@ export default function AccountPage({ initialTab = 'loans' }) {
           {activeTab === 'reservations' && (
             <div id="panel-reservations" role="tabpanel" aria-labelledby="tab-reservations" className="account-panel">
               <div className="account-panel-header">
-                <span className="account-section-eyebrow">ACTIVE HOLDS &middot; {reservations.length} ITEMS</span>
-                <span className="account-loan-policy">Holds are held at desk for 5 days after notification</span>
+                <span className="account-section-eyebrow">TITLE HOLDS &amp; QUEUE</span>
+                <span className="account-loan-policy">Hold period: 5 business days upon notification</span>
               </div>
 
-              {reservations.length === 0 ? (
+              {member.reservations.length === 0 ? (
                 <div className="account-empty-state">
-                  <p className="account-empty-title">NO ACTIVE RESERVATIONS</p>
-                  <p className="account-empty-desc">You do not have any titles on hold.</p>
+                  <p className="account-empty-text">No active reservations.</p>
+                  <Button variant="ochre" onClick={() => window.location.hash = '#catalog'}>
+                    Search Catalogue
+                  </Button>
                 </div>
               ) : (
-                <div className="account-table-wrapper">
-                  <table className="account-table" aria-label="Reservations table">
-                    <thead>
-                      <tr>
-                        <th>ITEM / ACCESSION</th>
-                        <th>RESERVED ON</th>
-                        <th>STATUS / HOLD STATE</th>
-                        <th>LOCATION / DEADLINE</th>
-                        <th style={{ textAlign: 'right' }}>ACTION</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {reservations.map(res => (
-                        <tr key={res.id}>
-                          <td>
-                            <div className="account-table-book">
-                              <span className="account-table-acc">{res.accession}</span>
-                              <a
-                                href={`#book/${res.accession}`}
-                                className="account-table-title"
-                                onClick={e => { e.preventDefault(); window.location.hash = `#book/${res.accession}` }}
-                              >
-                                {res.title}
-                              </a>
-                              <span className="account-table-author">{res.author}</span>
-                            </div>
-                          </td>
-                          <td className="account-mono-cell">{res.reservedDate}</td>
-                          <td>
-                            <span className={`account-status-badge${res.isReady ? ' account-status-badge--ready' : ' account-status-badge--queue'}`}>
-                              {res.status}
+                <div className="account-reservations-list">
+                  {member.reservations.map(res => (
+                    <article
+                      key={res.id}
+                      className={`account-res-card${res.isReady ? ' account-res-card--ready' : ''}`}
+                      aria-label={`Reservation for ${res.bookTitle}`}
+                    >
+                      <BookThumb
+                        title={res.bookTitle}
+                        category={res.bookCategory}
+                        accession={res.accession}
+                      />
+
+                      <div className="account-res-meta">
+                        <div className="account-loan-title-row">
+                          <a
+                            href={`#book/${res.accession}`}
+                            onClick={e => { e.preventDefault(); window.location.hash = `#book/${res.accession}` }}
+                            className="account-loan-title"
+                          >
+                            {res.bookTitle}
+                          </a>
+                          <span className="account-loan-author">by {res.bookAuthor}</span>
+                        </div>
+
+                        <div className="account-res-status-row">
+                          <span className={`account-status-badge${res.isReady ? ' account-status-badge--ready' : ' account-status-badge--queue'}`}>
+                            {res.isReady ? 'READY FOR PICKUP' : `POSITION #${res.queuePosition || 1} IN QUEUE`}
+                          </span>
+                        </div>
+
+                        <div className="account-res-details">
+                          <div>
+                            <span className="account-date-key">PICKUP LOCATION: </span>
+                            <span className="account-date-val font-semibold">{res.pickupLocation || 'Circulation Desk'}</span>
+                          </div>
+                          <div>
+                            <span className="account-date-key">{res.isReady ? 'HOLD EXPIRES: ' : 'REQUESTED: '}</span>
+                            <span className="account-date-val font-semibold">
+                              {res.isReady ? formatDisplayDate(res.holdExpiresAt) : formatDisplayDate(res.createdAt)}
                             </span>
-                          </td>
-                          <td>
-                            <div className="account-location-cell">
-                              <span className="account-loc-main">{res.pickupLocation}</span>
-                              <span className="account-loc-sub">{res.pickupDeadline}</span>
-                            </div>
-                          </td>
-                          <td style={{ textAlign: 'right' }}>
-                            <Button
-                              variant="danger"
-                              style={{ fontSize: '0.75rem', padding: '6px 12px' }}
-                              onClick={() => handleCancelHold(res.id)}
-                            >
-                              Cancel hold
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="account-res-actions">
+                        <Button
+                          variant="secondary"
+                          style={{ fontSize: '0.8125rem', width: '100%' }}
+                          onClick={() => handleCancelHold(res.id)}
+                        >
+                          Cancel Hold
+                        </Button>
+                      </div>
+                    </article>
+                  ))}
                 </div>
               )}
             </div>
@@ -585,118 +570,143 @@ export default function AccountPage({ initialTab = 'loans' }) {
           {activeTab === 'history' && (
             <div id="panel-history" role="tabpanel" aria-labelledby="tab-history" className="account-panel">
               <div className="account-panel-header">
-                <span className="account-section-eyebrow">CIRCULATION HISTORY &middot; {HISTORY_RECORDS.length} PAST LOANS</span>
-                <span className="account-loan-policy">Complete circulation ledger for member {USER_PROFILE.enrollmentNo}</span>
+                <span className="account-section-eyebrow">CIRCULATION HISTORY</span>
+                <span className="account-loan-policy">Past completed borrowings</span>
               </div>
 
-              <div className="account-table-wrapper">
-                <table className="account-table" aria-label="Circulation history table">
-                  <thead>
-                    <tr>
-                      <th>ACCESSION</th>
-                      <th>TITLE &amp; AUTHOR</th>
-                      <th>CATEGORY</th>
-                      <th>BORROWED</th>
-                      <th>RETURNED</th>
-                      <th>STATUS</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {HISTORY_RECORDS.map(rec => (
-                      <tr key={rec.id}>
-                        <td className="account-mono-cell">{rec.accession}</td>
-                        <td>
-                          <div className="account-table-book">
-                            <a
-                              href={`#book/${rec.accession}`}
-                              className="account-table-title"
-                              onClick={e => { e.preventDefault(); window.location.hash = `#book/${rec.accession}` }}
-                            >
-                              {rec.title}
-                            </a>
-                            <span className="account-table-author">{rec.author}</span>
-                          </div>
-                        </td>
-                        <td>{rec.category}</td>
-                        <td className="account-mono-cell">{rec.borrowed}</td>
-                        <td className="account-mono-cell">{rec.returned}</td>
-                        <td>
-                          <span className={`account-history-status${rec.status.includes('late') ? ' account-history-status--late' : ''}`}>
-                            {rec.status}
-                          </span>
-                        </td>
+              {member.historyLoans.length === 0 ? (
+                <div className="account-empty-state">
+                  <p className="account-empty-text">No borrowing history yet.</p>
+                </div>
+              ) : (
+                <div className="account-table-wrapper">
+                  <table className="account-table" aria-label="Circulation history table">
+                    <thead>
+                      <tr>
+                        <th>ACCESSION</th>
+                        <th>TITLE / AUTHOR</th>
+                        <th>BORROWED</th>
+                        <th>RETURNED</th>
+                        <th>STATUS</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {member.historyLoans.map(rec => {
+                        const wasLate = rec.returnedDate && rec.dueDate && rec.returnedDate > rec.dueDate
+                        const lateDays = wasLate ? daysBetween(rec.dueDate, rec.returnedDate) : 0
+
+                        return (
+                          <tr key={rec.id}>
+                            <td className="account-mono-cell">{rec.accession}</td>
+                            <td>
+                              <a
+                                href={`#book/${rec.accession}`}
+                                onClick={e => { e.preventDefault(); window.location.hash = `#book/${rec.accession}` }}
+                                className="account-table-title"
+                              >
+                                {rec.bookTitle}
+                              </a>
+                              <span className="account-table-author"> &middot; {rec.bookAuthor}</span>
+                            </td>
+                            <td>{formatDisplayDate(rec.issuedDate)}</td>
+                            <td>{formatDisplayDate(rec.returnedDate)}</td>
+                            <td>
+                              <span className={`account-history-status${wasLate ? ' account-history-status--late' : ''}`}>
+                                {wasLate ? `Returned (${lateDays}d late)` : 'Returned on time'}
+                              </span>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           )}
 
-          {/* 4. FINES (Plain table, Plex Mono amounts) */}
+          {/* 4. FINES */}
           {activeTab === 'fines' && (
             <div id="panel-fines" role="tabpanel" aria-labelledby="tab-fines" className="account-panel">
               <div className="account-panel-header">
                 <span className="account-section-eyebrow">ASSESSED FINES &amp; CHARGES</span>
-                <span className="account-loan-policy">Daily late fee: $0.50/day standard &middot; $1.00/day reserved titles</span>
+                <span className="account-loan-policy">Daily late fee: Γé╣{fineDailyRate}/day on overdue items</span>
               </div>
 
               <div className="account-table-wrapper">
                 <table className="account-table account-table--fines" aria-label="Fines and charges table">
                   <thead>
                     <tr>
-                      <th>DATE</th>
+                      <th>DATE / DUE</th>
                       <th>ACCESSION / ITEM</th>
                       <th>DESCRIPTION / REASON</th>
                       <th>STATUS</th>
                       <th style={{ textAlign: 'right' }}>AMOUNT</th>
-                      <th style={{ textAlign: 'right' }}>ACTION</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {fines.map(fine => (
-                      <tr key={fine.id} className={fine.status === 'Unpaid' ? 'account-fine-unpaid' : 'account-fine-settled'}>
-                        <td className="account-mono-cell">{fine.date}</td>
+                    {/* Live accruing fines for current overdue loans */}
+                    {member.overdueLoans.map(l => (
+                      <tr key={`live-fine-${l.id}`} className="account-fine-unpaid">
+                        <td className="account-mono-cell">{formatDisplayDate(l.dueDate)}</td>
                         <td>
                           <div className="account-table-book">
-                            <span className="account-table-acc">{fine.accession}</span>
-                            <span className="account-table-title-plain">{fine.item}</span>
+                            <span className="account-table-acc">{l.accession}</span>
+                            <span className="account-table-title-plain">{l.bookTitle}</span>
+                          </div>
+                        </td>
+                        <td className="account-fine-reason">
+                          Active overdue loan ({l.daysLate} days late @ Γé╣{fineDailyRate}/day)
+                        </td>
+                        <td>
+                          <span className="account-fine-badge account-fine-badge--unpaid">
+                            ACCRUING
+                          </span>
+                        </td>
+                        <td className="account-fine-amount" style={{ textAlign: 'right', color: 'var(--color-oxblood)' }}>
+                          Γé╣{l.accruedFine.toFixed(2)}
+                        </td>
+                      </tr>
+                    ))}
+
+                    {/* Fixed recorded fines */}
+                    {memberFixedFines.map(fine => (
+                      <tr key={fine.id} className={fine.status === 'unpaid' ? 'account-fine-unpaid' : 'account-fine-settled'}>
+                        <td className="account-mono-cell">{formatDisplayDate(fine.createdAt)}</td>
+                        <td>
+                          <div className="account-table-book">
+                            <span className="account-table-acc">{fine.accession || 'FEE'}</span>
+                            <span className="account-table-title-plain">{fine.accession ? `Book ${fine.accession}` : 'Library Service'}</span>
                           </div>
                         </td>
                         <td className="account-fine-reason">{fine.reason}</td>
                         <td>
-                          <span className={`account-fine-badge${fine.status === 'Unpaid' ? ' account-fine-badge--unpaid' : ' account-fine-badge--settled'}`}>
-                            {fine.status}
+                          <span className={`account-fine-badge${fine.status === 'unpaid' ? ' account-fine-badge--unpaid' : ' account-fine-badge--settled'}`}>
+                            {fine.status.toUpperCase()}
                           </span>
                         </td>
                         <td className="account-fine-amount" style={{ textAlign: 'right' }}>
-                          ${fine.amount.toFixed(2)}
-                        </td>
-                        <td style={{ textAlign: 'right' }}>
-                          {fine.status === 'Unpaid' ? (
-                            <Button
-                              variant="ochre"
-                              style={{ fontSize: '0.75rem', padding: '6px 12px' }}
-                              onClick={() => handlePayFine(fine.id)}
-                            >
-                              Pay fine
-                            </Button>
-                          ) : (
-                            <span className="account-fine-receipt">PAID</span>
-                          )}
+                          Γé╣{Number(fine.amount).toFixed(2)}
                         </td>
                       </tr>
                     ))}
+
+                    {member.overdueLoans.length === 0 && memberFixedFines.length === 0 && (
+                      <tr>
+                        <td colSpan="5" style={{ textAlign: 'center', padding: '32px 0', color: 'var(--color-charcoal-60)' }}>
+                          No assessed fines or charges on your account. Good standing!
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                   <tfoot>
                     <tr className="account-table-foot">
                       <td colSpan="4" style={{ textAlign: 'right', fontWeight: 600 }}>
                         TOTAL OUTSTANDING FINES:
                       </td>
-                      <td className="account-fine-total" style={{ textAlign: 'right' }}>
-                        ${totalUnpaidFines.toFixed(2)}
+                      <td className="account-fine-total" style={{ textAlign: 'right', color: member.totalFinesDue > 0 ? 'var(--color-oxblood)' : 'inherit' }}>
+                        Γé╣{member.totalFinesDue.toFixed(2)}
                       </td>
-                      <td></td>
                     </tr>
                   </tfoot>
                 </table>

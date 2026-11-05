@@ -1,0 +1,36 @@
+# Generated for Book Bank backend issues app
+
+from django.conf import settings
+from django.db import migrations, models
+import django.db.models.deletion
+
+
+class Migration(migrations.Migration):
+
+    initial = True
+
+    dependencies = [
+        ('books', '0001_initial'),
+        ('students', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='Issue',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('issue_date', models.DateField(auto_now_add=True)),
+                ('due_date', models.DateField()),
+                ('status', models.CharField(choices=[('pending', 'Pending'), ('active', 'Active'), ('returned', 'Returned'), ('overdue', 'Overdue')], default='active', max_length=20)),
+                ('renewal_count', models.PositiveSmallIntegerField(default=0)),
+                ('book', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='issues', to='books.book')),
+                ('issued_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='issued_books', to=settings.AUTH_USER_MODEL)),
+                ('student', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='issues', to='students.studentprofile')),
+            ],
+            options={
+                'ordering': ['-issue_date'],
+            },
+        ),
+    ]
+

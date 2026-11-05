@@ -1,0 +1,35 @@
+# Generated for Book Bank backend notifications app
+
+from django.conf import settings
+from django.db import migrations, models
+import django.db.models.deletion
+
+
+class Migration(migrations.Migration):
+
+    initial = True
+
+    dependencies = [
+        ('books', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='Notification',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('notification_type', models.CharField(choices=[('issue_approved', 'Issue Approved'), ('book_issued', 'Book Issued'), ('due_soon', 'Due Soon'), ('overdue', 'Overdue'), ('reservation_ready', 'Reservation Ready'), ('return_confirmed', 'Return Confirmed'), ('fine_raised', 'Fine Raised'), ('order_update', 'Order Update'), ('other', 'Other')], default='other', max_length=30)),
+                ('title', models.CharField(max_length=255)),
+                ('message', models.TextField()),
+                ('is_read', models.BooleanField(default=False)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('recipient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='notifications', to=settings.AUTH_USER_MODEL)),
+                ('related_book', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='notifications', to='books.book')),
+            ],
+            options={
+                'ordering': ['-created_at'],
+            },
+        ),
+    ]
+
