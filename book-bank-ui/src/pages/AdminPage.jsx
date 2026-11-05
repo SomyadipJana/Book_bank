@@ -13,7 +13,7 @@
  *          #admin/vendors
  *          #admin/reports
  */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { Button } from '../components'
 
@@ -25,7 +25,7 @@ import AdminMembers     from './admin/AdminMembers'
 import AdminVendors     from './admin/AdminVendors'
 import AdminReports     from './admin/AdminReports'
 
-/* ── Nav configuration ─────────────────────────────────────── */
+/* ── Nav configuration ───────────────────────────────────────── */
 const NAV = [
   { id: 'dashboard',    label: 'Dashboard',        hash: '#admin/dashboard',    action: null },
   { id: 'catalogue',    label: 'Catalogue',        hash: '#admin/catalogue',    action: '+ Add Book' },
@@ -39,6 +39,8 @@ const NAV = [
 /* ── Shell ──────────────────────────────────────────────────── */
 export default function AdminPage({ currentTab = 'dashboard' }) {
   const { user, logout } = useAuth()
+  const addBookTriggerRef = useRef(null)
+  const addMemberTriggerRef = useRef(null)
 
   // ── Auth gate (role === "librarian") ──────────────────────────────────────
   const isLibrarian = user?.role === 'librarian'
@@ -67,10 +69,6 @@ export default function AdminPage({ currentTab = 'dashboard' }) {
       </div>
     )
   }
-
-  // ── Header action callbacks (forwarded from child pages) ───────────────────
-  const addBookTriggerRef = React.useRef(null)
-  const addMemberTriggerRef = React.useRef(null)
 
   const activeNav = NAV.find(n => n.id === currentTab) ?? NAV[0]
 
