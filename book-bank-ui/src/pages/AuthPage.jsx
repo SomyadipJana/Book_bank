@@ -74,25 +74,26 @@ function LoginForm({ onSwitch }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-    if (!email) {
-      setError('Please enter your email address.')
+    if (!email || !password) {
+      setError('Please enter both email and password.')
       return
     }
 
     setLoading(true)
     try {
-      // 1. Try backend API login
+      // 1. Try real Django backend API authentication
       const res = await fetch('http://localhost:8001/api/auth/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim(), password }),
       })
+
       if (res.ok) {
         const data = await res.json()
         localStorage.setItem('bb_access', data.access)
         localStorage.setItem('bb_refresh', data.refresh)
         localStorage.setItem('bb_user', JSON.stringify(data.user))
-        const loggedUser = login(data.user.email, password, data.user.full_name)
+        const loggedUser = login(data.user.email, password, data.user.full_name, data.user.role)
         if (data.user.role === 'librarian' || loggedUser?.role === 'librarian') {
           window.location.hash = '#admin'
         } else {
@@ -101,32 +102,27 @@ function LoginForm({ onSwitch }) {
         return
       }
 
-      // 2. If backend returns error, check local demo accounts fallback
+      // If backend responded with 400/401/etc. -> Password or email is wrong!
       const data = await res.json().catch(() => ({}))
       const msg = data.detail || (data.non_field_errors && data.non_field_errors[0])
-
-      const fallbackUser = login(email, password, '')
-      if (fallbackUser) {
-        if (fallbackUser.role === 'librarian') {
-          window.location.hash = '#admin'
-        } else {
-          window.location.hash = '#catalog'
-        }
-        return
-      }
       setError(msg || 'Invalid email or password.')
     } catch (err) {
-      // 3. Backend offline: allow demo accounts
-      const fallbackUser = login(email, password, '')
-      if (fallbackUser) {
-        if (fallbackUser.role === 'librarian') {
-          window.location.hash = '#admin'
-        } else {
-          window.location.hash = '#catalog'
-        }
+      // 2. Only if backend is completely offline, allow specific demo passwords
+      const emailLower = email.trim().toLowerCase()
+      if (
+        (emailLower === 'admin@bookbank.edu' && password === 'admin123') ||
+        (emailLower === 'librarian@bookbank.local' && password === 'Library@123')
+      ) {
+        login(email, password, 'Librarian', 'librarian')
+        window.location.hash = '#admin'
+        return
+      } else if (emailLower === 'test@university.edu' && (password === 'student123' || password === 'Student@123')) {
+        login(email, password, 'Aisha Patel', 'student')
+        window.location.hash = '#catalog'
         return
       }
-      setError('Could not connect to backend server at http://localhost:8001')
+
+      setError('Invalid email or password.')
     } finally {
       setLoading(false)
     }
@@ -232,7 +228,7 @@ function RegisterForm({ onSwitch }) {
         localStorage.setItem('bb_refresh', data.refresh)
         localStorage.setItem('bb_user', JSON.stringify(data.user))
       }
-    } catch (e) {
+    } catch {
       // Backend offline fallback
     }
 

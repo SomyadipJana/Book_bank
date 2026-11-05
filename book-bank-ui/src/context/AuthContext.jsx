@@ -28,11 +28,12 @@ export function AuthProvider({ children }) {
   }, [])
 
   const login = (email, password, name = '') => {
+    const emailLower = email.trim().toLowerCase()
     const isLibrarian =
-      (email.trim().toLowerCase() === 'admin@bookbank.edu' && password === 'admin123') ||
-      email.trim().toLowerCase().includes('librarian')
+      (emailLower === 'admin@bookbank.edu' && password === 'admin123') ||
+      (emailLower === 'librarian@bookbank.local' && password === 'Library@123')
 
-    if (isLibrarian) {
+  if (isLibrarian) {
       // Librarian is not a member and has no loans or fines
       // TODO: replace with the role returned by the real backend login response.
       const librarianUser = {
@@ -47,7 +48,6 @@ export function AuthProvider({ children }) {
     }
 
     // Student Login
-    const emailLower = email.trim().toLowerCase()
 
     // Map test@university.edu or existing emails to member record
     let resolvedMemberId = null
