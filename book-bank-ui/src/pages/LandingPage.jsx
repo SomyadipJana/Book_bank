@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Button } from '../components/Button'
 import { DueDatePocket } from '../components/DueDatePocket'
+import { useAuth } from '../context/AuthContext'
+import { Shelf } from '../components/Shelf'
 
 /* ── Data ────────────────────────────────────────────────── */
 
@@ -179,6 +181,22 @@ const STEPS = [
 /* ── Sub-components ──────────────────────────────────────── */
 
 function Nav() {
+  const { user, logout } = useAuth()
+  const isLibrarian = user?.role === 'librarian'
+
+  const navItems = isLibrarian
+    ? [
+        { label: 'Catalogue', href: '#catalog' },
+        { label: 'Admin',     href: '#admin' },
+        { label: 'About',     href: '#' },
+      ]
+    : [
+        { label: 'Catalogue',    href: '#catalog' },
+        { label: 'My Loans',     href: '#loans' },
+        { label: 'Reservations', href: '#reservations' },
+        { label: 'About',        href: '#' },
+      ]
+
   return (
     <nav className="nav">
       <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -194,23 +212,58 @@ function Nav() {
       </div>
 
       <ul className="nav__links">
-        {[
-          { label: 'Catalogue',    href: '#catalog' },
-          { label: 'My Loans',     href: '#loans' },
-          { label: 'Reservations', href: '#reservations' },
-          { label: 'About',        href: '#' },
-        ].map((l) => (
+        {navItems.map((l) => (
           <li key={l.label}><a href={l.href} className="nav__link">{l.label}</a></li>
         ))}
       </ul>
 
-      <Button
-        variant="primary"
-        style={{ fontSize: '0.8125rem', padding: '9px 18px' }}
-        onClick={() => { window.location.hash = '#login' }}
-      >
-        Sign In
-      </Button>
+      {user ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span
+            className="account-nav-user"
+            title={user.name}
+            style={{ cursor: 'pointer' }}
+            onClick={() => { window.location.hash = isLibrarian ? '#admin' : '#loans' }}
+          >
+            <span className="account-nav-avatar">{user.name ? user.name[0].toUpperCase() : 'U'}</span>
+            <span className="account-nav-name">{user.name}</span>
+            {isLibrarian && (
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.625rem',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  padding: '2px 6px',
+                  borderRadius: '3px',
+                  backgroundColor: 'rgba(198, 138, 46, 0.15)',
+                  color: 'var(--color-ochre)',
+                  border: '1px solid rgba(198, 138, 46, 0.35)',
+                  fontWeight: 600,
+                  marginLeft: 4,
+                }}
+              >
+                Librarian
+              </span>
+            )}
+          </span>
+          <button
+            type="button"
+            className="account-nav-signout"
+            onClick={() => { logout(); window.location.hash = '#login' }}
+          >
+            Sign Out
+          </button>
+        </div>
+      ) : (
+        <Button
+          variant="primary"
+          style={{ fontSize: '0.8125rem', padding: '9px 18px' }}
+          onClick={() => { window.location.hash = '#login' }}
+        >
+          Sign In
+        </Button>
+      )}
     </nav>
   )
 }
@@ -269,8 +322,6 @@ function Hero() {
       <div className="hero">
         {/* Content */}
         <div className="hero__content">
-          <span className="section-eyebrow">Book Bank — Student Library</span>
-
           <h1
             className="font-display tracking-display"
             style={{ fontSize: 'clamp(2.25rem, 5vw, 3.75rem)', fontWeight: 700, color: 'var(--color-ink)', lineHeight: 1.05, marginBottom: '20px' }}
@@ -457,6 +508,32 @@ function HowItWorks() {
   )
 }
 
+/* ── Dark Hero Shelf Banner ─────────────────────────────── */
+function DarkHeroShelf() {
+  return (
+    <section className="dark-hero">
+      {/* Wordmark — mirrors the nav branding */}
+      <div className="dark-hero__wordmark">
+        <span className="dark-hero__wordmark-name">Book Bank</span>
+        <span className="dark-hero__wordmark-sub">Management System</span>
+      </div>
+
+      {/* Interactive bookshelf */}
+      <div className="dark-hero__shelf-wrap">
+        <Shelf idleLabel="Hover a book to explore" />
+      </div>
+
+      {/* Quote */}
+      <div className="dark-hero__quote">
+        <p className="dark-hero__quote-text">
+          Every borrowed page is a world returned.
+        </p>
+        <p className="dark-hero__quote-attr">— The Book Bank</p>
+      </div>
+    </section>
+  )
+}
+
 function Footer() {
   const year = new Date().getFullYear()
   return (
@@ -480,20 +557,20 @@ function Footer() {
           <div className="footer__nav-group">
             <span className="footer__nav-heading">Library</span>
             <a href="#catalog" className="footer__nav-link">Browse Catalogue</a>
-            <a href="#" className="footer__nav-link">New Arrivals</a>
-            <a href="#" className="footer__nav-link">Reservations</a>
+            <a href="#catalog" className="footer__nav-link">New Arrivals</a>
+            <a href="#reservations" className="footer__nav-link">Reservations</a>
           </div>
           <div className="footer__nav-group">
             <span className="footer__nav-heading">Account</span>
-            <a href="#" className="footer__nav-link">Sign In</a>
-            <a href="#" className="footer__nav-link">Register</a>
-            <a href="#" className="footer__nav-link">My Loans</a>
+            <a href="#login" className="footer__nav-link">Sign In</a>
+            <a href="#register" className="footer__nav-link">Register</a>
+            <a href="#loans" className="footer__nav-link">My Loans</a>
           </div>
           <div className="footer__nav-group">
             <span className="footer__nav-heading">Information</span>
-            <a href="#" className="footer__nav-link">Library Hours</a>
-            <a href="#" className="footer__nav-link">Fine Policy</a>
-            <a href="#" className="footer__nav-link">Contact</a>
+            <a href="#" className="footer__nav-link" onClick={e => e.preventDefault()}>Library Hours</a>
+            <a href="#" className="footer__nav-link" onClick={e => e.preventDefault()}>Fine Policy</a>
+            <a href="#" className="footer__nav-link" onClick={e => e.preventDefault()}>Contact</a>
           </div>
         </nav>
       </div>
@@ -503,6 +580,11 @@ function Footer() {
         <div className="footer__bottom">
           <p className="footer__copy">
             &copy; {year} Book Bank Management System. Software Engineering Lab Project.
+            {' • '}
+            {/* TODO: remove this link once real role-based auth + a proper admin entry point exist. */}
+            <a href="#admin/dashboard" style={{ color: 'var(--color-charcoal-60)', textDecoration: 'underline' }}>
+              Admin (dev only)
+            </a>
           </p>
         </div>
       </div>
@@ -517,6 +599,7 @@ export default function LandingPage() {
     <div style={{ backgroundColor: 'var(--color-paper)' }}>
       <Nav />
       <Hero />
+      <DarkHeroShelf />
       <StatsStrip />
       <NewArrivals />
       <HowItWorks />
