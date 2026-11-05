@@ -17,6 +17,9 @@ class StudentProfile(models.Model):
     borrowing_limit = models.PositiveSmallIntegerField(default=3)
     is_active = models.BooleanField(default=True)
 
+    class Meta:
+        ordering = ["id"]
+
     def __str__(self):
         return f"{self.user.full_name} ({self.enrollment_number})"
 

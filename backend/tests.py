@@ -606,7 +606,8 @@ class StudentProfileTests(TestCase):
         auth(self.client, self.stu_token)
         resp = self.client.get("/api/students/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(resp.data), 1)
+        results = resp.data.get("results", resp.data)
+        self.assertEqual(len(results), 1)
 
     def test_create_vendor_user_as_librarian(self):
         auth(self.client, self.lib_token)
