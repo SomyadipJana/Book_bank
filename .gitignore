@@ -40,3 +40,9 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Reference files (Stock Maintenance demo template)
+Stock_Maintenance_System_FINAL_Final.pdf
+extracted_ref/
+ref_pages_text/
+
