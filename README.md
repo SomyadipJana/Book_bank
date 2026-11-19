@@ -14,7 +14,7 @@ The **Book Bank Management System** modernizes traditional academic library oper
 
 ---
 
-## 🛠️ Architecture & Tech Stack
+##  Architecture & Tech Stack
 
 ### Frontend (`book-bank-ui`)
 - **Core:** React 19, Vite
@@ -34,7 +34,7 @@ The **Book Bank Management System** modernizes traditional academic library oper
 
 ---
 
-## 📂 Repository Structure
+##  Repository Structure
 
 ```text
 Book_Management_system/
@@ -59,7 +59,7 @@ Book_Management_system/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - **Node.js:** v18 or newer
@@ -110,7 +110,7 @@ Interactive API documentation will be available at: `http://localhost:8000/docs`
 
 ---
 
-## 📖 Key Workflows
+##  Key Workflows
 
 1. **Book Discovery & Search:**
    - Filter by category, author, keyword, or ISBN.
@@ -143,6 +143,6 @@ The repository follows a role-based feature-branching model (see [`GIT_WORKFLOW.
 
 ---
 
-## 📄 License
+##  License
 
 This project is developed as part of the Software Engineering Lab curriculum. All rights reserved.

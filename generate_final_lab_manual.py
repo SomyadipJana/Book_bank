@@ -18,16 +18,16 @@ from reportlab.pdfgen import canvas
 # =============================================================================
 # CONFIGURABLE STUDENT & COURSE DETAILS
 # =============================================================================
-STUDENT_NAME = "Soyuz Paul"
-ROLL_NUMBER = "UG/SOET/30/24/554"
-REGISTRATION_NUMBER = "AU/2024/0002521"
+STUDENT_NAME = "Soumyadip jana"
+ROLL_NUMBER = "UG/SOET/30/24/539"
+REGISTRATION_NUMBER = "AU/2024/0002391"
 
 COURSE_TITLE = "Software Engineering Lab"
 COURSE_CODE = "CSE 12168"
 PROGRAMME = "B.Tech – Computer Science and Engineering"
 DEPARTMENT = "Computer Science and Engineering"
 SCHOOL = "School of Engineering and Technology"
-SECTION = "F"
+SECTION = "E"
 SEMESTER = "5"
 ACADEMIC_YEAR = "2026–2027"
 
